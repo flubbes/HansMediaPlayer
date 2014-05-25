@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using NAudio.Wave;
 
 namespace Hans
 {
@@ -20,9 +21,16 @@ namespace Hans
     /// </summary>
     public partial class MainWindow : Window
     {
+        private IWavePlayer _waveOut;
+        private AudioFileReader _audioFileReader;
+
         public MainWindow()
         {
             InitializeComponent();
+            _waveOut = new WaveOut();
+            _audioFileReader = new AudioFileReader("Another One Bites the Dust - Queen.mp3");
+            _waveOut.Init(_audioFileReader);
+            _waveOut.Play();
         }
     }
 }
