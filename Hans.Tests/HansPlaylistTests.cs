@@ -17,12 +17,15 @@ namespace Hans.Tests
         {
             var hansplaylist = new HansPlaylist();
             var hansSong = A.Fake<HansSong>();
-            hansplaylist.Add();
+            hansplaylist.Add(hansSong);
         }
     }
 
     public class HansPlaylist
     {
-
+        public void Add(HansSong hansSong)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
