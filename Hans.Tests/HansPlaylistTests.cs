@@ -1,4 +1,7 @@
-﻿using FakeItEasy;
+﻿using System.Linq;
+using FakeItEasy;
+using FluentAssertions;
+using Hans.Library;
 using NUnit.Framework;
 
 namespace Hans.Tests
@@ -6,26 +9,36 @@ namespace Hans.Tests
     [TestFixture]
     public class HansPlaylistTests
     {
-        [Test]
-        public void CanCreateHansPlaylist()
+        private HansPlaylist _hansPlaylist;
+        private HansSong _hansSong;
+
+        [SetUp]
+        public void SetUp()
         {
-            new HansPlaylist();
+            _hansPlaylist = new HansPlaylist("test");
+            _hansSong = A.Fake<HansSong>();
         }
 
         [Test]
         public void CanAddSongs()
         {
-            var hansplaylist = new HansPlaylist();
-            var hansSong = A.Fake<HansSong>();
-            hansplaylist.Add(hansSong);
+            _hansPlaylist.Add(_hansSong);
+            _hansPlaylist.Songs.Any().Should().BeTrue();
         }
-    }
 
-    public class HansPlaylist
-    {
-        public void Add(HansSong hansSong)
+        [Test]
+        public void CanRemoveSong()
         {
-            throw new System.NotImplementedException();
+            _hansPlaylist.Add(_hansSong);
+            _hansPlaylist.Remove(_hansSong);
+            _hansPlaylist.Songs.Any().Should().BeFalse();
+        }
+
+        [Test]
+        public void PlaylistNameIsSettedInConstructor()
+        {
+            var hansPlayList = new HansPlaylist("playlist");
+            hansPlayList.Name.Should().Be("playlist");
         }
     }
 }
