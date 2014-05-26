@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Timers;
 using System.Windows;
 using System.Windows.Documents;
 using Hans.SoundCloud;
+using Hans.Tests;
 using NAudio.Wave;
 
 namespace Hans
@@ -35,8 +37,15 @@ namespace Hans
                 return;
             }
             ListViewSearch.Items.Clear();
-            ListViewSearch.Items.Add(tracks);
-            
+            AddItems(tracks);
+        }
+
+        private void AddItems(IEnumerable<IOnlineServiceTrack> tracks)
+        {
+            foreach (var track in tracks)
+            {
+                ListViewSearch.Items.Add(track);
+            }
         }
 
         void formRefresher_Elapsed(object sender, ElapsedEventArgs e)
