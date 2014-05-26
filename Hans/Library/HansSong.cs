@@ -1,10 +1,11 @@
 ﻿using System;
+using NAudio.Wave;
 
-namespace Hans
+namespace Hans.Library
 {
     public class HansSong
     {
-
+        private AudioFileReader _fileReader;
         public HansSong(string path)
         {
             Path = path;
@@ -21,5 +22,10 @@ namespace Hans
         }
 
         public String Path { get; set; }
+
+        public void PrepareToPlay()
+        {
+            var val = new AudioFileReader("path").Length;
+        }
     }
 }

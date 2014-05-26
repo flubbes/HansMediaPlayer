@@ -63,6 +63,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="HansMediaPlayer.cs" />
+    <Compile Include="Library\HansSong.cs" />
     <Compile Include="Library\HansPlaylist.cs" />
     <Compile Include="SoundCloud\Extensions.cs" />
     <Compile Include="SoundCloud\SoundCloudHelper.cs" />

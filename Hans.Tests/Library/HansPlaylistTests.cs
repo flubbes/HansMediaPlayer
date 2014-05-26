@@ -4,7 +4,7 @@ using FluentAssertions;
 using Hans.Library;
 using NUnit.Framework;
 
-namespace Hans.Tests
+namespace Hans.Tests.Library
 {
     [TestFixture]
     public class HansPlaylistTests

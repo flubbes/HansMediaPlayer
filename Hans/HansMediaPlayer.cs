@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using NAudio.CoreAudioApi;
+using Hans.Library;
 using NAudio.Wave;
 
 namespace Hans
@@ -61,26 +58,5 @@ namespace Hans
                 }
             }
         }
-    }
-
-    public class HansSong
-    {
-
-        public HansSong(string path)
-        {
-            Path = path;
-        }
-
-        public long Length
-        {
-            get { return 0; }
-        }
-
-        public long Position
-        {
-            get { return 0; }
-        }
-
-        public String Path { get; set; }
     }
 }
