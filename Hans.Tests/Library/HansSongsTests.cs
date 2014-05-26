@@ -23,7 +23,6 @@ namespace Hans.Tests.Library
         {
             
             var hansSong = new HansSong("path");
-            var audioFileReader = A.Dummy<AudioFileReader>();
            
             hansSong.PrepareToPlay();
             

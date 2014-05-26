@@ -1,14 +1,15 @@
 ﻿using System;
+using System.IO;
 using NAudio.Wave;
 
 namespace Hans.Library
 {
     public class HansSong
     {
-        private AudioFileReader _fileReader;
-        public HansSong(string path)
+
+        public HansSong(string filePath)
         {
-            Path = path;
+            FilePath = filePath;
         }
 
         public long Length
@@ -21,13 +22,11 @@ namespace Hans.Library
             get { return 0; }
         }
 
-        public String Path { get; set; }
+        public string FilePath { get; set; }
 
-        public void PrepareToPlay()
+        public void PrepareToPlay(AudioFilePlayer )
         {
-           // _fileReader = new AudioFileReader();
-            //WaveStream bla = new stream
-                        
+            
         }
     }
 }
