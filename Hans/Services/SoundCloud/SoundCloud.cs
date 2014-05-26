@@ -2,33 +2,34 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
+using Hans.Tests;
 
-namespace Hans.SoundCloud
+namespace Hans.Services.SoundCloud
 {
-    public static class SoundCloudHelper
+    public class SoundCloud : IOnlineService
     {
         /// <summary>
         /// Returns the tracks available at the page with the specified source code.
         /// </summary>
         /// <param name="htmlCode">The HTML code of the page.</param>
         /// <returns>The list of available tracks.</returns>
-        public static List<Track> GetTracks(String htmlCode)
+        public IEnumerable<IOnlineServiceTrack> Search(string query)
+        {
+            return ParseTracks(GetSourceCode(query));
+        }
+
+        private IEnumerable<SoundCloudTrack> ParseTracks(string htmlCode)
         {
             var mp3Urls = GetMediaUrls(htmlCode);
             var titles = GetTitles(htmlCode);
             var artists = GetArtists(htmlCode);
+            var tracks = new List<SoundCloudTrack>();
 
-            var tracks = new List<Track>();
-
-            if (mp3Urls.Count != titles.Count 
-                || mp3Urls.Count != artists.Count 
-                || titles.Count != artists.Count)
+            if (mp3Urls.Count != titles.Count || mp3Urls.Count != artists.Count || titles.Count != artists.Count)
             {
-                // We won't be able to assign the artist and the title to every urls we have
-                // Create tracks with only the url
-
-                tracks.AddRange(mp3Urls.Select(mp3Url => new Track("Unknown", "Unknown", mp3Url)));
+                tracks.AddRange(mp3Urls.Select(mp3Url => new SoundCloudTrack("Unknown", "Unknown", mp3Url)));
             }
             else
             {
@@ -42,15 +43,19 @@ namespace Hans.SoundCloud
                         var title = e2.Current;
                         var artist = e3.Current;
 
-                        tracks.Add(new Track(artist, title, mp3Url));
+                        tracks.Add(new SoundCloudTrack(artist, title, mp3Url));
                     }
                 }
             }
-
             return tracks;
         }
 
-        private static List<String> GetMediaUrls(String htmlCode)
+        private static string GetSourceCode(string query)
+        {
+            return new WebClient().DownloadString(query.StartsWith("http") ? query :"https://soundcloud.com/search?q=" + query);
+        }
+
+        private List<String> GetMediaUrls(String htmlCode)
         {
             // "streamUrl":"http://media.soundcloud.com/stream/blabla"
             var regex = new Regex(@"""streamUrl"":""(?<url>http://media\.soundcloud\.com/stream/[^""]+)""");
@@ -58,7 +63,7 @@ namespace Hans.SoundCloud
             return (from Match match in regex.Matches(htmlCode) select match.Groups["url"].Value).ToList();
         }
 
-        private static List<String> GetTitles(String htmlCode)
+        private List<String> GetTitles(String htmlCode)
         {
             // "title":"blabla"
             var regex = new Regex(@"""title"":""(?<title>[^""]+)""");
@@ -66,7 +71,7 @@ namespace Hans.SoundCloud
             return (from Match match in regex.Matches(htmlCode) select ConvertUnicodeStrings(match.Groups["title"].Value)).ToList();
         }
 
-        private static List<String> GetArtists(String htmlCode)
+        private List<String> GetArtists(String htmlCode)
         {
             // "username":"blabla"
             var regex = new Regex(@"""username"":""(?<artist>[^""]*)""");
@@ -74,7 +79,7 @@ namespace Hans.SoundCloud
             return (from Match match in regex.Matches(htmlCode) select ConvertUnicodeStrings(match.Groups["artist"].Value)).ToList();
         }
 
-        private static String ConvertUnicodeStrings(String str)
+        private String ConvertUnicodeStrings(String str)
         {
             // Unicode characters appear as "_uXXXX" in SoundClound html source.
             // For instance, we have "_u00e9" for 'é'

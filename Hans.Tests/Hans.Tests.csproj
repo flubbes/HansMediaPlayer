@@ -69,6 +69,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="HansAudioPlayerTests.cs" />
     <Compile Include="Library\HansPlaylistTests.cs" />
     <Compile Include="Library\HansSongsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

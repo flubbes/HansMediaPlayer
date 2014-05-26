@@ -21,11 +21,10 @@ namespace Hans.Tests.Library
         [Test]
         public void CanPrepareFile()
         {
-            
             var hansSong = new HansSong("path");
-           
-            hansSong.PrepareToPlay();
-            
+            var audioLoader = A.Fake<IAudioLoader>();
+            hansSong.PrepareToPlay(audioLoader);
+            A.CallTo(() => audioLoader.Load(hansSong)).MustHaveHappened();
         }
     }
 }

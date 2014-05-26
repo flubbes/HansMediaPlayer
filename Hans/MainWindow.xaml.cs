@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Timers;
 using System.Windows;
+using System.Windows.Documents;
 using Hans.SoundCloud;
 using NAudio.Wave;
 
@@ -13,8 +14,7 @@ namespace Hans
     /// </summary>
     public partial class MainWindow
     {
-        private IWavePlayer _waveOut;
-        private AudioFileReader _audioFileReader;
+        private HansAudioPlayer _hansAudioPlayer;
         private Timer formRefresher;
         private bool _ignore;
 
@@ -23,15 +23,20 @@ namespace Hans
             InitializeComponent();
             formRefresher = new Timer();
             formRefresher.Interval = 10;
+            _hansAudioPlayer = new HansAudioPlayer();
+            _hansAudioPlayer.SearchFinished += _hansAudioPlayer_SearchFinished;
+        }
+
+        void _hansAudioPlayer_SearchFinished(System.Collections.Generic.IEnumerable<Tests.IOnlineServiceTrack> tracks)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(() => _hansAudioPlayer_SearchFinished(tracks));
+                return;
+            }
+            ListViewSearch.Items.Clear();
+            ListViewSearch.Items.Add(tracks);
             
-            formRefresher.Elapsed += formRefresher_Elapsed;
-            _waveOut = new WaveOut();
-            var tracks = SoundCloud.SoundCloudHelper.GetTracks(new WebClient().DownloadString("https://soundcloud.com/surendly-swaggaboy/capo-my-own-way-prod-by-taeedaproducer-x-josueonthebeat-x-intelonthebeat-glonl2"));
-            new WebClient().DownloadFile(tracks.First().Mp3Url, "peter.mp3");
-            _audioFileReader = new AudioFileReader("peter.mp3");
-            _waveOut.Init(_audioFileReader);
-            _waveOut.Play();
-            formRefresher.Start();
         }
 
         void formRefresher_Elapsed(object sender, ElapsedEventArgs e)
@@ -49,7 +54,6 @@ namespace Hans
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            _audioFileReader.Volume = (float) e.NewValue;
         }
 
         private void Invoke(Action act)
@@ -67,6 +71,49 @@ namespace Hans
             if (_ignore)
                 return;
             //_audioFileReader.Position = (long) SongProgress.Value;
+        }
+
+        private void ButtonSearch_Click(object sender, RoutedEventArgs e)
+        {
+            _hansAudioPlayer.Search(new SearchRequest
+            {
+                OnlineService = new Services.SoundCloud.SoundCloud(),
+                Query = TextBoxQuery.Text
+            });
+        }
+
+        private void ButtonPlayPause_Click(object sender, RoutedEventArgs e)
+        {
+            if (_hansAudioPlayer.IsPlaying)
+            {
+                _hansAudioPlayer.Pause();
+                ButtonPlayPause.Content = "Play";
+            }
+            else
+            {
+                _hansAudioPlayer.Play();
+                ButtonPlayPause.Content = "Pause";
+            }
+        }
+
+        private void ButtonStop_Click(object sender, RoutedEventArgs e)
+        {
+            _hansAudioPlayer.Stop();
+        }
+
+        private void ButtonPrevious_Click(object sender, RoutedEventArgs e)
+        {
+            _hansAudioPlayer.Previous();
+        }
+
+        private void ButtonNext_Click(object sender, RoutedEventArgs e)
+        {
+            _hansAudioPlayer.Next();
+        }
+
+        private void SliderVolume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            _hansAudioPlayer.Volume = (float) e.NewValue;
         }
     }
 }

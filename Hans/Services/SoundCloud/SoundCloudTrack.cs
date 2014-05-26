@@ -1,8 +1,10 @@
 using System;
+using Hans.SoundCloud;
+using Hans.Tests;
 
-namespace Hans.SoundCloud
+namespace Hans.Services.SoundCloud
 {
-    public class Track
+    public class SoundCloudTrack : IOnlineServiceTrack
     {
         public string Artist { get; set; }
         public string Title { get; set; }
@@ -16,7 +18,7 @@ namespace Hans.SoundCloud
             }
         }
 
-        public Track(string artist, string title, string mp3Url)
+        public SoundCloudTrack(string artist, string title, string mp3Url)
         {
             Artist = artist;
             Title = title;

@@ -6,6 +6,7 @@ namespace Hans.Library
 {
     public class HansSong
     {
+        private IAudioLoader _loader;
 
         public HansSong(string filePath)
         {
@@ -24,9 +25,10 @@ namespace Hans.Library
 
         public string FilePath { get; set; }
 
-        public void PrepareToPlay(AudioFilePlayer )
+        public void PrepareToPlay(IAudioLoader loader)
         {
-            
+            _loader = loader;
+            _loader.Load(this);
         }
     }
 }

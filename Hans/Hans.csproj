@@ -14,6 +14,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <ExpressionBlendVersion>12.0.50320.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -39,6 +40,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\GAPI.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Drawing" />
     <Reference Include="NAudio">
       <HintPath>..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
     </Reference>
@@ -62,13 +64,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="HansMediaPlayer.cs" />
+    <Compile Include="Models\ListViewTrackModel.cs" />
+    <Compile Include="SearchRequest.cs" />
+    <Compile Include="Web\DownloadRequest.cs" />
+    <Compile Include="Web\IDownloader.cs" />
+    <Compile Include="HansAudioPlayer.cs" />
     <Compile Include="Library\IAudioLoader.cs" />
     <Compile Include="Library\HansSong.cs" />
     <Compile Include="Library\HansPlaylist.cs" />
-    <Compile Include="SoundCloud\Extensions.cs" />
-    <Compile Include="SoundCloud\SoundCloudHelper.cs" />
-    <Compile Include="SoundCloud\Track.cs" />
+    <Compile Include="Services\IOnlineService.cs" />
+    <Compile Include="Services\IOnlineServiceTrack.cs" />
+    <Compile Include="Services\SoundCloud\Extensions.cs" />
+    <Compile Include="Services\SoundCloud\SoundCloud.cs" />
+    <Compile Include="Services\SoundCloud\SoundCloudTrack.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
