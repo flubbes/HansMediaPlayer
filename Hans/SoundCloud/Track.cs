@@ -4,10 +4,11 @@ namespace Hans.SoundCloud
 {
     public class Track
     {
-        public String Artist { get; set; }
-        public String Title { get; set; }
-        public String Mp3Url { get; set; }
-        public String ArtistTitle
+        public string Artist { get; set; }
+        public string Title { get; set; }
+        public string Mp3Url { get; set; }
+
+        public string DisplayName
         {
             get
             {
@@ -15,7 +16,7 @@ namespace Hans.SoundCloud
             }
         }
 
-        public Track(String artist, String title, String mp3Url)
+        public Track(string artist, string title, string mp3Url)
         {
             Artist = artist;
             Title = title;
@@ -24,7 +25,7 @@ namespace Hans.SoundCloud
 
         public String GetFileName()
         {
-            String fileName = ArtistTitle + ".mp3";
+            var fileName = DisplayName + ".mp3";
             return fileName.ToAllowedFileName();
         }
     }

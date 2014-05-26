@@ -26,8 +26,8 @@ namespace Hans
             
             formRefresher.Elapsed += formRefresher_Elapsed;
             _waveOut = new WaveOut();
-            //var tracks = SoundCloud.SoundCloudHelper.GetTracks(new WebClient().DownloadString("https://soundcloud.com/hits-only/nicki-minaj-pills-and-potions"));
-            //new WebClient().DownloadFile(tracks.First().Mp3Url, "peter.mp3");
+            var tracks = SoundCloud.SoundCloudHelper.GetTracks(new WebClient().DownloadString("https://soundcloud.com/surendly-swaggaboy/capo-my-own-way-prod-by-taeedaproducer-x-josueonthebeat-x-intelonthebeat-glonl2"));
+            new WebClient().DownloadFile(tracks.First().Mp3Url, "peter.mp3");
             _audioFileReader = new AudioFileReader("peter.mp3");
             _waveOut.Init(_audioFileReader);
             _waveOut.Play();
@@ -41,10 +41,10 @@ namespace Hans
                 Invoke(() => formRefresher_Elapsed(sender, e));
                 return;
             }
-            _ignore = true;
-            SongProgress.Value = _audioFileReader.Position;
-            SongProgress.Maximum = _audioFileReader.Length;
-            _ignore = false;
+            //_ignore = true;
+            //SongProgress.Value = _audioFileReader.Position;
+            //SongProgress.Maximum = _audioFileReader.Length;
+            //_ignore = false;
         }
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -66,7 +66,7 @@ namespace Hans
         {
             if (_ignore)
                 return;
-            _audioFileReader.Position = (long) SongProgress.Value;
+            //_audioFileReader.Position = (long) SongProgress.Value;
         }
     }
 }
