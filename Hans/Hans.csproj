@@ -58,8 +58,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="HansMediaPlayer.cs" />
+    <Compile Include="SoundCloud\Extensions.cs" />
     <Compile Include="SoundCloud\SoundCloudHelper.cs" />
-    <Compile Include="SoundCloud\SoundCloudSong.cs" />
+    <Compile Include="SoundCloud\Track.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

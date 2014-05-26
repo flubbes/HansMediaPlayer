@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <Slider x:Name="VolumeSlider" HorizontalAlignment="Left" Margin="76,200,0,0" VerticalAlignment="Top" Width="294" ValueChanged="VolumeSlider_ValueChanged" LargeChange="0.1" Maximum="1" SmallChange="0.01"/>
+        <Slider x:Name="SongProgress" Margin="0,291,0,0" VerticalAlignment="Top" ValueChanged="SongProgress_ValueChanged"/>
+
     </Grid>
 </Window>
