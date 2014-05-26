@@ -1,8 +1,11 @@
-﻿using FakeItEasy;
+﻿using System;
+using FakeItEasy;
 using FakeItEasy.ExtensionSyntax.Full;
+using FluentAssertions;
 using Hans.Library;
 using NAudio.Wave;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace Hans.Tests.Library
 {
@@ -18,10 +21,10 @@ namespace Hans.Tests.Library
         [Test]
         public void CanPrepareFile()
         {
+            
             var hansSong = new HansSong("path");
-            var fakeAudioFileReader = A.Fake<AudioFileReader>();
-            A.CallTo(() => fakeAudioFileReader.Length).Returns(1337);
-            A.CallTo(() => new AudioFileReader("path")).Returns(fakeAudioFileReader);
+            var audioFileReader = A.Dummy<AudioFileReader>();
+           
             hansSong.PrepareToPlay();
             
         }

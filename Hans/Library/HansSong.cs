@@ -25,7 +25,9 @@ namespace Hans.Library
 
         public void PrepareToPlay()
         {
-            var val = new AudioFileReader("path").Length;
+           // _fileReader = new AudioFileReader();
+            //WaveStream bla = new stream
+                        
         }
     }
 }
