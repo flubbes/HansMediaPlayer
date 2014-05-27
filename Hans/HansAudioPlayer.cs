@@ -5,39 +5,29 @@ using System.Threading;
 using System.Threading.Tasks;
 using Hans.Library;
 using Hans.Tests;
+using Hans.Web;
 using NAudio.Wave;
 
 namespace Hans
 {
     public class HansAudioPlayer
     {
-        private volatile List<HansSong> _songQueue;
         private volatile int _listPosition;
-
-        public delegate void SearchFinishedEventHandler(IEnumerable<IOnlineServiceTrack> tracks);
-
-        public event SearchFinishedEventHandler SearchFinished;
+        private SongDownloads _songDownloads;
+        private volatile List<HansSong> _songQueue;
 
         public HansAudioPlayer()
         {
             _listPosition = 0;
             _songQueue = new List<HansSong>();
             Player = new WaveOut();
-            
+            _songDownloads = new SongDownloads();
+            _songDownloads.DownloadFinished += _songDownloads_DownloadFinished;
         }
 
-        public void Pause()
-        {
-            
-        }
+        public event SearchFinishedEventHandler SearchFinished;
 
-        public void Play()
-        {
-            if (IsQueueEmpty())
-                return;
-        }
-
-        public IWavePlayer Player { get; set; }
+        public event SongQueueChangedEventHandler SongQueueChanged;
 
         public HansSong CurrentlyPlaying
         {
@@ -47,21 +37,13 @@ namespace Hans
             }
         }
 
-        public bool Shuffle { get; set; }
+        public bool IsPlaying { get; private set; }
+
+        public IWavePlayer Player { get; set; }
 
         public bool Reapeat { get; set; }
 
-        public bool IsPlaying { get; private set; }
-
-        private bool IsQueueEmpty()
-        {
-            return !_songQueue.Any();
-        }
-
-        public void Stop()
-        {
-            
-        }
+        public bool Shuffle { get; set; }
 
         public IEnumerable<HansSong> SongQueue
         {
@@ -76,14 +58,41 @@ namespace Hans
 
         public float Volume { get; set; }
 
-        public void Previous()
+        public void Download(IOnlineServiceTrack track)
         {
-            
+            _songDownloads.Start(new DownloadRequest
+            {
+                DestinationPath = track.DisplayName + ".mp3",
+                Downloader = new HttpDownloader(),
+                OnlineServiceTrack = track,
+                Uri = track.Mp3Url
+            });
         }
 
         public void Next()
         {
-            
+
+        }
+
+        public void Pause()
+        {
+
+        }
+
+        public void Play()
+        {
+            if (IsQueueEmpty())
+            {
+                return;
+            }
+            _songQueue[_listPosition].PrepareToPlay(new RamAudioLoader());
+            Player.Init(_songQueue[_listPosition].WaveStream);
+            Player.Play();
+        }
+
+        public void Previous()
+        {
+
         }
 
         public void Search(SearchRequest searchRequest)
@@ -94,6 +103,27 @@ namespace Hans
             }.Start();
         }
 
+        public void Stop()
+        {
+
+        }
+
+        private void _songDownloads_DownloadFinished(object sender, DownloadFinishedEventHandlerArgs args)
+        {
+            _songQueue.Add(
+                    HansSong.FromOnlineServiceTrack(
+                            args.DownloadRequest.DestinationPath,
+                            args.DownloadRequest.OnlineServiceTrack
+                        )
+                );
+            OnSongQueueChanged();
+        }
+
+        private bool IsQueueEmpty()
+        {
+            return !_songQueue.Any();
+        }
+
         private void OnSearchFinished(IEnumerable<IOnlineServiceTrack> tracks)
         {
             if (SearchFinished != null)
@@ -102,6 +132,13 @@ namespace Hans
             }
         }
 
+        private void OnSongQueueChanged()
+        {
+            if (SongQueueChanged != null)
+            {
+                SongQueueChanged(this, EventArgs.Empty);
+            }
+        }
         private void StartSearch(SearchRequest searchRequest)
         {
             OnSearchFinished(searchRequest.OnlineService.Search(searchRequest.Query));

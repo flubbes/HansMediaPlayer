@@ -44,6 +44,11 @@
             </Button.RenderTransform>
         </Button>
         <ListView x:Name="ListViewSearch" HorizontalAlignment="Center" Height="405" Margin="10,50,296,0" VerticalAlignment="Top" Width="550">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add to playlist" Name="MenuItemAddToPlaylist" Click="MenuItemAddToPlaylist_OnClick"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Artist" DisplayMemberBinding="{Binding Path=Artist}"/>
@@ -52,14 +57,18 @@
             </ListView.View>
         </ListView>
         <Slider x:Name="SliderSongProgress" HorizontalAlignment="Left" Margin="10,513,0,0" VerticalAlignment="Top" Width="836"/>
-        <Slider x:Name="SliderVolume" Margin="370,477,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="175" ValueChanged="SliderVolume_ValueChanged" LargeChange="0.01" TickFrequency="0.01" Maximum="1"/>
+        <Slider x:Name="SliderVolume" Margin="370,477,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="175" ValueChanged="SliderVolume_ValueChanged" LargeChange="0.01" TickFrequency="0.01" Maximum="1" Value="1"/>
         <TextBox x:Name="TextBoxQuery" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="270"/>
         <Button x:Name="ButtonSearch" Content="Search" HorizontalAlignment="Left" Margin="485,11,0,0" VerticalAlignment="Top" Width="75" Click="ButtonSearch_Click"/>
         <ComboBox x:Name="ComboBoxService" HorizontalAlignment="Left" Margin="285,11,0,0" VerticalAlignment="Top" Width="195"/>
         <ListView x:Name="ListViewSongQueue" HorizontalAlignment="Center" Height="498" Margin="565,10,10,0" VerticalAlignment="Top" Width="281">
             <ListView.View>
-                <GridView/>
+                <GridView>
+                    <GridViewColumn Header="Artist" DisplayMemberBinding="{Binding Path=Artist}"/>
+                    <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Path=Title}"/>
+                </GridView>
             </ListView.View>
+            <ComboBox Height="100" Width="120"/>
         </ListView>
     </Grid>
 </Window>

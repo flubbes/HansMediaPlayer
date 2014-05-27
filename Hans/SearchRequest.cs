@@ -1,4 +1,4 @@
-﻿using Hans.Tests;
+﻿using Hans.Services;
 
 namespace Hans
 {
