@@ -1,4 +1,5 @@
 ﻿using FakeItEasy;
+using Hans.Services;
 using NUnit.Framework;
 
 namespace Hans.Tests

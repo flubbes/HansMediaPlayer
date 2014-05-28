@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Hans.Tests;
 
-namespace Hans.Tests
+namespace Hans.Services
 {
     public interface IOnlineService
     {

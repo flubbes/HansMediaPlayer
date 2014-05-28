@@ -71,10 +71,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\ListViewTrackModel.cs" />
+    <Compile Include="Library\RamAudioLoader.cs" />
+    <Compile Include="SearchFinishedEventHandler.cs" />
     <Compile Include="SearchRequest.cs" />
     <Compile Include="Services\RestSharpJsonSerializeWrapper.cs" />
+    <Compile Include="SongQueueChangedEventHandler.cs" />
+    <Compile Include="Web\DownloadFinishedEventHandler.cs" />
     <Compile Include="Web\DownloadRequest.cs" />
+    <Compile Include="Web\HttpDownloader.cs" />
     <Compile Include="Web\IDownloader.cs" />
     <Compile Include="HansAudioPlayer.cs" />
     <Compile Include="Library\IAudioLoader.cs" />
@@ -85,6 +89,7 @@
     <Compile Include="Services\SoundCloud\Extensions.cs" />
     <Compile Include="Services\SoundCloud\SoundCloud.cs" />
     <Compile Include="Services\SoundCloud\SoundCloudTrack.cs" />
+    <Compile Include="Web\SongDownloads.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

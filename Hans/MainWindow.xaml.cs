@@ -17,9 +17,8 @@ namespace Hans
     public partial class MainWindow
     {
         private HansAudioPlayer _hansAudioPlayer;
-        private Timer formRefresher;
         private bool _ignore;
-
+        private Timer formRefresher;
         public MainWindow()
         {
             InitializeComponent();
@@ -27,6 +26,12 @@ namespace Hans
             formRefresher.Interval = 10;
             _hansAudioPlayer = new HansAudioPlayer();
             _hansAudioPlayer.SearchFinished += _hansAudioPlayer_SearchFinished;
+            _hansAudioPlayer.SongQueueChanged += _hansAudioPlayer_SongQueueChanged;
+        }
+
+        private bool InvokeRequired
+        {
+            get { return !Dispatcher.CheckAccess(); }
         }
 
         void _hansAudioPlayer_SearchFinished(System.Collections.Generic.IEnumerable<Tests.IOnlineServiceTrack> tracks)
@@ -36,11 +41,29 @@ namespace Hans
                 Invoke(() => _hansAudioPlayer_SearchFinished(tracks));
                 return;
             }
-            ListViewSearch.Items.Clear();
-            AddItems(tracks);
+            FillListViewSearch(tracks);
         }
 
-        private void AddItems(IEnumerable<IOnlineServiceTrack> tracks)
+        void _hansAudioPlayer_SongQueueChanged(object sender, EventArgs args)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(() => _hansAudioPlayer_SongQueueChanged(sender, args));
+                return;
+            }
+            ListViewSongQueue.Items.Clear();
+            AddItemsToSongQueueListView();
+        }
+
+        private void AddItemsToSongQueueListView()
+        {
+            foreach (var track in _hansAudioPlayer.SongQueue)
+            {
+                ListViewSongQueue.Items.Add(track);
+            }
+        }
+
+        private void AddItemsToSearchListView(IEnumerable<IOnlineServiceTrack> tracks)
         {
             foreach (var track in tracks)
             {
@@ -48,47 +71,9 @@ namespace Hans
             }
         }
 
-        void formRefresher_Elapsed(object sender, ElapsedEventArgs e)
+        private void ButtonNext_Click(object sender, RoutedEventArgs e)
         {
-            if (InvokeRequired)
-            {
-                Invoke(() => formRefresher_Elapsed(sender, e));
-                return;
-            }
-            //_ignore = true;
-            //SongProgress.Value = _audioFileReader.Position;
-            //SongProgress.Maximum = _audioFileReader.Length;
-            //_ignore = false;
-        }
-
-        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-        }
-
-        private void Invoke(Action act)
-        {
-            Dispatcher.Invoke(act);
-        }
-
-        private bool InvokeRequired
-        {
-            get { return !Dispatcher.CheckAccess(); }
-        }
-
-        private void SongProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (_ignore)
-                return;
-            //_audioFileReader.Position = (long) SongProgress.Value;
-        }
-
-        private void ButtonSearch_Click(object sender, RoutedEventArgs e)
-        {
-            _hansAudioPlayer.Search(new SearchRequest
-            {
-                OnlineService = new Services.SoundCloud.SoundCloud(),
-                Query = TextBoxQuery.Text
-            });
+            _hansAudioPlayer.Next();
         }
 
         private void ButtonPlayPause_Click(object sender, RoutedEventArgs e)
@@ -105,24 +90,92 @@ namespace Hans
             }
         }
 
-        private void ButtonStop_Click(object sender, RoutedEventArgs e)
-        {
-            _hansAudioPlayer.Stop();
-        }
-
         private void ButtonPrevious_Click(object sender, RoutedEventArgs e)
         {
             _hansAudioPlayer.Previous();
         }
 
-        private void ButtonNext_Click(object sender, RoutedEventArgs e)
+        private void ButtonSearch_Click(object sender, RoutedEventArgs e)
         {
-            _hansAudioPlayer.Next();
+            _hansAudioPlayer.Search(new SearchRequest
+            {
+                OnlineService = new Services.SoundCloud.SoundCloud(),
+                Query = TextBoxQuery.Text
+            });
+        }
+
+        private void ButtonStop_Click(object sender, RoutedEventArgs e)
+        {
+            _hansAudioPlayer.Stop();
+        }
+
+        private IOnlineServiceTrack ConvertSelectionToOnlineServiceTrack()
+        {
+            return ListViewSearch.SelectedValue as IOnlineServiceTrack;
+        }
+
+        private void FillListViewSearch(IEnumerable<IOnlineServiceTrack> tracks)
+        {
+            ListViewSearch.Items.Clear();
+            AddItemsToSearchListView(tracks);
+        }
+        void formRefresher_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(() => formRefresher_Elapsed(sender, e));
+                return;
+            }
+            //_ignore = true;
+            //SongProgress.Value = _audioFileReader.Position;
+            //SongProgress.Maximum = _audioFileReader.Length;
+            //_ignore = false;
+        }
+
+        private void Invoke(Action act)
+        {
+            Dispatcher.Invoke(act);
+        }
+
+        private bool IsSelectionEmpty()
+        {
+            return ListViewSearch.SelectedIndex == -1;
+        }
+
+        private bool IsServiceTrack()
+        {
+            return ListViewSearch.SelectedValue is IOnlineServiceTrack;
+        }
+
+        private void MenuItemAddToPlaylist_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (IsSelectionEmpty() || !IsServiceTrack())
+            {
+                return;
+            }
+
+            var track = ConvertSelectionToOnlineServiceTrack();
+            _hansAudioPlayer.Download(track);
         }
 
         private void SliderVolume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            _hansAudioPlayer.Volume = (float) e.NewValue;
+            if (_hansAudioPlayer == null)
+            {
+                return;
+            }
+            _hansAudioPlayer.Volume = (float)e.NewValue;
+        }
+
+        private void SongProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (_ignore)
+                return;
+            //_audioFileReader.Position = (long) SongProgress.Value;
+        }
+
+        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
         }
     }
 }
