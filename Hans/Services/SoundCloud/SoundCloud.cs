@@ -13,7 +13,7 @@ namespace Hans.Services.SoundCloud
 {
     public class SoundCloud : IOnlineService
     {
-        public static readonly string ApiKey = "df2fea9bed01f8e2743ef1edb11657f5";
+        public const string ApiKey = "df2fea9bed01f8e2743ef1edb11657f5";
 
         public IEnumerable<IOnlineServiceTrack> Search(string query)
         {

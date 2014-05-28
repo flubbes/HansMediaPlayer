@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Timers;
 using System.Windows;
-using System.Windows.Documents;
-using Hans.SoundCloud;
 using Hans.Tests;
-using NAudio.Wave;
 
 namespace Hans
 {
