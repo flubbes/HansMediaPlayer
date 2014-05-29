@@ -48,6 +48,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp">
       <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
@@ -77,16 +80,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Database\FlatFileDatabaseSaver.cs" />
+    <Compile Include="Library\HansMusicLibrary.cs" />
+    <Compile Include="Database\IDatabaseSaver.cs" />
     <Compile Include="Library\RamAudioLoader.cs" />
-    <Compile Include="SearchFinishedEventHandler.cs" />
-    <Compile Include="SearchRequest.cs" />
+    <Compile Include="General\SearchFinishedEventHandler.cs" />
+    <Compile Include="General\SearchRequest.cs" />
+    <Compile Include="Modules\DatabaseModule.cs" />
     <Compile Include="Services\RestSharpJsonSerializeWrapper.cs" />
-    <Compile Include="SongQueueChangedEventHandler.cs" />
+    <Compile Include="General\SongQueueChangedEventHandler.cs" />
     <Compile Include="Web\DownloadFinishedEventHandler.cs" />
     <Compile Include="Web\DownloadRequest.cs" />
     <Compile Include="Web\HttpDownloader.cs" />
     <Compile Include="Web\IDownloader.cs" />
-    <Compile Include="HansAudioPlayer.cs" />
+    <Compile Include="General\HansAudioPlayer.cs" />
     <Compile Include="Library\IAudioLoader.cs" />
     <Compile Include="Library\HansSong.cs" />
     <Compile Include="Library\HansPlaylist.cs" />

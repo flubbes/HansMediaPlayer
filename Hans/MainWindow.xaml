@@ -1,8 +1,12 @@
 ﻿<Window x:Class="Hans.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="572" Width="864">
+        Title="MainWindow" Height="572" Width="864" Activated="Window_Activated">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="335*"/>
+            <ColumnDefinition Width="521*"/>
+        </Grid.ColumnDefinitions>
         <Button x:Name="ButtonPlayPause" Content="Play" HorizontalAlignment="Left" Margin="100,471,0,0" VerticalAlignment="Top" Width="80" Height="24" BorderThickness="1" Background="#FFDCD8D8" RenderTransformOrigin="0.5,0.5" Click="ButtonPlayPause_Click">
             <Button.RenderTransform>
                 <TransformGroup>
@@ -23,7 +27,7 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
-        <Button x:Name="ButtonNext" Content="Next" HorizontalAlignment="Left" Margin="270,471,0,0" VerticalAlignment="Top" Width="80" Height="24" BorderThickness="1" Background="#FFDCD8D8" RenderTransformOrigin="0.5,0.5" Click="ButtonNext_Click">
+        <Button x:Name="ButtonNext" Content="Next" HorizontalAlignment="Left" Margin="270,471,0,0" VerticalAlignment="Top" Width="80" Height="24" BorderThickness="1" Background="#FFDCD8D8" RenderTransformOrigin="0.5,0.5" Click="ButtonNext_Click" Grid.ColumnSpan="2">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleY="1" ScaleX="1"/>
@@ -43,9 +47,9 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
-        <Slider x:Name="SliderSongProgress" HorizontalAlignment="Left" Margin="10,513,0,0" VerticalAlignment="Top" Width="836"/>
-        <Slider x:Name="SliderVolume" Margin="370,477,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="175" ValueChanged="SliderVolume_ValueChanged" LargeChange="0.01" TickFrequency="0.01" Maximum="1" Value="1"/>
-        <ListView x:Name="ListViewSongQueue" HorizontalAlignment="Center" Height="498" Margin="565,10,10,0" VerticalAlignment="Top" Width="281">
+        <Slider x:Name="SliderSongProgress" HorizontalAlignment="Left" Margin="10,513,0,0" VerticalAlignment="Top" Width="836" Grid.ColumnSpan="2"/>
+        <Slider x:Name="SliderVolume" Margin="35,477,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="175" ValueChanged="SliderVolume_ValueChanged" LargeChange="0.01" TickFrequency="0.01" Maximum="1" Value="1" Grid.Column="1"/>
+        <ListView x:Name="ListViewSongQueue" HorizontalAlignment="Center" Height="498" Margin="230,10,10,0" VerticalAlignment="Top" Width="281" Grid.Column="1">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Artist" DisplayMemberBinding="{Binding Path=Artist}"/>
@@ -54,7 +58,7 @@
             </ListView.View>
             <ComboBox Height="100" Width="120"/>
         </ListView>
-        <TabControl HorizontalAlignment="Left" Height="456" VerticalAlignment="Top" Width="535">
+        <TabControl HorizontalAlignment="Left" Height="456" VerticalAlignment="Top" Width="535" Grid.ColumnSpan="2">
             <TabItem Header="TabItem">
                 <Grid Background="#FFE5E5E5" Margin="80,170,34,-37">
                     <Grid.ColumnDefinitions>

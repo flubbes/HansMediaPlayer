@@ -1,6 +1,6 @@
 ﻿using Hans.Services;
 
-namespace Hans
+namespace Hans.General
 {
     public struct SearchRequest
     {

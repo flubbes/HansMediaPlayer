@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Hans.Library;
 using Hans.Tests;
 using Hans.Web;
 using NAudio.Wave;
+using Ninject;
 
-namespace Hans
+namespace Hans.General
 {
     public class HansAudioPlayer
     {
         private volatile int _listPosition;
-        private SongDownloads _songDownloads;
+        private readonly SongDownloads _songDownloads;
         private volatile List<HansSong> _songQueue;
 
         public HansAudioPlayer()
@@ -37,12 +37,15 @@ namespace Hans
             }
         }
 
+        [Inject]
+        public HansMusicLibrary Library { get; set; } 
+
         public bool IsPlaying
         {
             get { return Player.PlaybackState == PlaybackState.Playing; }
         }
 
-        public IWavePlayer Player { get; set; }
+        private IWavePlayer Player { get; set; }
 
         public bool Reapeat { get; set; }
 

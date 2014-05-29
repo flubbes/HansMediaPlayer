@@ -1,6 +1,6 @@
 using System;
 
-namespace Hans
+namespace Hans.General
 {
     public delegate void SongQueueChangedEventHandler(object sender, EventArgs args);
 }
