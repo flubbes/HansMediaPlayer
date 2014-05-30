@@ -94,7 +94,8 @@ namespace Hans
         {
             _hansAudioPlayer.Search(new SearchRequest
             {
-                OnlineService = new Services.SoundCloud.SoundCloud(),
+                //OnlineService = new Services.SoundCloud.SoundCloud(),
+                OnlineService = new Services.YouTube.YouTube(),
                 Query = TextBoxQuery.Text
             });
         }

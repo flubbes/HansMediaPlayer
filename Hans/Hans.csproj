@@ -53,9 +53,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -68,9 +65,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="YoutubeExtractor">
-      <HintPath>..\packages\YoutubeExtractor.0.9.5\lib\net35\YoutubeExtractor.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -81,6 +75,8 @@
     <Compile Include="SearchFinishedEventHandler.cs" />
     <Compile Include="SearchRequest.cs" />
     <Compile Include="Services\RestSharpJsonSerializeWrapper.cs" />
+    <Compile Include="Services\YouTube\YouTube.cs" />
+    <Compile Include="Services\YouTube\YouTubeTrack.cs" />
     <Compile Include="SongQueueChangedEventHandler.cs" />
     <Compile Include="Web\DownloadFinishedEventHandler.cs" />
     <Compile Include="Web\DownloadRequest.cs" />
@@ -140,6 +136,7 @@
   <ItemGroup>
     <Content Include="GAPI.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
