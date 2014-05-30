@@ -4,8 +4,6 @@ using System.Timers;
 using System.Windows;
 using Hans.General;
 using Hans.Tests;
-using Ninject;
-using Ninject.Components;
 
 namespace Hans
 {
@@ -14,14 +12,14 @@ namespace Hans
     /// </summary>
     public partial class MainWindow
     {
-        [Inject]
-        private HansAudioPlayer _hansAudioPlayer;
+        public HansAudioPlayer _hansAudioPlayer;
 
         private bool _ignore;
         private Timer formRefresher;
 
-        public MainWindow()
+        public MainWindow(HansAudioPlayer hansAudioPlayer)
         {
+            _hansAudioPlayer = hansAudioPlayer;
             InitializeComponent();
         }
 

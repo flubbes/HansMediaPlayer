@@ -10,13 +10,14 @@ namespace Hans.Library
         private List<HansSong> _songs;
 
 
-        public HansMusicLibrary()
+        public HansMusicLibrary(IDatabaseSaver databaseSaver)
         {
+            DatabaseSaver = databaseSaver;
             playLists = new List<HansPlaylist>();
             _songs = new List<HansSong>();
+            SaveDatabase(DatabaseSaver);
         }
 
-        [Inject]
         public IDatabaseSaver DatabaseSaver { get; set; }
 
         public IEnumerable<HansPlaylist> Playlists
