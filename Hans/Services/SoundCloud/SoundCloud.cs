@@ -24,5 +24,9 @@ namespace Hans.Services.SoundCloud
             return a.Select(val => val.ToObject<SoundCloudTrack>());
         }
 
+        public override string ToString()
+        {
+            return "SoundCloud";
+        }
     }
 }

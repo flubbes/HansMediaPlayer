@@ -37,7 +37,10 @@ namespace Hans
             }
         }
 
-        public bool IsPlaying { get; private set; }
+        public bool IsPlaying
+        {
+            get { return Player.PlaybackState == PlaybackState.Playing; }
+        }
 
         public IWavePlayer Player { get; set; }
 

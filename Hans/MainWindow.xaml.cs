@@ -17,11 +17,28 @@ namespace Hans
         public MainWindow()
         {
             InitializeComponent();
+            InitFormRefresher();
+            InitHansAudioPlayer();
+            InitServiceComboBox();
+        }
+
+        private void InitFormRefresher()
+        {
             formRefresher = new Timer();
             formRefresher.Interval = 10;
+        }
+
+        private void InitHansAudioPlayer()
+        {
             _hansAudioPlayer = new HansAudioPlayer();
             _hansAudioPlayer.SearchFinished += _hansAudioPlayer_SearchFinished;
             _hansAudioPlayer.SongQueueChanged += _hansAudioPlayer_SongQueueChanged;
+        }
+
+        private void InitServiceComboBox()
+        {
+            ComboBoxService.Items.Add(new Services.SoundCloud.SoundCloud());
+            ComboBoxService.SelectedIndex = 0;
         }
 
         private bool InvokeRequired
