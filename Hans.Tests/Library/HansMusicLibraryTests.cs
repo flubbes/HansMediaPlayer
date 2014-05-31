@@ -13,17 +13,13 @@ namespace Hans.Tests.Library
     public class HansMusicLibraryTests
     {
         private HansMusicLibrary _musicLibrary;
+        private IDatabaseSaver _databaseSaver;
 
         [SetUp]
         public void SetUp()
         {
-            _musicLibrary = new HansMusicLibrary();
-        }
-
-        [Test]
-        public void CanCreateHansMusicLibrary()
-        {
-            new HansMusicLibrary();
+            _databaseSaver = A.Fake<IDatabaseSaver>();
+            _musicLibrary = new HansMusicLibrary(_databaseSaver);
         }
 
         [Test]
