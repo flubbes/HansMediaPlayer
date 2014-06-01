@@ -19,9 +19,7 @@ namespace Hans.Services.YouTube
             var restClient = new RestClient("https://www.googleapis.com/youtube/v3/");
             var response = restClient.Execute(new RestRequest("search?q=" + query + "&key=" + ApiKey + "&part=snippet"));
             var a = JArray.Parse(response.Content);
-            return null;
-
-            //return response;
+            return a.Select(val => val.ToObject<YouTubeTrack>());
         }
     }
 }
