@@ -1,8 +1,9 @@
 ﻿using FakeItEasy;
+using Hans.General;
 using Hans.Services;
 using NUnit.Framework;
 
-namespace Hans.Tests
+namespace Hans.Tests.General
 {
     [TestFixture]
     public class HansAudioPlayerTests
