@@ -84,7 +84,6 @@
     <Compile Include="Services\RestSharpJsonSerializeWrapper.cs" />
     <Compile Include="Services\YouTube\YouTube.cs" />
     <Compile Include="Services\YouTube\YouTubeTrack.cs" />
-    <Compile Include="SongQueueChangedEventHandler.cs" />
     <Compile Include="General\SongQueueChangedEventHandler.cs" />
     <Compile Include="Web\DownloadFinishedEventHandler.cs" />
     <Compile Include="Web\DownloadRequest.cs" />
