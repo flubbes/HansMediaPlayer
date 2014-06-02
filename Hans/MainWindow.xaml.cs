@@ -37,7 +37,8 @@ namespace Hans
 
         private void InitServiceComboBox()
         {
-            ComboBoxService.Items.Add(new Services.SoundCloud.SoundCloud());
+            ComboBoxService.Items.Add(typeof(Services.SoundCloud.SoundCloud));
+            //ComboBoxService.Items.Add(typeof(Youtube));
             ComboBoxService.SelectedIndex = 0;
         }
 
