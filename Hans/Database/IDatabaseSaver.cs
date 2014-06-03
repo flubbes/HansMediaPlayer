@@ -2,6 +2,6 @@
 {
     public interface IDatabaseSaver
     {
-        void Save<T>(T toSave);
+        void Save<T>(T toSave, string filePath);
     }
 }
