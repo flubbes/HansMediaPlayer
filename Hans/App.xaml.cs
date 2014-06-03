@@ -14,6 +14,10 @@ namespace Hans
     {
         private IKernel _kernel;
 
+        /// <summary>
+        /// On program start up
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -22,13 +26,18 @@ namespace Hans
             Current.MainWindow.Show();
         }
 
+        /// <summary>
+        /// Builds the kernel
+        /// </summary>
         private void BuildKernel()
         {
             _kernel = new StandardKernel();
             _kernel.Load<DatabaseModule>();
-           
         }
 
+        /// <summary>
+        /// builds the form
+        /// </summary>
         private void BuildForm()
         {
             Current.MainWindow = _kernel.Get<MainWindow>();
