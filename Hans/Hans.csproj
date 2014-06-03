@@ -75,6 +75,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Database\FlatFileDatabaseSaver.cs" />
+    <Compile Include="Database\IDatabaseLoader.cs" />
     <Compile Include="GeneralApp\ExitTriggeredEventHandler.cs" />
     <Compile Include="GeneralApp\ExitTrigger.cs" />
     <Compile Include="Library\HansMusicLibrary.cs" />
