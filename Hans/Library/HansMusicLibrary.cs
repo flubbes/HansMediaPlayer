@@ -1,20 +1,27 @@
 ﻿using System.Collections.Generic;
 using Hans.Database;
+using Hans.GeneralApp;
+using Hans.Properties;
 using Ninject;
 
 namespace Hans.Library
 {
     public class HansMusicLibrary
     {
-        private List<HansPlaylist> playLists;
-        private List<HansSong> _songs;
+        private readonly List<HansPlaylist> playLists;
+        private readonly List<HansSong> _songs;
 
 
-        public HansMusicLibrary(IDatabaseSaver databaseSaver)
+        public HansMusicLibrary(IDatabaseSaver databaseSaver, ExitTrigger exitTrigger)
         {
             DatabaseSaver = databaseSaver;
             playLists = new List<HansPlaylist>();
             _songs = new List<HansSong>();
+            exitTrigger.ExitTriggered += exitTrigger_ExitTriggered;
+        }
+
+        void exitTrigger_ExitTriggered()
+        {
             SaveDatabase(DatabaseSaver);
         }
 
@@ -47,7 +54,7 @@ namespace Hans.Library
 
         public void SaveDatabase(IDatabaseSaver databaseSaver)
         {
-            databaseSaver.Save(this);
+            databaseSaver.Save(this, Settings.Default.Database_Path);
         }
     }
 }
