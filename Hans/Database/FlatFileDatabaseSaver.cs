@@ -11,11 +11,10 @@ namespace Hans.Database
 {
     public class FlatFileDatabaseSaver : IDatabaseSaver
     {
-        public void Save<T>(T toSave)
+        public void Save<T>(T toSave, string filePath)
         {
             var j = JsonConvert.SerializeObject(toSave);
-            var databasePath = Settings.Default.Database_Path;
-            using (var s = File.CreateText(databasePath))
+            using (var s = File.CreateText(filePath))
             {
                 s.Write(j);
             }
