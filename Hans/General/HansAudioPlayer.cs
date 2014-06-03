@@ -16,8 +16,9 @@ namespace Hans.General
         private readonly SongDownloads _songDownloads;
         private volatile List<HansSong> _songQueue;
 
-        public HansAudioPlayer()
+        public HansAudioPlayer(HansMusicLibrary library)
         {
+            Library = library;
             _listPosition = 0;
             _songQueue = new List<HansSong>();
             Player = new WaveOut();
@@ -37,7 +38,6 @@ namespace Hans.General
             }
         }
 
-        [Inject]
         public HansMusicLibrary Library { get; set; } 
 
         public bool IsPlaying
