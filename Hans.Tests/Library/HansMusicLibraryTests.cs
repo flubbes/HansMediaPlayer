@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 using System.Net.Mime;
 using FakeItEasy;
@@ -50,7 +51,7 @@ namespace Hans.Tests.Library
         {
             var databaseSaver = A.Fake<IDatabaseSaver>();
             _musicLibrary.SaveDatabase(databaseSaver);
-            A.CallTo(() => databaseSaver.Save(_musicLibrary)).MustHaveHappened();
+            A.CallTo(() => databaseSaver.Save(_musicLibrary, string.Empty)).WithAnyArguments().MustHaveHappened();
         }
     }
 }
