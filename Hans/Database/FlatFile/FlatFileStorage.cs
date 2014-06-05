@@ -27,6 +27,7 @@ namespace Hans.Database.FlatFile
             {
                 _cache.Add(item);
             }
+            _lastCacheUpdate = DateTime.Now;
             CommitCachedChangesAsync();
         }
 
@@ -36,6 +37,7 @@ namespace Hans.Database.FlatFile
             {
                 _cache.Remove(item);
             }
+            _lastCacheUpdate = DateTime.Now;
             CommitCachedChangesAsync();
         }
 
@@ -54,6 +56,7 @@ namespace Hans.Database.FlatFile
                 var index = _cache.FindIndex(i => i.Equals(item));
                 _cache[index] = item;
             }
+            _lastCacheUpdate = DateTime.Now;
             CommitCachedChangesAsync();
         }
 
