@@ -179,42 +179,65 @@ namespace Hans
             return ListViewSearch.SelectedIndex == -1;
         }
 
-        private bool IsServiceTrack()
+        private bool IsNoServiceTrack()
         {
-            return ListViewSearch.SelectedValue is IOnlineServiceTrack;
+            return !(ListViewSearch.SelectedValue is IOnlineServiceTrack);
         }
 
         private void MenuItemAddToPlaylist_OnClick(object sender, RoutedEventArgs e)
         {
-            if (IsSelectionEmpty() || !IsServiceTrack())
+            if (IsSelectionEmpty() || IsNoServiceTrack())
             {
                 return;
             }
-
-            var track = ConvertSelectionToOnlineServiceTrack();
-            _hansAudioPlayer.Download(track);
+            _hansAudioPlayer.Download(GetSelectionAsOnlineServiceTrack());
         }
 
         private void SliderVolume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (_hansAudioPlayer == null)
+            if (_hansAudioPlayer == null || _volumeChangeIgnoreIndicator)
             {
                 return;
             }
             _hansAudioPlayer.Volume = (float)e.NewValue;
         }
 
-        private void SongProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void SliderSongProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-        }
-
-        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
+            if (_hansAudioPlayer == null || _progressChangeIgnoreIndicator)
+            {
+                return;
+            }
+            _hansAudioPlayer.CurrentSongPosition = (long) e.NewValue;
         }
 
         private void MenuItem_OnClick(object sender, RoutedEventArgs e)
         {
-            
+            var vm = BuildOpenDialog("Open a folder to add to your music library");
+            vm.IsDirectoryChooser = true;
+            var result = vm.Show();
+            HandleDialogResultToLoadFolder(result, vm);
+        }
+
+        private void HandleDialogResultToLoadFolder(bool? result, OpenDialogViewModel vm)
+        {
+            if (result ?? false)
+            {
+                _hansAudioPlayer.LoadFolder(vm.SelectedFolder.Path);
+            }
+        }
+
+        private static OpenDialogViewModel BuildOpenDialog(string caption)
+        {
+            var openDialogView = new OpenDialogView();
+            var vm = (OpenDialogViewModel) openDialogView.DataContext;
+            vm.Caption = caption;
+            return vm;
+        }
+
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            _formRefresher.Stop();
         }
     }
 }
