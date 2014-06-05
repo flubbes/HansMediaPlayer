@@ -1,5 +1,5 @@
-﻿using Hans.Database.FlatFile;
-using Hans.Database.Playlists;
+﻿using Hans.Database.Playlists;
+using Hans.Database.Playlists.FlatFile;
 using Hans.Database.Songs;
 using Hans.Database.Songs.FlatFile;
 using Ninject.Modules;

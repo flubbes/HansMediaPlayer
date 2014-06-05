@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Hans.Database.Playlists;
+using Hans.Database.FlatFile;
 using Hans.Properties;
 
-namespace Hans.Database.FlatFile
+namespace Hans.Database.Playlists.FlatFile
 {
     public class FlatFilePlaylistStore : IPlaylistStore
     {
