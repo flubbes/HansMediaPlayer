@@ -22,7 +22,6 @@ namespace Hans.Services.SoundCloud
         [JsonProperty("genre")]
         public string Genre { get; set; }
 
-
         public string Artist {
             get { return User.Username; }
             set { User.Username = value; }
