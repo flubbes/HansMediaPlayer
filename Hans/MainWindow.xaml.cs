@@ -14,7 +14,6 @@ namespace Hans
     {
         public HansAudioPlayer _hansAudioPlayer;
 
-        private bool _ignore;
         private Timer formRefresher;
 
         public MainWindow(HansAudioPlayer hansAudioPlayer)
@@ -179,8 +178,6 @@ namespace Hans
 
         private void SongProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (_ignore)
-                return;
         }
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
