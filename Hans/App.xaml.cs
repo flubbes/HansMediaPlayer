@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Windows;
 using Hans.Database;
 using Hans.General;
-using Hans.GeneralApp;
 using Hans.Library;
 using Hans.Modules;
 using Ninject;
@@ -30,6 +29,10 @@ namespace Hans
             Current.MainWindow.Show();
         }
 
+        /// <summary>
+        /// Gets triggered when the app exits
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnExit(ExitEventArgs e)
         {
             base.OnExit(e);
