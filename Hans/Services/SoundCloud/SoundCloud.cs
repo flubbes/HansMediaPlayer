@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Hans.Tests;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 

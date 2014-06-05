@@ -1,4 +1,4 @@
-﻿namespace Hans.Tests
+﻿namespace Hans.Services
 {
     public interface IOnlineServiceTrack
     {

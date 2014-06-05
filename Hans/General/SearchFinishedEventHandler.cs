@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Hans.Tests;
+using Hans.Services;
 
 namespace Hans.General
 {

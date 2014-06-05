@@ -1,7 +1,7 @@
 ﻿using System;
-using Hans.Tests;
+using Hans.Services;
 
-namespace Hans.Database
+namespace Hans.Database.Songs
 {
     public class HansSong
     {

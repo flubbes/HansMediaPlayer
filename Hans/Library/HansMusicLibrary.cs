@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Hans.Database;
 using Hans.Database.Playlists;
+using Hans.Database.Songs;
 
 namespace Hans.Library
 {

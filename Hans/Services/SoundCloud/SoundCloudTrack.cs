@@ -1,6 +1,5 @@
 using System;
 using Hans.General;
-using Hans.Tests;
 using Newtonsoft.Json;
 
 namespace Hans.Services.SoundCloud

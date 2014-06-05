@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Hans.Database;
+using Hans.Database.Songs;
 using Hans.Library;
 using Hans.Properties;
-using Hans.Tests;
+using Hans.Services;
 using Hans.Web;
 using NAudio.Wave;
 

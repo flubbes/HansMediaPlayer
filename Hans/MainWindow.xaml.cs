@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Timers;
 using System.Windows;
 using Hans.General;
+using Hans.Services;
 using Hans.Services.YouTube;
-using Hans.Tests;
 
 namespace Hans
 {
@@ -46,7 +46,7 @@ namespace Hans
             get { return !Dispatcher.CheckAccess(); }
         }
 
-        void _hansAudioPlayer_SearchFinished(IEnumerable<Tests.IOnlineServiceTrack> tracks)
+        void _hansAudioPlayer_SearchFinished(IEnumerable<IOnlineServiceTrack> tracks)
         {
             if (InvokeRequired)
             {
