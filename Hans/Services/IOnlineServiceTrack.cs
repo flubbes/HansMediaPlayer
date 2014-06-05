@@ -1,4 +1,7 @@
-﻿namespace Hans.Services
+﻿using Hans.Web;
+using YoutubeExtractor;
+
+namespace Hans.Services
 {
     public interface IOnlineServiceTrack
     {
