@@ -17,14 +17,5 @@ namespace Hans.Tests.Library
         {
             new HansSong("path");
         }
-
-        [Test]
-        public void CanPrepareFile()
-        {
-            var hansSong = new HansSong("path");
-            var audioLoader = A.Fake<IAudioLoader>();
-            hansSong.PrepareToPlay(audioLoader);
-            A.CallTo(() => audioLoader.Load(hansSong)).MustHaveHappened();
-        }
     }
 }
