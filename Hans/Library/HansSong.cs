@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Hans.Tests;
+﻿using Hans.Tests;
 using NAudio.Wave;
 
 namespace Hans.Library

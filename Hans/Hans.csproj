@@ -74,8 +74,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Database\FlatFileDatabaseSaver.cs" />
-    <Compile Include="Database\FlatFilePlaylistStore.cs" />
+    <Compile Include="Database\FlatFile\FlatFileDatabaseSaver.cs" />
+    <Compile Include="Database\FlatFile\FlatFilePlaylistStore.cs" />
     <Compile Include="Database\IDatabaseLoader.cs" />
     <Compile Include="Database\IPlaylistStore.cs" />
     <Compile Include="General\GotTriggeredEventHandler.cs" />
