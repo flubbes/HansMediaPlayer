@@ -24,14 +24,13 @@ namespace Hans
 
         private void InitFormRefresher()
         {
-            formRefresher = new Timer();
-            formRefresher.Interval = 10;
+            formRefresher = new Timer {Interval = 10};
         }
 
         private void InitHansAudioPlayer()
         {
-            //_hansAudioPlayer.SearchFinished += _hansAudioPlayer_SearchFinished;
-            //_hansAudioPlayer.SongQueueChanged += _hansAudioPlayer_SongQueueChanged;
+            _hansAudioPlayer.SearchFinished += _hansAudioPlayer_SearchFinished;
+            _hansAudioPlayer.SongQueueChanged += _hansAudioPlayer_SongQueueChanged;
         }
 
         private void InitServiceComboBox()
@@ -46,7 +45,7 @@ namespace Hans
             get { return !Dispatcher.CheckAccess(); }
         }
 
-        void _hansAudioPlayer_SearchFinished(System.Collections.Generic.IEnumerable<Tests.IOnlineServiceTrack> tracks)
+        void _hansAudioPlayer_SearchFinished(IEnumerable<Tests.IOnlineServiceTrack> tracks)
         {
             if (InvokeRequired)
             {
