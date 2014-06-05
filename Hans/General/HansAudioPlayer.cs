@@ -109,7 +109,50 @@ namespace Hans.General
             }
         }
 
-        public float Volume { get; set; }
+        public float Volume
+        {
+            get
+            {
+                return _audioFileReader != null ? _audioFileReader.Volume : 1.0f;
+            }
+            set
+            {
+                if (_audioFileReader == null)
+                {
+                    return;
+                }
+                _audioFileReader.Volume = value;
+            }
+        }
+
+        public long CurrentProgress 
+        {
+            get
+            {
+                return _audioFileReader != null ? _audioFileReader.Position*100/_audioFileReader.Length : 0;
+            }
+        }
+
+        public double CurrentSongLength
+        {
+            get { return _audioFileReader.Length; }
+        }
+
+        public long CurrentSongPosition
+        {
+            get
+            {
+                return _audioFileReader != null ? _audioFileReader.Position : 0;
+            }
+            set
+            {
+                if (_audioFileReader == null)
+                {
+                    return;
+                }
+                _audioFileReader.Position = value;
+            }
+        }
 
         public void Download(IOnlineServiceTrack track)
         {
