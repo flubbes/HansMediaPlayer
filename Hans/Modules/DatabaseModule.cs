@@ -19,7 +19,7 @@ namespace Hans.Modules
         /// </summary>
         public override void Load()
         {
-            Bind<IDatabaseSaver>().To<FlatFileDatabaseSaver>();
+            Bind<IPlaylistStore>().To<FlatFilePlaylistStore>();
         }
     }
 }
