@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
+using Hans.Properties;
 using Newtonsoft.Json.Bson;
+using Hans.General;
 
 namespace Hans.Web
 {
@@ -57,8 +60,18 @@ namespace Hans.Web
 
         public void Start(DownloadRequest downloadRequest)
         {
+            CreateTempDirectoryIfNotExists();
             _activeDownloads.Add(downloadRequest);
             downloadRequest.Downloader.Start(downloadRequest);
+        }
+
+        private static void CreateTempDirectoryIfNotExists()
+        {
+            var downloadTempDirectory = Settings.Default.Download_Temp_Directory;
+            if (!Directory.Exists(downloadTempDirectory))
+            {
+                Directory.CreateDirectory(downloadTempDirectory);
+            }
         }
 
         public IEnumerable<DownloadRequest> ActiveDownloads
