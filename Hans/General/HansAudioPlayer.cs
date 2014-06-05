@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using Hans.Library;
+using Hans.Properties;
+using Hans.Services.YouTube;
 using Hans.Tests;
 using Hans.Web;
 using NAudio.Wave;
 using Ninject;
+using YoutubeExtractor;
 
 namespace Hans.General
 {
@@ -66,13 +72,25 @@ namespace Hans.General
 
         public void Download(IOnlineServiceTrack track)
         {
+            // Async
+            // mp3???
+            // Catch 403
+            // TODO iDownloader hasFailed
             _songDownloads.Start(new DownloadRequest
+            {
+                DestinationPath = Settings.Default.Download_Temp_Directory,
+                Downloader = new YouTubeDownloader(),
+                OnlineServiceTrack = track,
+                Uri = track.Mp3Url
+            });
+
+            /*_songDownloads.Start(new DownloadRequest
             {
                 DestinationPath = track.DisplayName + ".mp3",
                 Downloader = new HttpDownloader(),
                 OnlineServiceTrack = track,
                 Uri = track.Mp3Url
-            });
+            });*/
         }
 
         public void Next()
