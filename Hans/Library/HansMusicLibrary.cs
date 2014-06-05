@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Hans.Database;
+using Hans.Database.Playlists;
 using Hans.General;
 using Hans.Properties;
 using Ninject;
@@ -9,14 +10,14 @@ namespace Hans.Library
 {
     public class HansMusicLibrary
     {
-        private readonly PlaylistStore _playlistStore;
+        private readonly IPlaylistStore _playlistStore;
         private List<HansPlaylist> _playLists;
         private List<HansSong> _songs;
 
         /// <summary>
         /// Creates a new instance of the hans music library
         /// </summary>
-        public HansMusicLibrary(PlaylistStore playlistStore)
+        public HansMusicLibrary(IPlaylistStore playlistStore)
         {
             _playlistStore = playlistStore;
             InitializeProperties();

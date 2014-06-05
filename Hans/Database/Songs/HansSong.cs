@@ -1,7 +1,7 @@
-﻿using Hans.Tests;
-using NAudio.Wave;
+﻿using System;
+using Hans.Tests;
 
-namespace Hans.Library
+namespace Hans.Database
 {
     public class HansSong
     {
@@ -18,6 +18,8 @@ namespace Hans.Library
                 Title = track.Title
             };
         }
+
+        public Guid Id { get; set; }
 
         public string Title { get; set; }
 

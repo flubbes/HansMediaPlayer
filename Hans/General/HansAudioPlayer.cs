@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Hans.Database;
 using Hans.Library;
 using Hans.Tests;
 using Hans.Web;
 using NAudio.Wave;
-using Ninject;
 
 namespace Hans.General
 {

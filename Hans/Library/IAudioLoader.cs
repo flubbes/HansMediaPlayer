@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using Hans.Database;
+using NAudio.Wave;
 
 namespace Hans.Library
 {

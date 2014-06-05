@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Hans.Database;
 using Hans.Database.FlatFile;
+using Hans.Database.Playlists;
 using Ninject;
 using Ninject.Modules;
 
