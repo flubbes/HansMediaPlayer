@@ -185,5 +185,10 @@ namespace Hans
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
         }
+
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

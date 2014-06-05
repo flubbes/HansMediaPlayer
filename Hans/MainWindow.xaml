@@ -95,7 +95,7 @@
 				<MenuItem Header="Exit" />
 			</MenuItem>
 			<MenuItem Header="Library">
-				<MenuItem Header="Add From Directory" />	
+				<MenuItem Header="Add From Directory" Click="MenuItem_OnClick"/>	
 			</MenuItem>
 		</Menu>
         
