@@ -38,9 +38,6 @@ namespace Hans.Library
             SaveDatabase(_databaseSaver);
         }
 
-
-
-
         public IEnumerable<HansPlaylist> Playlists
         {
             get { return _playLists; }
