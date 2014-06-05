@@ -76,8 +76,13 @@ namespace Hans.Services.SoundCloud
 
         public String GetFileName()
         {
-            var fileName = DisplayName + ".mp3";
+            var fileName = string.Format("{0} - {1}.mp3", Artist, Title);
             return fileName.RemoveIllegalCharacters();
+        }
+
+        public IDownloader GetDownloader()
+        {
+            return new HttpDownloader();
         }
     }
 
