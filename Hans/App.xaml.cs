@@ -16,7 +16,6 @@ namespace Hans
     {
         private IKernel _kernel;
         private ExitAppTrigger _exitAppTrigger;
-        private StartUpTrigger _startUpTrigger;
 
         /// <summary>
         /// On program start up
@@ -66,7 +65,6 @@ namespace Hans
         private void BindTriggers()
         {
             _kernel.Bind<ExitAppTrigger>().ToMethod<ExitAppTrigger>(a => _exitAppTrigger);
-            _kernel.Bind<StartUpTrigger>().ToMethod<StartUpTrigger>(a => _startUpTrigger);
         }
 
 
@@ -76,7 +74,6 @@ namespace Hans
         private void InitializeTriggers()
         {
             _exitAppTrigger = new ExitAppTrigger();
-            _startUpTrigger = new StartUpTrigger();
         }
 
         /// <summary>

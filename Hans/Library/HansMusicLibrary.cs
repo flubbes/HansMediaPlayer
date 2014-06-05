@@ -11,7 +11,12 @@ namespace Hans.Library
         private readonly List<HansPlaylist> playLists;
         private readonly List<HansSong> _songs;
 
-
+        /// <summary>
+        /// Creates a new instance of the hans music library
+        /// </summary>
+        /// <param name="databaseSaver"></param>
+        /// <param name="exitAppTrigger"></param>
+        /// <param name="?"></param>
         public HansMusicLibrary(IDatabaseSaver databaseSaver, ExitAppTrigger exitAppTrigger)
         {
             DatabaseSaver = databaseSaver;
