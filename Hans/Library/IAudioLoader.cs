@@ -8,7 +8,7 @@ namespace Hans.Library
         /// <summary>
         /// Prepares the audio file to play
         /// </summary>
-        WaveStream Load(HansSong song);
+        AudioFileReader Load(HansSong song);
 
         /// <summary>
         /// The method that gets called at the end to wipe all data within the player
