@@ -21,8 +21,8 @@ namespace Hans.Tests.Library
         public void SetUp()
         {
             _databaseSaver = A.Fake<IDatabaseSaver>();
-            var exitTrigger = A.Fake<ExitAppTrigger>();
-            _musicLibrary = new HansMusicLibrary(_databaseSaver, exitTrigger);
+            var playListStore = A.Fake<PlaylistStore>();
+            _musicLibrary = new HansMusicLibrary(playListStore);
         }
 
         [Test]
@@ -46,14 +46,6 @@ namespace Hans.Tests.Library
             _musicLibrary.AddSong(hansSong);
             _musicLibrary.RemoveSong(hansSong);
             _musicLibrary.Songs.Any().Should().BeFalse();
-        }
-
-        [Test]
-        public void CanSaveDatabase()
-        {
-            var databaseSaver = A.Fake<IDatabaseSaver>();
-            _musicLibrary.SaveDatabase(databaseSaver);
-            A.CallTo(() => databaseSaver.Save(_musicLibrary, string.Empty)).WithAnyArguments().MustHaveHappened();
         }
     }
 }
