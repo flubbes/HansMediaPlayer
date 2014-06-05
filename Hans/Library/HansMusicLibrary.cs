@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Hans.Database;
 using Hans.General;
 using Hans.Properties;
@@ -8,10 +9,9 @@ namespace Hans.Library
 {
     public class HansMusicLibrary
     {
-        private readonly IDatabaseLoader _databaseLoader;
+        private readonly PlaylistStore _playlistStore;
         private List<HansPlaylist> _playLists;
         private List<HansSong> _songs;
-        private readonly IDatabaseSaver _databaseSaver;
 
         /// <summary>
         /// Creates a new instance of the hans music library
@@ -19,23 +19,17 @@ namespace Hans.Library
         /// <param name="databaseSaver"></param>
         /// <param name="exitAppTrigger"></param>
         /// <param name="?"></param>
-        public HansMusicLibrary(IDatabaseSaver databaseSaver, ExitAppTrigger exitAppTrigger, IDatabaseLoader databaseLoader)
+        /// <param name="playlistStore"></param>
+        public HansMusicLibrary(PlaylistStore playlistStore)
         {
-            _databaseLoader = databaseLoader;
-            _databaseSaver = databaseSaver;
+            _playlistStore = playlistStore;
             InitializeProperties();
-            exitAppTrigger.GotTriggered += GotTriggerGotTriggered;
         }
 
         private void InitializeProperties()
         {
             _playLists = new List<HansPlaylist>();
             _songs = new List<HansSong>();
-        }
-
-        void GotTriggerGotTriggered()
-        {
-            SaveDatabase(_databaseSaver);
         }
 
         public IEnumerable<HansPlaylist> Playlists
@@ -61,11 +55,6 @@ namespace Hans.Library
         public void RemoveSong(HansSong hansSong)
         {
             _songs.Remove(hansSong);
-        }
-
-        public void SaveDatabase(IDatabaseSaver databaseSaver)
-        {
-            databaseSaver.Save(this, Settings.Default.Database_Path);
         }
     }
 }
