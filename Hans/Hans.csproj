@@ -91,9 +91,10 @@
     <Compile Include="General\StringExtensions.cs" />
     <Compile Include="Library\HansMusicLibrary.cs" />
     <Compile Include="Database\IStore.cs" />
-    <Compile Include="Library\RamAudioLoader.cs" />
+    <Compile Include="Library\DefaultAudioLoader.cs" />
     <Compile Include="General\SearchFinishedEventHandler.cs" />
     <Compile Include="General\SearchRequest.cs" />
+    <Compile Include="Modules\AudioModule.cs" />
     <Compile Include="Modules\DatabaseModule.cs" />
     <Compile Include="Services\RestSharpJsonSerializeWrapper.cs" />
     <Compile Include="Services\YouTube\YouTube.cs" />
