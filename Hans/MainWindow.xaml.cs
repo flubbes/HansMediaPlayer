@@ -125,12 +125,10 @@ namespace Hans
             if (_hansAudioPlayer.IsPlaying)
             {
                 _hansAudioPlayer.Pause();
-                ButtonPlayPause.Content = "Play";
             }
             else
             {
                 _hansAudioPlayer.Play();
-                ButtonPlayPause.Content = "Pause";
             }
         }
 
