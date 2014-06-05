@@ -52,19 +52,19 @@ namespace Hans
         }
 
         /// <summary>
-        /// Loads all the modules
-        /// </summary>
-        private void LoadModules()
-        {
-            _kernel.Load<DatabaseModule>();
-        }
-
-        /// <summary>
         /// Binds all triggers
         /// </summary>
         private void BindTriggers()
         {
             _kernel.Bind<ExitAppTrigger>().ToMethod<ExitAppTrigger>(a => _exitAppTrigger);
+        }
+
+        /// <summary>
+        /// Loads all the modules
+        /// </summary>
+        private void LoadModules()
+        {
+            _kernel.Load<DatabaseModule>();
         }
 
 
