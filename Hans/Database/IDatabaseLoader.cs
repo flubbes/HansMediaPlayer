@@ -8,6 +8,6 @@ namespace Hans.Database
 {
     public interface IDatabaseLoader
     {
-        void Load();
+        void Load<T>(string path);
     }
 }
