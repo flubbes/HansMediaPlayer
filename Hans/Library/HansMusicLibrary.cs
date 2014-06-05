@@ -8,8 +8,10 @@ namespace Hans.Library
 {
     public class HansMusicLibrary
     {
+        private readonly IDatabaseLoader _databaseLoader;
         private readonly List<HansPlaylist> _playLists;
         private readonly List<HansSong> _songs;
+        private readonly IDatabaseSaver _databaseSaver;
 
         /// <summary>
         /// Creates a new instance of the hans music library
@@ -17,9 +19,10 @@ namespace Hans.Library
         /// <param name="databaseSaver"></param>
         /// <param name="exitAppTrigger"></param>
         /// <param name="?"></param>
-        public HansMusicLibrary(IDatabaseSaver databaseSaver, ExitAppTrigger exitAppTrigger)
+        public HansMusicLibrary(IDatabaseSaver databaseSaver, ExitAppTrigger exitAppTrigger, IDatabaseLoader databaseLoader)
         {
-            DatabaseSaver = databaseSaver;
+            _databaseLoader = databaseLoader;
+            _databaseSaver = databaseSaver;
             _playLists = new List<HansPlaylist>();
             _songs = new List<HansSong>();
             exitAppTrigger.GotTriggered += GotTriggerGotTriggered;
@@ -27,10 +30,11 @@ namespace Hans.Library
 
         void GotTriggerGotTriggered()
         {
-            SaveDatabase(DatabaseSaver);
+            SaveDatabase(_databaseSaver);
         }
 
-        public IDatabaseSaver DatabaseSaver { get; set; }
+
+
 
         public IEnumerable<HansPlaylist> Playlists
         {

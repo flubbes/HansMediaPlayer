@@ -79,7 +79,6 @@
     <Compile Include="General\GotTriggeredEventHandler.cs" />
     <Compile Include="General\ExitAppTrigger.cs" />
     <Compile Include="General\AppTrigger.cs" />
-    <Compile Include="General\StartUpTrigger.cs" />
     <Compile Include="Library\HansMusicLibrary.cs" />
     <Compile Include="Database\IDatabaseSaver.cs" />
     <Compile Include="Library\RamAudioLoader.cs" />
