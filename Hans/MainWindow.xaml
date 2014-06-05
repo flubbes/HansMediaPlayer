@@ -49,7 +49,7 @@
 				</TransformGroup>
 			</Button.RenderTransform>
 		</Button>
-		<Slider x:Name="SliderSongProgress" HorizontalAlignment="Left" Margin="15,547,0,0" VerticalAlignment="Top" Width="824" Grid.ColumnSpan="3"/>
+		<Slider x:Name="SliderSongProgress" HorizontalAlignment="Left" Margin="15,547,0,0" VerticalAlignment="Top" Width="824" Grid.ColumnSpan="3" ValueChanged="SliderSongProgress_ValueChanged"/>
 		<Slider x:Name="SliderVolume" Margin="25,510,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="175" ValueChanged="SliderVolume_ValueChanged" LargeChange="0.01" TickFrequency="0.01" Maximum="1" Value="1" Grid.Column="1"/>
 		<ListView x:Name="ListViewSongQueue" HorizontalAlignment="Center" Height="508" Margin="20,39,24,0" VerticalAlignment="Top" Width="267" Grid.Column="2">
 			<ListView.View>
