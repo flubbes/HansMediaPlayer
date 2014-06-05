@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Net;
+using Hans.General;
 
 namespace Hans.Web
 {
