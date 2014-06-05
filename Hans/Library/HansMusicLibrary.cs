@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Hans.Database;
-using Hans.GeneralApp;
+using Hans.General;
 using Hans.Properties;
 using Ninject;
 

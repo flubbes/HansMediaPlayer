@@ -1,18 +1,18 @@
-﻿using Hans.GeneralApp;
+﻿using System.Windows;
 
 namespace Hans.General
 {
-    public class ExitTrigger
+    public class AppTrigger
     {
 
-        public void TriggerExit()
+        public void Trigger()
         {
-            if (ExitTriggered != null)
+            if (GotTriggered != null)
             {
-                ExitTriggered();
+                GotTriggered();
             }
         }
 
-        public event ExitTriggeredEventHandler ExitTriggered;
+        public event GotTriggeredEventHandler GotTriggered;
     }
 }

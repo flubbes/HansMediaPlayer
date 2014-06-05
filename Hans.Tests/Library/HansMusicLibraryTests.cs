@@ -5,6 +5,7 @@ using System.Net.Mime;
 using FakeItEasy;
 using FluentAssertions;
 using Hans.Database;
+using Hans.General;
 using Hans.Library;
 using NUnit.Framework;
 
@@ -20,7 +21,8 @@ namespace Hans.Tests.Library
         public void SetUp()
         {
             _databaseSaver = A.Fake<IDatabaseSaver>();
-            _musicLibrary = new HansMusicLibrary(_databaseSaver);
+            var exitTrigger = A.Fake<ExitTrigger>();
+            _musicLibrary = new HansMusicLibrary(_databaseSaver, exitTrigger);
         }
 
         [Test]
