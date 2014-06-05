@@ -39,6 +39,7 @@ namespace Hans
 
         private void InitServiceComboBox()
         {
+            ComboBoxService.DisplayMemberPath = "Name";
             ComboBoxService.Items.Add(typeof(Services.SoundCloud.SoundCloud));
             ComboBoxService.Items.Add(typeof(YouTube));
             ComboBoxService.SelectedIndex = 0;
@@ -114,8 +115,7 @@ namespace Hans
         {
             _hansAudioPlayer.Search(new SearchRequest
             {
-                //OnlineService = new Services.SoundCloud.SoundCloud(),
-                OnlineService = new YouTube(),
+                OnlineService = Activator.CreateInstance(ComboBoxService.SelectedValue as Type) as IOnlineService,
                 Query = TextBoxQuery.Text
             });
         }
