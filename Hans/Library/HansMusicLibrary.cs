@@ -16,32 +16,45 @@ namespace Hans.Library
         /// <summary>
         /// Creates a new instance of the hans music library
         /// </summary>
-        /// <param name="databaseSaver"></param>
-        /// <param name="exitAppTrigger"></param>
-        /// <param name="?"></param>
-        /// <param name="playlistStore"></param>
         public HansMusicLibrary(PlaylistStore playlistStore)
         {
             _playlistStore = playlistStore;
             InitializeProperties();
         }
 
+        /// <summary>
+        /// Initializes the properties of this class
+        /// </summary>
         private void InitializeProperties()
         {
             _playLists = new List<HansPlaylist>();
             _songs = new List<HansSong>();
         }
 
+        /// <summary>
+        /// Alls playlists in this library
+        /// </summary>
         public IEnumerable<HansPlaylist> Playlists
         {
-            get { return _playLists; }
+            get
+            {
+                return _playlistStore.GetEnumerable(); 
+            }
         }
 
         public IEnumerable<HansSong> Songs
         {
-            get { return _songs; }
+            get
+            {
+                //TODO update to new format
+                return _songs;
+            }
         }
 
+        /// <summary>
+        /// Creates a new playlist
+        /// </summary>
+        /// <param name="name"></param>
         public void CreatePlayList(string name)
         {
             

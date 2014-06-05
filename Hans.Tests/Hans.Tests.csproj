@@ -72,8 +72,6 @@
     <Compile Include="General\AppTriggerTests.cs" />
     <Compile Include="General\HansAudioPlayerTests.cs" />
     <Compile Include="Library\HansMusicLibraryTests.cs" />
-    <Compile Include="Library\HansPlaylistTests.cs" />
-    <Compile Include="Library\HansSongsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\SongDownloadsTests.cs" />
   </ItemGroup>
