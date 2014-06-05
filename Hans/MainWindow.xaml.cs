@@ -32,13 +32,37 @@ namespace Hans
 
         private void InitFormRefresher()
         {
-            _formRefresher = new Timer {Interval = 10};
+            _formRefresher = new Timer {Interval = 100};
+            _formRefresher.Elapsed += _formRefresher_Elapsed;
+            _formRefresher.Start();
+        }
+
+        void _formRefresher_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(() => _formRefresher_Elapsed(sender, e));
+                return;
+            }
+            ButtonPlayPause.Content = _hansAudioPlayer.IsPlaying ? "Pause" : "Play";
+            _volumeChangeIgnoreIndicator = true;
+            SliderVolume.Value = _hansAudioPlayer.Volume;
+            _volumeChangeIgnoreIndicator = false;
+            _progressChangeIgnoreIndicator = true;
+            SliderSongProgress.Value = _hansAudioPlayer.CurrentSongPosition;
+            _progressChangeIgnoreIndicator = false;
         }
 
         private void InitHansAudioPlayer()
         {
             _hansAudioPlayer.SearchFinished += _hansAudioPlayer_SearchFinished;
             _hansAudioPlayer.SongQueueChanged += _hansAudioPlayer_SongQueueChanged;
+            _hansAudioPlayer.NewSong += _hansAudioPlayer_NewSong;
+        }
+
+        void _hansAudioPlayer_NewSong()
+        {
+            SliderSongProgress.Maximum = _hansAudioPlayer.CurrentSongLength;
         }
 
         private void InitServiceComboBox()
