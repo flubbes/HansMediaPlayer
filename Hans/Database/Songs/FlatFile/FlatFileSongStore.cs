@@ -6,7 +6,7 @@ namespace Hans.Database.Songs.FlatFile
 {
     public class FlatFileSongStore : ISongStore
     {
-        private FlatFileStorage<HansSong> _flatFileStorage; 
+        private readonly FlatFileStorage<HansSong> _flatFileStorage; 
 
         public FlatFileSongStore()
         {
