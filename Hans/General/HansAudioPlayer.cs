@@ -94,7 +94,7 @@ namespace Hans.General
 
         private IWavePlayer Player { get; set; }
 
-        public bool Reapeat { get; set; }
+        public bool Repeat { get; set; }
 
         public bool Shuffle { get; set; }
 
