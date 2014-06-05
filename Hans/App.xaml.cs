@@ -61,6 +61,7 @@ namespace Hans
         private void LoadModules()
         {
             _kernel.Load<DatabaseModule>();
+            _kernel.Load<AudioModule>();
         }
 
 
