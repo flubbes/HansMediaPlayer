@@ -68,6 +68,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="YoutubeExtractor">
+      <HintPath>..\packages\YoutubeExtractor.0.9.5\lib\net35\YoutubeExtractor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -81,6 +84,7 @@
     <Compile Include="General\GotTriggeredEventHandler.cs" />
     <Compile Include="General\ExitAppTrigger.cs" />
     <Compile Include="General\AppTrigger.cs" />
+    <Compile Include="General\StringExtensions.cs" />
     <Compile Include="Library\HansMusicLibrary.cs" />
     <Compile Include="Database\IDatabaseSaver.cs" />
     <Compile Include="Database\IStore.cs" />
@@ -103,10 +107,10 @@
     <Compile Include="Library\HansPlaylist.cs" />
     <Compile Include="Services\IOnlineService.cs" />
     <Compile Include="Services\IOnlineServiceTrack.cs" />
-    <Compile Include="Services\SoundCloud\Extensions.cs" />
     <Compile Include="Services\SoundCloud\SoundCloud.cs" />
     <Compile Include="Services\SoundCloud\SoundCloudTrack.cs" />
     <Compile Include="Web\SongDownloads.cs" />
+    <Compile Include="Web\YouTubeDownloader.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
