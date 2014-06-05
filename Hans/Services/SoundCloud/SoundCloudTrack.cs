@@ -1,5 +1,5 @@
 using System;
-using Hans.SoundCloud;
+using Hans.General;
 using Hans.Tests;
 using Newtonsoft.Json;
 
@@ -77,7 +77,7 @@ namespace Hans.Services.SoundCloud
         public String GetFileName()
         {
             var fileName = DisplayName + ".mp3";
-            return fileName.ToAllowedFileName();
+            return fileName.RemoveIllegalCharacters();
         }
     }
 
