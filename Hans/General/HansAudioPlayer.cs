@@ -178,7 +178,10 @@ namespace Hans.General
 
         public void Pause()
         {
-
+            if (IsPlaying)
+            {
+                Player.Pause();
+            }
         }
 
         public void Play()
