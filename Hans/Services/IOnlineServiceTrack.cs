@@ -10,5 +10,6 @@ namespace Hans.Services
         string Mp3Url { get; set; }
         string DisplayName { get;  }
         string GetFileName();
+        IDownloader GetDownloader();
     }
 }
