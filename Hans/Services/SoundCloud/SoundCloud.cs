@@ -18,9 +18,9 @@ namespace Hans.Services.SoundCloud
             return a.Select(val => val.ToObject<SoundCloudTrack>());
         }
 
-        public static implicit operator string(SoundCloud soundCloud)
+        public string Name
         {
-            return "SoundCloud";
+            get { return "SoundCloud"; }
         }
     }
 }

@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using System.Windows;
 
 namespace Hans.Services
 {
     public interface IOnlineService
     {
         IEnumerable<IOnlineServiceTrack> Search(string query);
+
+        string Name { get; }
     }
 }

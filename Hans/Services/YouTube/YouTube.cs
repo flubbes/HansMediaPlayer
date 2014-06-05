@@ -17,5 +17,10 @@ namespace Hans.Services.YouTube
             var a = JsonConvert.DeserializeObject<JObject>(response.Content)["items"];
             return a.ToObject<IEnumerable<YouTubeTrack>>();
         }
+
+        public string Name
+        {
+            get { return "Youtube"; }
+        }
     }
 }
