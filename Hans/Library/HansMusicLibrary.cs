@@ -8,7 +8,7 @@ namespace Hans.Library
 {
     public class HansMusicLibrary
     {
-        private readonly List<HansPlaylist> playLists;
+        private readonly List<HansPlaylist> _playLists;
         private readonly List<HansSong> _songs;
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace Hans.Library
         public HansMusicLibrary(IDatabaseSaver databaseSaver, ExitAppTrigger exitAppTrigger)
         {
             DatabaseSaver = databaseSaver;
-            playLists = new List<HansPlaylist>();
+            _playLists = new List<HansPlaylist>();
             _songs = new List<HansSong>();
             exitAppTrigger.GotTriggered += GotTriggerGotTriggered;
         }
@@ -34,7 +34,7 @@ namespace Hans.Library
 
         public IEnumerable<HansPlaylist> Playlists
         {
-            get { return playLists; }
+            get { return _playLists; }
         }
 
         public IEnumerable<HansSong> Songs
@@ -44,7 +44,7 @@ namespace Hans.Library
 
         public void CreatePlayList(string name)
         {
-            playLists.Add(new HansPlaylist(name));
+            _playLists.Add(new HansPlaylist(name));
         }
 
         public void AddSong(HansSong hansSong)
