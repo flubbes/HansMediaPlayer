@@ -10,18 +10,18 @@ namespace Hans.Web
 {
     class YouTubeDownloader : IDownloader
     {
-        private AudioDownloader audioDownloader;
+        private AudioDownloader _audioDownloader;
 
         public void Start(DownloadRequest request)
         {
             InitialzeAudioDownloader(request, GetVideoInfo(request));
             HookEvents();
-            audioDownloader.Execute();
+            _audioDownloader.Execute();
         }
 
         private void InitialzeAudioDownloader(DownloadRequest request, VideoInfo video)
         {
-            audioDownloader = new AudioDownloader(video,
+            _audioDownloader = new AudioDownloader(video,
                 Path.Combine(request.DestinationPath, request.OnlineServiceTrack.DisplayName.RemoveIllegalCharacters() + video.AudioExtension));
         }
 
@@ -38,9 +38,9 @@ namespace Hans.Web
 
         private void HookEvents()
         {
-            audioDownloader.DownloadProgressChanged += _downloadProgressChanged;
-            audioDownloader.AudioExtractionProgressChanged += _audioExtractionProgressChanged;
-            audioDownloader.DownloadFinished += _downloadFinished;
+            _audioDownloader.DownloadProgressChanged += _downloadProgressChanged;
+            _audioDownloader.AudioExtractionProgressChanged += _audioExtractionProgressChanged;
+            _audioDownloader.DownloadFinished += _downloadFinished;
         }
 
         private void _downloadFinished(object sender, EventArgs e)
