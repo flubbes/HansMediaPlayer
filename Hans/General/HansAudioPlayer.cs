@@ -219,7 +219,7 @@ namespace Hans.General
         {
             _songQueue.Add(
                     HansSong.FromOnlineServiceTrack(
-                            args.DownloadRequest.DestinationPath,
+                            args.DownloadRequest.GetAbsolutePath(),
                             args.DownloadRequest.OnlineServiceTrack
                         )
                 );
