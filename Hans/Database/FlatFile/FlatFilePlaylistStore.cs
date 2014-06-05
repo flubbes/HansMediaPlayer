@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Hans.Library;
 
-namespace Hans.Database
+namespace Hans.Database.FlatFile
 {
     public class FlatFilePlaylistStore : IPlaylistStore
     {
