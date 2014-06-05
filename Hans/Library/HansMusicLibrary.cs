@@ -44,7 +44,7 @@ namespace Hans.Library
 
         public void CreatePlayList(string name)
         {
-            _playLists.Add(new HansPlaylist(name));
+            
         }
 
         public void AddSong(HansSong hansSong)
