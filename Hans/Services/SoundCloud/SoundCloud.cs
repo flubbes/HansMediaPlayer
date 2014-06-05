@@ -24,7 +24,7 @@ namespace Hans.Services.SoundCloud
             return a.Select(val => val.ToObject<SoundCloudTrack>());
         }
 
-        public override string ToString()
+        public static implicit operator string(SoundCloud soundCloud)
         {
             return "SoundCloud";
         }
