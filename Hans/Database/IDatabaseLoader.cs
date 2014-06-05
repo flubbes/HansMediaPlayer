@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Hans.Database
 {
-    class IDatabaseLoader
+    public interface IDatabaseLoader
     {
+        void Load();
     }
 }

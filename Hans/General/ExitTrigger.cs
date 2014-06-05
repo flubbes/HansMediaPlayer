@@ -1,4 +1,6 @@
-﻿namespace Hans.GeneralApp
+﻿using Hans.GeneralApp;
+
+namespace Hans.General
 {
     public class ExitTrigger
     {
