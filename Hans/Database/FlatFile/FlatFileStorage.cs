@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows.Automation.Peers;
 using Newtonsoft.Json;
 using Ninject.Infrastructure.Language;
 
@@ -18,7 +20,7 @@ namespace Hans.Database.FlatFile
         {
             _path = path;
             _threadLock = new object();
-            _cache = new List<T>(GetCacheFromFile());
+            _cache = new List<T>(GetCacheFromFile() ?? new T[0]);
         }
 
         public void Add(T item)
@@ -74,6 +76,16 @@ namespace Hans.Database.FlatFile
         /// </summary>
         /// <returns></returns>
         private string GetFileContent()
+        {
+            return DatabaseFileDoesnNotExist() ? string.Empty : ReadFileContent();
+        }
+
+        private bool DatabaseFileDoesnNotExist()
+        {
+            return !File.Exists(_path);
+        }
+
+        private string ReadFileContent()
         {
             using (var fs = GetFileStreamReader())
             {
