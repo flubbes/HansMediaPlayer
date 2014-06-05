@@ -250,5 +250,9 @@ namespace Hans.General
         {
             OnSearchFinished(searchRequest.OnlineService.Search(searchRequest.Query));
         }
+
+        public void LoadFolder(string path)
+        {
+        }
     }
 }
