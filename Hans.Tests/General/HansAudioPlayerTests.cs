@@ -14,7 +14,7 @@ namespace Hans.Tests.General
         {
             var service = A.Fake<IOnlineService>();
             var hansMusicLibrary = A.Fake<HansMusicLibrary>();
-            var hansAudioPlayer = new HansAudioPlayer(hansMusicLibrary);
+            var hansAudioPlayer = new HansAudioPlayer(hansMusicLibrary, A.Fake<IAudioLoader>());
             hansAudioPlayer.Search(new SearchRequest
             {
                 OnlineService = service,
