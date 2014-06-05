@@ -9,8 +9,8 @@ namespace Hans.Library
     public class HansMusicLibrary
     {
         private readonly IDatabaseLoader _databaseLoader;
-        private readonly List<HansPlaylist> _playLists;
-        private readonly List<HansSong> _songs;
+        private List<HansPlaylist> _playLists;
+        private List<HansSong> _songs;
         private readonly IDatabaseSaver _databaseSaver;
 
         /// <summary>
@@ -23,9 +23,14 @@ namespace Hans.Library
         {
             _databaseLoader = databaseLoader;
             _databaseSaver = databaseSaver;
+            InitializeProperties();
+            exitAppTrigger.GotTriggered += GotTriggerGotTriggered;
+        }
+
+        private void InitializeProperties()
+        {
             _playLists = new List<HansPlaylist>();
             _songs = new List<HansSong>();
-            exitAppTrigger.GotTriggered += GotTriggerGotTriggered;
         }
 
         void GotTriggerGotTriggered()
