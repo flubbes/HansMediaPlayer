@@ -230,7 +230,7 @@
         <Button Content="Button" Margin="211,467.586,78,29" Style="{DynamicResource ButtonStop}"/>
         <Button Content="Button" Margin="126,466,161.357,29" Style="{DynamicResource ButtonPlay}"/>
         <Button Content="Button" Margin="289,466,0,29" Style="{DynamicResource ButtonNext}"/>
-        <Button Content="Button" Margin="35,468,257.517,29" Style="{DynamicResource ButtonPrev}"/>
+        <Button x:Name="Previous" Content="Button" Margin="35,468,257.517,29" Style="{DynamicResource ButtonPrev}"/>
         <Button Content="Button" Margin="117,466,172,29" Style="{DynamicResource ButtonPause}"/>
     </Grid>
 </Window>
