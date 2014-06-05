@@ -18,6 +18,8 @@ namespace Hans
         private readonly HansAudioPlayer _hansAudioPlayer;
 
         private Timer _formRefresher;
+        private bool _volumeChangeIgnoreIndicator;
+        private bool _progressChangeIgnoreIndicator;
 
         public MainWindow(HansAudioPlayer hansAudioPlayer)
         {
