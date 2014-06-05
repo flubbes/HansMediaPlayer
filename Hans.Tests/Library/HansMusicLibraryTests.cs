@@ -1,11 +1,8 @@
-﻿using System;
-using System.Configuration;
-using System.Linq;
-using System.Net.Mime;
+﻿using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
 using Hans.Database;
-using Hans.General;
+using Hans.Database.Playlists;
 using Hans.Library;
 using NUnit.Framework;
 
@@ -15,21 +12,20 @@ namespace Hans.Tests.Library
     public class HansMusicLibraryTests
     {
         private HansMusicLibrary _musicLibrary;
-        private IDatabaseSaver _databaseSaver;
+        private IPlaylistStore _playListStore;
 
         [SetUp]
         public void SetUp()
         {
-            _databaseSaver = A.Fake<IDatabaseSaver>();
-            var playListStore = A.Fake<PlaylistStore>();
-            _musicLibrary = new HansMusicLibrary(playListStore);
+            _playListStore = A.Fake<IPlaylistStore>();
+            _musicLibrary = new HansMusicLibrary(_playListStore);
         }
 
         [Test]
         public void CanCreatePlayList()
         {
             _musicLibrary.CreatePlayList("name");
-            _musicLibrary.Playlists.Any().Should().BeTrue();
+            A.CallTo(() => _playListStore.Add(default(HansPlaylist))).WithAnyArguments().MustHaveHappened();
         }
 
         [Test]

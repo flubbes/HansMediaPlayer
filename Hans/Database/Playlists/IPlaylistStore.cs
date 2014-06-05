@@ -1,6 +1,4 @@
-using Hans.Library;
-
-namespace Hans.Database
+namespace Hans.Database.Playlists
 {
     public interface IPlaylistStore : IStore<HansPlaylist>
     {

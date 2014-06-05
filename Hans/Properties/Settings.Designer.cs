@@ -25,10 +25,19 @@ namespace Hans.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("musicLibrary.json")]
-        public string Database_Path {
+        [global::System.Configuration.DefaultSettingValueAttribute("songs.json")]
+        public string Database_SongStore_Path {
             get {
-                return ((string)(this["Database_Path"]));
+                return ((string)(this["Database_SongStore_Path"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("playlists.json")]
+        public string Database_PlaylistStore_Path {
+            get {
+                return ((string)(this["Database_PlaylistStore_Path"]));
             }
         }
         

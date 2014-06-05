@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hans.Database;
+using Hans.Database.FlatFile;
+using Hans.Database.Playlists;
 using Ninject;
 using Ninject.Modules;
 
@@ -19,7 +21,7 @@ namespace Hans.Modules
         /// </summary>
         public override void Load()
         {
-            Bind<IPlaylistStore>().To<FlatFilePlaylistStore>();
+            Bind<IPlaylistStore>().To<FlatFilePlaylistStore>().InSingletonScope();
         }
     }
 }

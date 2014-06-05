@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Hans.Library
+namespace Hans.Database.Playlists
 {
     public class HansPlaylist
     {
