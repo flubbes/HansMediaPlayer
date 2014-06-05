@@ -43,7 +43,14 @@ namespace Hans.Services.YouTube
 
         public string GetFileName()
         {
-            throw new NotImplementedException();
+            return string.Format("{0} - {1}{2}", Artist, Title, FileExtension);
+        }
+
+        public string FileExtension { get; set; }
+
+        public IDownloader GetDownloader()
+        {
+            return new YouTubeDownloader();
         }
     }
 
