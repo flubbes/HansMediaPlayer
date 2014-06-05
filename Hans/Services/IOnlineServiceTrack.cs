@@ -1,4 +1,7 @@
-﻿namespace Hans.Tests
+﻿using Hans.Web;
+using YoutubeExtractor;
+
+namespace Hans.Services
 {
     public interface IOnlineServiceTrack
     {
@@ -7,5 +10,6 @@
         string Mp3Url { get; set; }
         string DisplayName { get;  }
         string GetFileName();
+        IDownloader GetDownloader();
     }
 }

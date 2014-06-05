@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hans.Database;
-using Ninject;
+﻿using Hans.Database.Playlists;
+using Hans.Database.Playlists.FlatFile;
+using Hans.Database.Songs;
+using Hans.Database.Songs.FlatFile;
 using Ninject.Modules;
 
 namespace Hans.Modules
@@ -19,7 +16,8 @@ namespace Hans.Modules
         /// </summary>
         public override void Load()
         {
-            Bind<IDatabaseSaver>().To<FlatFileDatabaseSaver>();
+            Bind<IPlaylistStore>().To<FlatFilePlaylistStore>().InSingletonScope();
+            Bind<ISongStore>().To<FlatFileSongStore>().InSingletonScope();
         }
     }
 }

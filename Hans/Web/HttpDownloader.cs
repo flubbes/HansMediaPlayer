@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Net;
+using Hans.General;
 
 namespace Hans.Web
 {
@@ -12,7 +14,8 @@ namespace Hans.Web
             _webClient = new WebClient();
             _webClient.DownloadProgressChanged += webClient_DownloadProgressChanged;
             _webClient.DownloadFileCompleted += webClient_DownloadFileCompleted;
-            _webClient.DownloadFileAsync(new Uri(request.Uri), request.DestinationPath);
+            var uri = new Uri(request.Uri);
+            _webClient.DownloadFileAsync(uri, request.GetRelativePath());
         }
 
         void webClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)

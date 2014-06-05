@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text.RegularExpressions;
-using Hans.Tests;
-using Newtonsoft.Json;
+using Hans.Web;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 
@@ -14,7 +9,7 @@ namespace Hans.Services.SoundCloud
     public class SoundCloud : IOnlineService
     {
         public const string ApiKey = "df2fea9bed01f8e2743ef1edb11657f5";
-
+        
         public IEnumerable<IOnlineServiceTrack> Search(string query)
         {
             var restClient = new RestClient("https://api.soundcloud.com");
@@ -24,9 +19,11 @@ namespace Hans.Services.SoundCloud
             return a.Select(val => val.ToObject<SoundCloudTrack>());
         }
 
-        public override string ToString()
+        public string Name
         {
-            return "SoundCloud";
+            get { return "SoundCloud"; }
         }
+
+        public IDownloader Downloader { get; set; }
     }
 }

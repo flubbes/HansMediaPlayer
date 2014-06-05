@@ -1,10 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Windows;
-using Hans.Database;
+﻿using System.Windows;
 using Hans.General;
-using Hans.GeneralApp;
-using Hans.Library;
 using Hans.Modules;
 using Ninject;
 
@@ -16,7 +11,7 @@ namespace Hans
     public partial class App
     {
         private IKernel _kernel;
-        private ExitTrigger _exitTrigger;
+        private ExitAppTrigger _exitAppTrigger;
 
         /// <summary>
         /// On program start up
@@ -30,10 +25,14 @@ namespace Hans
             Current.MainWindow.Show();
         }
 
+        /// <summary>
+        /// Gets triggered when the app exits
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnExit(ExitEventArgs e)
         {
+            _exitAppTrigger.Trigger();
             base.OnExit(e);
-            _exitTrigger.TriggerExit();
         }
 
         /// <summary>
@@ -41,11 +40,37 @@ namespace Hans
         /// </summary>
         private void BuildKernel()
         {
-            _exitTrigger = new ExitTrigger();
+            InitializeTriggers();
             _kernel = new StandardKernel();
-            _kernel.Bind<ExitTrigger>().ToMethod<ExitTrigger>(a => _exitTrigger);
-            _kernel.Load<DatabaseModule>();
+            BindTriggers();
+            LoadModules();
             
+        }
+
+        /// <summary>
+        /// Binds all triggers
+        /// </summary>
+        private void BindTriggers()
+        {
+            _kernel.Bind<ExitAppTrigger>().ToMethod<ExitAppTrigger>(a => _exitAppTrigger);
+        }
+
+        /// <summary>
+        /// Loads all the modules
+        /// </summary>
+        private void LoadModules()
+        {
+            _kernel.Load<DatabaseModule>();
+            _kernel.Load<AudioModule>();
+        }
+
+
+        /// <summary>
+        /// Initializes the triggers
+        /// </summary>
+        private void InitializeTriggers()
+        {
+            _exitAppTrigger = new ExitAppTrigger();
         }
 
         /// <summary>

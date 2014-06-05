@@ -1,45 +1,58 @@
 ﻿using System.Collections.Generic;
-using Hans.Database;
-using Hans.GeneralApp;
-using Hans.Properties;
-using Ninject;
+using Hans.Database.Playlists;
+using Hans.Database.Songs;
 
 namespace Hans.Library
 {
     public class HansMusicLibrary
     {
-        private readonly List<HansPlaylist> playLists;
-        private readonly List<HansSong> _songs;
+        private readonly IPlaylistStore _playlistStore;
+        private List<HansSong> _songs;
 
-
-        public HansMusicLibrary(IDatabaseSaver databaseSaver, ExitTrigger exitTrigger)
+        /// <summary>
+        /// Creates a new instance of the hans music library
+        /// </summary>
+        public HansMusicLibrary(IPlaylistStore playlistStore)
         {
-            DatabaseSaver = databaseSaver;
-            playLists = new List<HansPlaylist>();
+            _playlistStore = playlistStore;
+            InitializeProperties();
+        }
+
+        /// <summary>
+        /// Initializes the properties of this class
+        /// </summary>
+        private void InitializeProperties()
+        {
             _songs = new List<HansSong>();
-            exitTrigger.ExitTriggered += exitTrigger_ExitTriggered;
         }
 
-        void exitTrigger_ExitTriggered()
-        {
-            SaveDatabase(DatabaseSaver);
-        }
-
-        public IDatabaseSaver DatabaseSaver { get; set; }
-
+        /// <summary>
+        /// Alls playlists in this library
+        /// </summary>
         public IEnumerable<HansPlaylist> Playlists
         {
-            get { return playLists; }
+            get
+            {
+                return _playlistStore.GetEnumerable(); 
+            }
         }
 
         public IEnumerable<HansSong> Songs
         {
-            get { return _songs; }
+            get
+            {
+                //TODO update to new format
+                return _songs;
+            }
         }
 
+        /// <summary>
+        /// Creates a new playlist
+        /// </summary>
+        /// <param name="name"></param>
         public void CreatePlayList(string name)
         {
-            playLists.Add(new HansPlaylist(name));
+            
         }
 
         public void AddSong(HansSong hansSong)
@@ -50,11 +63,6 @@ namespace Hans.Library
         public void RemoveSong(HansSong hansSong)
         {
             _songs.Remove(hansSong);
-        }
-
-        public void SaveDatabase(IDatabaseSaver databaseSaver)
-        {
-            databaseSaver.Save(this, Settings.Default.Database_Path);
         }
     }
 }

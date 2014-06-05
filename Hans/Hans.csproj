@@ -40,6 +40,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\GAPI.dll</HintPath>
     </Reference>
+    <Reference Include="Gat.Controls.OpenDialog">
+      <HintPath>..\packages\OpenDialog.1.1.1\lib\net45\Gat.Controls.OpenDialog.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Drawing" />
     <Reference Include="NAudio">
       <HintPath>..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
@@ -68,21 +71,30 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="YoutubeExtractor">
+      <HintPath>..\packages\YoutubeExtractor.0.9.5\lib\net35\YoutubeExtractor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Database\FlatFileDatabaseSaver.cs" />
-    <Compile Include="Database\IDatabaseLoader.cs" />
-    <Compile Include="GeneralApp\ExitTriggeredEventHandler.cs" />
-    <Compile Include="GeneralApp\ExitTrigger.cs" />
+    <Compile Include="Database\Playlists\FlatFile\FlatFilePlaylistStore.cs" />
+    <Compile Include="Database\Songs\FlatFile\FlatFileSongStore.cs" />
+    <Compile Include="Database\FlatFile\FlatFileStorage.cs" />
+    <Compile Include="Database\Playlists\IPlaylistStore.cs" />
+    <Compile Include="Database\Songs\ISongStore.cs" />
+    <Compile Include="General\GotTriggeredEventHandler.cs" />
+    <Compile Include="General\ExitAppTrigger.cs" />
+    <Compile Include="General\AppTrigger.cs" />
+    <Compile Include="General\StringExtensions.cs" />
     <Compile Include="Library\HansMusicLibrary.cs" />
-    <Compile Include="Database\IDatabaseSaver.cs" />
-    <Compile Include="Library\RamAudioLoader.cs" />
+    <Compile Include="Database\IStore.cs" />
+    <Compile Include="Library\DefaultAudioLoader.cs" />
     <Compile Include="General\SearchFinishedEventHandler.cs" />
     <Compile Include="General\SearchRequest.cs" />
+    <Compile Include="Modules\AudioModule.cs" />
     <Compile Include="Modules\DatabaseModule.cs" />
     <Compile Include="Services\RestSharpJsonSerializeWrapper.cs" />
     <Compile Include="Services\YouTube\YouTube.cs" />
@@ -94,14 +106,14 @@
     <Compile Include="Web\IDownloader.cs" />
     <Compile Include="General\HansAudioPlayer.cs" />
     <Compile Include="Library\IAudioLoader.cs" />
-    <Compile Include="Library\HansSong.cs" />
-    <Compile Include="Library\HansPlaylist.cs" />
+    <Compile Include="Database\Songs\HansSong.cs" />
+    <Compile Include="Database\Playlists\HansPlaylist.cs" />
     <Compile Include="Services\IOnlineService.cs" />
     <Compile Include="Services\IOnlineServiceTrack.cs" />
-    <Compile Include="Services\SoundCloud\Extensions.cs" />
     <Compile Include="Services\SoundCloud\SoundCloud.cs" />
     <Compile Include="Services\SoundCloud\SoundCloudTrack.cs" />
     <Compile Include="Web\SongDownloads.cs" />
+    <Compile Include="Web\YouTubeDownloader.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

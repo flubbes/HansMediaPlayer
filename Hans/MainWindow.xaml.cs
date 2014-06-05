@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Timers;
 using System.Windows;
+using Gat.Controls;
 using Hans.General;
-using Hans.Tests;
+using Hans.Services;
+using Hans.Services.YouTube;
 
 namespace Hans
 {
@@ -12,33 +15,61 @@ namespace Hans
     /// </summary>
     public partial class MainWindow
     {
-        public HansAudioPlayer _hansAudioPlayer;
+        private readonly HansAudioPlayer _hansAudioPlayer;
 
-        private bool _ignore;
-        private Timer formRefresher;
+        private Timer _formRefresher;
+        private bool _volumeChangeIgnoreIndicator;
+        private bool _progressChangeIgnoreIndicator;
 
         public MainWindow(HansAudioPlayer hansAudioPlayer)
         {
             _hansAudioPlayer = hansAudioPlayer;
             InitializeComponent();
+            InitFormRefresher();
+            InitHansAudioPlayer();
+            InitServiceComboBox();
         }
 
         private void InitFormRefresher()
         {
-            formRefresher = new Timer();
-            formRefresher.Interval = 10;
+            _formRefresher = new Timer {Interval = 100};
+            _formRefresher.Elapsed += _formRefresher_Elapsed;
+            _formRefresher.Start();
+        }
+
+        void _formRefresher_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(() => _formRefresher_Elapsed(sender, e));
+                return;
+            }
+            ButtonPlayPause.Content = _hansAudioPlayer.IsPlaying ? "Pause" : "Play";
+            _volumeChangeIgnoreIndicator = true;
+            SliderVolume.Value = _hansAudioPlayer.Volume;
+            _volumeChangeIgnoreIndicator = false;
+            _progressChangeIgnoreIndicator = true;
+            SliderSongProgress.Value = _hansAudioPlayer.CurrentSongPosition;
+            _progressChangeIgnoreIndicator = false;
         }
 
         private void InitHansAudioPlayer()
         {
-            //_hansAudioPlayer.SearchFinished += _hansAudioPlayer_SearchFinished;
-            //_hansAudioPlayer.SongQueueChanged += _hansAudioPlayer_SongQueueChanged;
+            _hansAudioPlayer.SearchFinished += _hansAudioPlayer_SearchFinished;
+            _hansAudioPlayer.SongQueueChanged += _hansAudioPlayer_SongQueueChanged;
+            _hansAudioPlayer.NewSong += _hansAudioPlayer_NewSong;
+        }
+
+        void _hansAudioPlayer_NewSong()
+        {
+            SliderSongProgress.Maximum = _hansAudioPlayer.CurrentSongLength;
         }
 
         private void InitServiceComboBox()
         {
+            ComboBoxService.DisplayMemberPath = "Name";
             ComboBoxService.Items.Add(typeof(Services.SoundCloud.SoundCloud));
-            //ComboBoxService.Items.Add(typeof(Youtube));
+            ComboBoxService.Items.Add(typeof(YouTube));
             ComboBoxService.SelectedIndex = 0;
         }
 
@@ -47,7 +78,7 @@ namespace Hans
             get { return !Dispatcher.CheckAccess(); }
         }
 
-        void _hansAudioPlayer_SearchFinished(System.Collections.Generic.IEnumerable<Tests.IOnlineServiceTrack> tracks)
+        void _hansAudioPlayer_SearchFinished(IEnumerable<IOnlineServiceTrack> tracks)
         {
             if (InvokeRequired)
             {
@@ -94,12 +125,10 @@ namespace Hans
             if (_hansAudioPlayer.IsPlaying)
             {
                 _hansAudioPlayer.Pause();
-                ButtonPlayPause.Content = "Play";
             }
             else
             {
                 _hansAudioPlayer.Play();
-                ButtonPlayPause.Content = "Pause";
             }
         }
 
@@ -112,8 +141,7 @@ namespace Hans
         {
             _hansAudioPlayer.Search(new SearchRequest
             {
-                //OnlineService = new Services.SoundCloud.SoundCloud(),
-                OnlineService = new Services.YouTube.YouTube(),
+                OnlineService = Activator.CreateInstance(ComboBoxService.SelectedValue as Type) as IOnlineService,
                 Query = TextBoxQuery.Text
             });
         }
@@ -123,7 +151,7 @@ namespace Hans
             _hansAudioPlayer.Stop();
         }
 
-        private IOnlineServiceTrack ConvertSelectionToOnlineServiceTrack()
+        private IOnlineServiceTrack GetSelectionAsOnlineServiceTrack()
         {
             return ListViewSearch.SelectedValue as IOnlineServiceTrack;
         }
@@ -138,7 +166,6 @@ namespace Hans
             if (InvokeRequired)
             {
                 Invoke(() => formRefresher_Elapsed(sender, e));
-                return;
             }
         }
 
@@ -152,46 +179,65 @@ namespace Hans
             return ListViewSearch.SelectedIndex == -1;
         }
 
-        private bool IsServiceTrack()
+        private bool IsNoServiceTrack()
         {
-            return ListViewSearch.SelectedValue is IOnlineServiceTrack;
+            return !(ListViewSearch.SelectedValue is IOnlineServiceTrack);
         }
 
         private void MenuItemAddToPlaylist_OnClick(object sender, RoutedEventArgs e)
         {
-            if (IsSelectionEmpty() || !IsServiceTrack())
+            if (IsSelectionEmpty() || IsNoServiceTrack())
             {
                 return;
             }
-
-            var track = ConvertSelectionToOnlineServiceTrack();
-            _hansAudioPlayer.Download(track);
+            _hansAudioPlayer.Download(GetSelectionAsOnlineServiceTrack());
         }
 
         private void SliderVolume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (_hansAudioPlayer == null)
+            if (_hansAudioPlayer == null || _volumeChangeIgnoreIndicator)
             {
                 return;
             }
             _hansAudioPlayer.Volume = (float)e.NewValue;
         }
 
-        private void SongProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void SliderSongProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (_ignore)
+            if (_hansAudioPlayer == null || _progressChangeIgnoreIndicator)
+            {
                 return;
+            }
+            _hansAudioPlayer.CurrentSongPosition = (long) e.NewValue;
         }
 
-        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
         {
+            var vm = BuildOpenDialog("Open a folder to add to your music library");
+            vm.IsDirectoryChooser = true;
+            var result = vm.Show();
+            HandleDialogResultToLoadFolder(result, vm);
         }
 
-        private void Window_Activated(object sender, EventArgs e)
+        private void HandleDialogResultToLoadFolder(bool? result, OpenDialogViewModel vm)
         {
-            InitFormRefresher();
-            InitHansAudioPlayer();
-            InitServiceComboBox();
+            if (result ?? false)
+            {
+                _hansAudioPlayer.LoadFolder(vm.SelectedFolder.Path);
+            }
+        }
+
+        private static OpenDialogViewModel BuildOpenDialog(string caption)
+        {
+            var openDialogView = new OpenDialogView();
+            var vm = (OpenDialogViewModel) openDialogView.DataContext;
+            vm.Caption = caption;
+            return vm;
+        }
+
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            _formRefresher.Stop();
         }
     }
 }

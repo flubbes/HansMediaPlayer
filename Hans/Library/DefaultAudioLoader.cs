@@ -1,12 +1,11 @@
-﻿using System.IO;
+﻿using Hans.Database.Songs;
 using NAudio.Wave;
-using RestSharp.Extensions;
 
 namespace Hans.Library
 {
-    class RamAudioLoader : IAudioLoader
+    class DefaultAudioLoader : IAudioLoader
     {
-        public WaveStream Load(HansSong song)
+        public AudioFileReader Load(HansSong song)
         {
             return new AudioFileReader(song.FilePath);
         }

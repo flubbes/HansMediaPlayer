@@ -1,6 +1,6 @@
 using System;
-using Hans.SoundCloud;
-using Hans.Tests;
+using Hans.General;
+using Hans.Web;
 using Newtonsoft.Json;
 
 namespace Hans.Services.SoundCloud
@@ -21,7 +21,6 @@ namespace Hans.Services.SoundCloud
 
         [JsonProperty("genre")]
         public string Genre { get; set; }
-
 
         public string Artist {
             get { return User.Username; }
@@ -77,8 +76,13 @@ namespace Hans.Services.SoundCloud
 
         public String GetFileName()
         {
-            var fileName = DisplayName + ".mp3";
-            return fileName.ToAllowedFileName();
+            var fileName = string.Format("{0} - {1}.mp3", Artist, Title);
+            return fileName.RemoveIllegalCharacters();
+        }
+
+        public IDownloader GetDownloader()
+        {
+            return new HttpDownloader();
         }
     }
 
