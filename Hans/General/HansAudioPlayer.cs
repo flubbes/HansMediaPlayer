@@ -190,10 +190,11 @@ namespace Hans.General
             {
                 return;
             }
-            //TODO implement playing functionality
-            //_songQueue[_listPosition].PrepareToPlay(new RamAudioLoader());
-            //Player.Init(_songQueue[_listPosition].WaveStream);
+            var song = _songQueue[_listPosition];
+            _audioFileReader = _audioLoader.Load(song);
+            Player.Init(_audioFileReader);
             Player.Play();
+            OnNewSong();
         }
 
         public void Previous()
