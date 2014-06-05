@@ -23,5 +23,7 @@ namespace Hans.Services.SoundCloud
         {
             get { return "SoundCloud"; }
         }
+
+        public IDownloader Downloader { get; set; }
     }
 }
