@@ -13,18 +13,64 @@ namespace Hans.General
 {
     public class HansAudioPlayer
     {
+        private readonly IAudioLoader _audioLoader;
         private volatile int _listPosition;
         private readonly SongDownloads _songDownloads;
         private volatile List<HansSong> _songQueue;
+        private AudioFileReader _audioFileReader;
 
-        public HansAudioPlayer(HansMusicLibrary library)
+        public delegate void NewSongEventHandler();
+
+        public event NewSongEventHandler NewSong;
+
+        public HansAudioPlayer(HansMusicLibrary library, IAudioLoader audioLoader)
         {
+            _audioLoader = audioLoader;
             Library = library;
             _listPosition = 0;
             _songQueue = new List<HansSong>();
             Player = new WaveOut();
+            Player.PlaybackStopped += Player_PlaybackStopped;
             _songDownloads = new SongDownloads();
             _songDownloads.DownloadFinished += _songDownloads_DownloadFinished;
+        }
+
+        void Player_PlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            //TODO refactor
+            if (IsQueueEmpty())
+            {
+                return;
+            }
+            if (Shuffle)
+            {
+                _listPosition = new Random().Next(0, _songQueue.Count);
+            }
+            else
+            {
+                if (_listPosition == _songQueue.Count)
+                {
+                    if (!Repeat)
+                    {
+                        return;
+                    }
+                    _listPosition = 0;
+                }
+                else
+                {
+                    _listPosition++;
+                }
+            }
+            Play();
+        }
+
+        protected virtual void OnNewSong()
+        {
+            var handler = NewSong;
+            if (handler != null)
+            {
+                handler();
+            }
         }
 
         public event SearchFinishedEventHandler SearchFinished;
