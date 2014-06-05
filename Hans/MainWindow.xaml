@@ -1,4 +1,5 @@
 ﻿<Window
+        Closing="MainWindow_OnClosing"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Hans.MainWindow" Height="612" Width="864" MinWidth="864" MinHeight="612" Title="Hans Audio Player 1.0 (&quot;Schlauchboot&quot;)">
