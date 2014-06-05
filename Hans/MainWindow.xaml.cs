@@ -151,7 +151,7 @@ namespace Hans
             _hansAudioPlayer.Stop();
         }
 
-        private IOnlineServiceTrack ConvertSelectionToOnlineServiceTrack()
+        private IOnlineServiceTrack GetSelectionAsOnlineServiceTrack()
         {
             return ListViewSearch.SelectedValue as IOnlineServiceTrack;
         }
