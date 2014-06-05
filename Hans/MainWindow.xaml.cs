@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Timers;
 using System.Windows;
 using Hans.General;
+using Hans.Services.YouTube;
 using Hans.Tests;
 
 namespace Hans
@@ -12,9 +13,9 @@ namespace Hans
     /// </summary>
     public partial class MainWindow
     {
-        public HansAudioPlayer _hansAudioPlayer;
+        private readonly HansAudioPlayer _hansAudioPlayer;
 
-        private Timer formRefresher;
+        private Timer _formRefresher;
 
         public MainWindow(HansAudioPlayer hansAudioPlayer)
         {
@@ -24,7 +25,7 @@ namespace Hans
 
         private void InitFormRefresher()
         {
-            formRefresher = new Timer {Interval = 10};
+            _formRefresher = new Timer {Interval = 10};
         }
 
         private void InitHansAudioPlayer()
@@ -36,7 +37,7 @@ namespace Hans
         private void InitServiceComboBox()
         {
             ComboBoxService.Items.Add(typeof(Services.SoundCloud.SoundCloud));
-            //ComboBoxService.Items.Add(typeof(Youtube));
+            ComboBoxService.Items.Add(typeof(YouTube));
             ComboBoxService.SelectedIndex = 0;
         }
 
