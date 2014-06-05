@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Timers;
 using System.Windows;
+using Gat.Controls;
 using Hans.General;
 using Hans.Services;
 using Hans.Services.YouTube;
