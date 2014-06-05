@@ -1,4 +1,3 @@
-using Hans.Services;
 using Hans.Tests;
 
 namespace Hans.Web

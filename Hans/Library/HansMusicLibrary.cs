@@ -1,10 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Hans.Database;
 using Hans.Database.Playlists;
-using Hans.General;
-using Hans.Properties;
-using Ninject;
 
 namespace Hans.Library
 {

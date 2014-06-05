@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace Hans.General
+﻿namespace Hans.General
 {
     /// <summary>
     /// This class is necessary to bind the class correctly with ninject

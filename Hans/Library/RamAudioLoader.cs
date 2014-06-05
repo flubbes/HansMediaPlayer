@@ -1,7 +1,5 @@
-﻿using System.IO;
-using Hans.Database;
+﻿using Hans.Database;
 using NAudio.Wave;
-using RestSharp.Extensions;
 
 namespace Hans.Library
 {

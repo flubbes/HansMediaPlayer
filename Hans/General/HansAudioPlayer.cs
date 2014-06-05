@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using Hans.Database;
 using Hans.Library;
 using Hans.Properties;
-using Hans.Services.YouTube;
 using Hans.Tests;
 using Hans.Web;
 using NAudio.Wave;
-using Ninject;
-using YoutubeExtractor;
 
 namespace Hans.General
 {

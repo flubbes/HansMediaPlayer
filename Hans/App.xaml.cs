@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Windows;
-using Hans.Database;
+﻿using System.Windows;
 using Hans.General;
-using Hans.Library;
 using Hans.Modules;
 using Ninject;
 

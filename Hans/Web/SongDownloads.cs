@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using Hans.Properties;
-using Newtonsoft.Json.Bson;
-using Hans.General;
 
 namespace Hans.Web
 {
