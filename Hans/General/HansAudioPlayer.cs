@@ -91,7 +91,8 @@ namespace Hans.General
             {
                 return;
             }
-            _songQueue[_listPosition].PrepareToPlay(new RamAudioLoader());
+            //TODO implement playing functionality
+            //_songQueue[_listPosition].PrepareToPlay(new RamAudioLoader());
             Player.Init(_songQueue[_listPosition].WaveStream);
             Player.Play();
         }
