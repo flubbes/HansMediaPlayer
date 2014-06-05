@@ -21,6 +21,9 @@ namespace Hans
         {
             _hansAudioPlayer = hansAudioPlayer;
             InitializeComponent();
+            InitFormRefresher();
+            InitHansAudioPlayer();
+            InitServiceComboBox();
         }
 
         private void InitFormRefresher()
@@ -181,13 +184,6 @@ namespace Hans
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-        }
-
-        private void Window_Activated(object sender, EventArgs e)
-        {
-            InitFormRefresher();
-            InitHansAudioPlayer();
-            InitServiceComboBox();
         }
     }
 }
