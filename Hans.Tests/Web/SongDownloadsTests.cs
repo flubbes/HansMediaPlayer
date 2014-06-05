@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using FakeItEasy;
 using FluentAssertions;
@@ -66,6 +67,7 @@ namespace Hans.Tests.Web
             songDownloads.DownloadFinished += (sender, args) => checker.Invoke();
             A.CallTo(() => downloadRequest.Downloader.Progress).Returns(100);
             songDownloads.Start(downloadRequest);
+            Thread.Sleep(400); //wait for the thread -.-' ugly shit
             A.CallTo(() => checker.Invoke()).MustHaveHappened();
         }
     }

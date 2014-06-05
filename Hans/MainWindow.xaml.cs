@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Timers;
 using System.Windows;
+using Hans.General;
 using Hans.Tests;
 
 namespace Hans
@@ -11,15 +12,15 @@ namespace Hans
     /// </summary>
     public partial class MainWindow
     {
-        private HansAudioPlayer _hansAudioPlayer;
+        public HansAudioPlayer _hansAudioPlayer;
+
         private bool _ignore;
         private Timer formRefresher;
-        public MainWindow()
+
+        public MainWindow(HansAudioPlayer hansAudioPlayer)
         {
+            _hansAudioPlayer = hansAudioPlayer;
             InitializeComponent();
-            InitFormRefresher();
-            InitHansAudioPlayer();
-            InitServiceComboBox();
         }
 
         private void InitFormRefresher()
@@ -30,14 +31,14 @@ namespace Hans
 
         private void InitHansAudioPlayer()
         {
-            _hansAudioPlayer = new HansAudioPlayer();
-            _hansAudioPlayer.SearchFinished += _hansAudioPlayer_SearchFinished;
-            _hansAudioPlayer.SongQueueChanged += _hansAudioPlayer_SongQueueChanged;
+            //_hansAudioPlayer.SearchFinished += _hansAudioPlayer_SearchFinished;
+            //_hansAudioPlayer.SongQueueChanged += _hansAudioPlayer_SongQueueChanged;
         }
 
         private void InitServiceComboBox()
         {
-            ComboBoxService.Items.Add(new Services.SoundCloud.SoundCloud());
+            ComboBoxService.Items.Add(typeof(Services.SoundCloud.SoundCloud));
+            //ComboBoxService.Items.Add(typeof(Youtube));
             ComboBoxService.SelectedIndex = 0;
         }
 
@@ -139,10 +140,6 @@ namespace Hans
                 Invoke(() => formRefresher_Elapsed(sender, e));
                 return;
             }
-            //_ignore = true;
-            //SongProgress.Value = _audioFileReader.Position;
-            //SongProgress.Maximum = _audioFileReader.Length;
-            //_ignore = false;
         }
 
         private void Invoke(Action act)
@@ -184,11 +181,17 @@ namespace Hans
         {
             if (_ignore)
                 return;
-            //_audioFileReader.Position = (long) SongProgress.Value;
         }
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+        }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            InitFormRefresher();
+            InitHansAudioPlayer();
+            InitServiceComboBox();
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using FakeItEasy;
+using Hans.General;
+using Hans.Library;
 using Hans.Services;
 using NUnit.Framework;
 
-namespace Hans.Tests
+namespace Hans.Tests.General
 {
     [TestFixture]
     public class HansAudioPlayerTests
@@ -11,7 +13,8 @@ namespace Hans.Tests
         public void CanSearchServices()
         {
             var service = A.Fake<IOnlineService>();
-            var hansAudioPlayer = new HansAudioPlayer();
+            var hansMusicLibrary = A.Fake<HansMusicLibrary>();
+            var hansAudioPlayer = new HansAudioPlayer(hansMusicLibrary);
             hansAudioPlayer.Search(new SearchRequest
             {
                 OnlineService = service,

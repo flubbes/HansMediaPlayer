@@ -67,7 +67,6 @@ namespace Hans.Services.YouTube
         [JsonProperty("title")]
         public string Title { get; set; }
 
-
         [JsonProperty("channelTitle")]
         public string ChannelTitle { get; set; }
     }
