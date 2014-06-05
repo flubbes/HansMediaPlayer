@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Hans.Database;
 using Hans.Database.Songs;
 using Hans.Library;
 using Hans.Properties;

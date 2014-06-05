@@ -21,13 +21,6 @@ namespace Hans.Tests.Web
             _downloaderFake = A.Fake<IDownloader>();
         }
 
-
-        [Test]
-        public void CanCreateSongDownloads()
-        {
-            new SongDownloads();
-        }
-
         [Test]
         public void CanQueueItem()
         {

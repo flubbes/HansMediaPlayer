@@ -6,9 +6,11 @@ namespace Hans.Services.YouTube
     internal class YouTubeTrack : IOnlineServiceTrack
     {
         [JsonProperty("id")]
+// ReSharper disable once UnusedAutoPropertyAccessor.Local
         private YouTubeId Id { get; set; }
 
         [JsonProperty("snippet")]
+// ReSharper disable once UnusedAutoPropertyAccessor.Local
         private YouTubeSnippet Snippet { get; set; }
 
         public string Mp3Url

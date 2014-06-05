@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
-using Hans.Database;
 using Hans.Database.Playlists;
 using Hans.Database.Songs;
 using Hans.Library;

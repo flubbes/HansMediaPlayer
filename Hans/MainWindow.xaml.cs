@@ -112,7 +112,7 @@ namespace Hans
             _hansAudioPlayer.Search(new SearchRequest
             {
                 //OnlineService = new Services.SoundCloud.SoundCloud(),
-                OnlineService = new Services.YouTube.YouTube(),
+                OnlineService = new YouTube(),
                 Query = TextBoxQuery.Text
             });
         }
@@ -137,7 +137,6 @@ namespace Hans
             if (InvokeRequired)
             {
                 Invoke(() => formRefresher_Elapsed(sender, e));
-                return;
             }
         }
 
