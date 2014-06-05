@@ -31,8 +31,8 @@ namespace Hans
         /// <param name="e"></param>
         protected override void OnExit(ExitEventArgs e)
         {
-            base.OnExit(e);
             _exitAppTrigger.Trigger();
+            base.OnExit(e);
         }
 
         /// <summary>
