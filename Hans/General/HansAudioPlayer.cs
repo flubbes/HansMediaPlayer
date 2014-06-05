@@ -160,21 +160,15 @@ namespace Hans.General
             // mp3???
             // Catch 403
             // TODO iDownloader hasFailed
-            _songDownloads.Start(new DownloadRequest
+            new Thread(() => _songDownloads.Start(new DownloadRequest
             {
-                DestinationPath = Settings.Default.Download_Temp_Directory,
-                Downloader = new YouTubeDownloader(),
+                DestinationDirectory = Settings.Default.Download_Temp_Directory,
+                FileName = track.GetFileName(),
                 OnlineServiceTrack = track,
+                Downloader = track.GetDownloader(),
                 Uri = track.Mp3Url
-            });
-
-            /*_songDownloads.Start(new DownloadRequest
-            {
-                DestinationPath = track.DisplayName + ".mp3",
-                Downloader = new HttpDownloader(),
-                OnlineServiceTrack = track,
-                Uri = track.Mp3Url
-            });*/
+            })).Start();
+            ;
         }
 
         public void Next()
