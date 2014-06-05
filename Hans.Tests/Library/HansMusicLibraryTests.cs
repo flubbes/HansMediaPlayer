@@ -21,7 +21,7 @@ namespace Hans.Tests.Library
         public void SetUp()
         {
             _databaseSaver = A.Fake<IDatabaseSaver>();
-            var exitTrigger = A.Fake<ExitTrigger>();
+            var exitTrigger = A.Fake<ExitAppTrigger>();
             _musicLibrary = new HansMusicLibrary(_databaseSaver, exitTrigger);
         }
 

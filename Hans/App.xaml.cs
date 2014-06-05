@@ -15,7 +15,8 @@ namespace Hans
     public partial class App
     {
         private IKernel _kernel;
-        private ExitTrigger _exitTrigger;
+        private ExitAppTrigger _exitAppTrigger;
+        private StartUpTrigger _startUpTrigger;
 
         /// <summary>
         /// On program start up
@@ -36,7 +37,7 @@ namespace Hans
         protected override void OnExit(ExitEventArgs e)
         {
             base.OnExit(e);
-            _exitTrigger.TriggerExit();
+            _exitAppTrigger.Trigger();
         }
 
         /// <summary>
@@ -44,11 +45,38 @@ namespace Hans
         /// </summary>
         private void BuildKernel()
         {
-            _exitTrigger = new ExitTrigger();
+            InitializeTriggers();
             _kernel = new StandardKernel();
-            _kernel.Bind<ExitTrigger>().ToMethod<ExitTrigger>(a => _exitTrigger);
-            _kernel.Load<DatabaseModule>();
+            BindTriggers();
+            LoadModules();
             
+        }
+
+        /// <summary>
+        /// Loads all the modules
+        /// </summary>
+        private void LoadModules()
+        {
+            _kernel.Load<DatabaseModule>();
+        }
+
+        /// <summary>
+        /// Binds all triggers
+        /// </summary>
+        private void BindTriggers()
+        {
+            _kernel.Bind<ExitAppTrigger>().ToMethod<ExitAppTrigger>(a => _exitAppTrigger);
+            _kernel.Bind<StartUpTrigger>().ToMethod<StartUpTrigger>(a => _startUpTrigger);
+        }
+
+
+        /// <summary>
+        /// Initializes the triggers
+        /// </summary>
+        private void InitializeTriggers()
+        {
+            _exitAppTrigger = new ExitAppTrigger();
+            _startUpTrigger = new StartUpTrigger();
         }
 
         /// <summary>

@@ -10,7 +10,7 @@ namespace Hans.Tests.General
         [Test]
         public void TriggersEventCorrectly()
         {
-            var appTrigger = new AppTrigger();
+            var appTrigger = new ExitAppTrigger();
             var triggered = false;
             appTrigger.GotTriggered += () => triggered = true;
             appTrigger.Trigger();

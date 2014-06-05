@@ -12,15 +12,15 @@ namespace Hans.Library
         private readonly List<HansSong> _songs;
 
 
-        public HansMusicLibrary(IDatabaseSaver databaseSaver, ExitTrigger exitTrigger)
+        public HansMusicLibrary(IDatabaseSaver databaseSaver, ExitAppTrigger exitAppTrigger)
         {
             DatabaseSaver = databaseSaver;
             playLists = new List<HansPlaylist>();
             _songs = new List<HansSong>();
-            exitTrigger.ExitTriggered += exitTrigger_ExitTriggered;
+            exitAppTrigger.GotTriggered += GotTriggerGotTriggered;
         }
 
-        void exitTrigger_ExitTriggered()
+        void GotTriggerGotTriggered()
         {
             SaveDatabase(DatabaseSaver);
         }
