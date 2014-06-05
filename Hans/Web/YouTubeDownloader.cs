@@ -22,7 +22,7 @@ namespace Hans.Web
         private void InitialzeAudioDownloader(DownloadRequest request, VideoInfo video)
         {
             _audioDownloader = new AudioDownloader(video,
-                Path.Combine(request.DestinationPath, request.OnlineServiceTrack.DisplayName.RemoveIllegalCharacters() + video.AudioExtension));
+                Path.Combine(request.DestinationDirectory, request.OnlineServiceTrack.DisplayName.RemoveIllegalCharacters() + video.AudioExtension));
         }
 
         private static VideoInfo GetVideoInfo(DownloadRequest request)
@@ -50,13 +50,12 @@ namespace Hans.Web
 
         void _downloadProgressChanged(object sender, ProgressEventArgs args)
         {
-            Progress = Convert.ToInt32(args.ProgressPercentage * 0.85);
-            Debug.WriteLine(Progress);
+            Progress = Convert.ToInt32(args.ProgressPercentage*0.85);
         }
 
         void _audioExtractionProgressChanged(object sender, ProgressEventArgs args)
         {
-            Progress = Convert.ToInt32(args.ProgressPercentage * 0.15);
+            Progress = Convert.ToInt32(85 + args.ProgressPercentage * 0.15);
         }
 
         public int Progress { get; private set; }
