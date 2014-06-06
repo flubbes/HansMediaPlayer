@@ -211,7 +211,7 @@ namespace Hans.General
 
         public void Stop()
         {
-
+            Player.Stop();
         }
 
         private void _songDownloads_DownloadFinished(object sender, DownloadFinishedEventHandlerArgs args)
