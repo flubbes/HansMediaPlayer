@@ -185,6 +185,10 @@ namespace Hans.General
             {
                 return;
             }
+            if (IsPlaying)
+            {
+                return;
+            }
             var song = _songQueue[_listPosition];
             _audioFileReader = _audioLoader.Load(song);
             Player.Init(_audioFileReader);
