@@ -80,6 +80,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Database\PlaylistSongs\FlatFile\FlatFilePlaylistSongStore.cs" />
+    <Compile Include="Database\PlaylistSongs\IPlaylistSongStore.cs" />
+    <Compile Include="Database\PlaylistSongs\PlaylistSong.cs" />
     <Compile Include="Database\Playlists\FlatFile\FlatFilePlaylistStore.cs" />
     <Compile Include="Database\Songs\FlatFile\FlatFileSongStore.cs" />
     <Compile Include="Database\FlatFile\FlatFileStorage.cs" />
