@@ -44,7 +44,6 @@ namespace Hans
                 Invoke(() => _formRefresher_Elapsed(sender, e));
                 return;
             }
-            ButtonPlayPause.Content = _hansAudioPlayer.IsPlaying ? "Pause" : "Play";
             _volumeChangeIgnoreIndicator = true;
             SliderVolume.Value = _hansAudioPlayer.Volume;
             _volumeChangeIgnoreIndicator = false;
@@ -115,28 +114,6 @@ namespace Hans
             }
         }
 
-        private void ButtonNext_Click(object sender, RoutedEventArgs e)
-        {
-            _hansAudioPlayer.Next();
-        }
-
-        private void ButtonPlayPause_Click(object sender, RoutedEventArgs e)
-        {
-            if (_hansAudioPlayer.IsPlaying)
-            {
-                _hansAudioPlayer.Pause();
-            }
-            else
-            {
-                _hansAudioPlayer.Play();
-            }
-        }
-
-        private void ButtonPrevious_Click(object sender, RoutedEventArgs e)
-        {
-            _hansAudioPlayer.Previous();
-        }
-
         private void ButtonSearch_Click(object sender, RoutedEventArgs e)
         {
             _hansAudioPlayer.Search(new SearchRequest
@@ -144,6 +121,12 @@ namespace Hans
                 OnlineService = Activator.CreateInstance(ComboBoxService.SelectedValue as Type) as IOnlineService,
                 Query = TextBoxQuery.Text
             });
+        }
+
+
+        private void ButtonPlay_Click(object sender, RoutedEventArgs e)
+        {
+            _hansAudioPlayer.Play();
         }
 
         private void ButtonStop_Click(object sender, RoutedEventArgs e)
@@ -211,14 +194,6 @@ namespace Hans
             _hansAudioPlayer.CurrentSongPosition = (long) e.NewValue;
         }
 
-        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
-        {
-            var vm = BuildOpenDialog("Open a folder to add to your music library");
-            vm.IsDirectoryChooser = true;
-            var result = vm.Show();
-            HandleDialogResultToLoadFolder(result, vm);
-        }
-
         private void HandleDialogResultToLoadFolder(bool? result, OpenDialogViewModel vm)
         {
             if (result ?? false)
@@ -238,6 +213,29 @@ namespace Hans
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
             _formRefresher.Stop();
+        }
+
+        private void ButtonPause_Click(object sender, RoutedEventArgs e)
+        {
+            _hansAudioPlayer.Pause();
+        }
+
+        private void ButtonNext_OnClick(object sender, RoutedEventArgs e)
+        {
+            _hansAudioPlayer.Next();
+        }
+
+        private void ButtonPrevious_OnClick(object sender, RoutedEventArgs e)
+        {
+            _hansAudioPlayer.Previous();
+        }
+
+        private void MenuItemAddFromDirectory_OnClick(object sender, RoutedEventArgs e)
+        {
+            var vm = BuildOpenDialog("Open a folder to add to your music library");
+            vm.IsDirectoryChooser = true;
+            var result = vm.Show();
+            HandleDialogResultToLoadFolder(result, vm);
         }
     }
 }
