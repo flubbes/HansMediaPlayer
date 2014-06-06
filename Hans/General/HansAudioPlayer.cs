@@ -164,7 +164,6 @@ namespace Hans.General
                 Downloader = track.GetDownloader(),
                 Uri = track.Mp3Url
             })).Start();
-            ;
         }
 
         public void Next()
