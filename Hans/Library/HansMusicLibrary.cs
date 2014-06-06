@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Hans.Database.Playlists;
 using Hans.Database.Songs;
 
@@ -52,7 +53,11 @@ namespace Hans.Library
         /// <param name="name"></param>
         public void CreatePlayList(string name)
         {
-            
+            _playlistStore.Add(new HansPlaylist
+            {
+                Id = Guid.NewGuid(),
+                Name = name
+            });
         }
 
         public void AddSong(HansSong hansSong)
