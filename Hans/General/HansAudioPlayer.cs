@@ -156,10 +156,6 @@ namespace Hans.General
 
         public void Download(IOnlineServiceTrack track)
         {
-            // Async
-            // mp3???
-            // Catch 403
-            // TODO iDownloader hasFailed
             new Thread(() => _songDownloads.Start(new DownloadRequest
             {
                 DestinationDirectory = Settings.Default.Download_Temp_Directory,
