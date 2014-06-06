@@ -1,5 +1,7 @@
 ﻿using Hans.Database.Playlists;
 using Hans.Database.Playlists.FlatFile;
+using Hans.Database.PlaylistSongs;
+using Hans.Database.PlaylistSongs.FlatFile;
 using Hans.Database.Songs;
 using Hans.Database.Songs.FlatFile;
 using Ninject.Modules;
@@ -18,6 +20,7 @@ namespace Hans.Modules
         {
             Bind<IPlaylistStore>().To<FlatFilePlaylistStore>().InSingletonScope();
             Bind<ISongStore>().To<FlatFileSongStore>().InSingletonScope();
+            Bind<IPlaylistSongStore>().To<FlatFilePlaylistSongStore>().InSingletonScope();
         }
     }
 }
