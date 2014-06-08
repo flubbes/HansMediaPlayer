@@ -43,6 +43,9 @@
     <Reference Include="Gat.Controls.OpenDialog">
       <HintPath>..\packages\OpenDialog.1.1.1\lib\net45\Gat.Controls.OpenDialog.dll</HintPath>
     </Reference>
+    <Reference Include="Id3">
+      <HintPath>..\packages\ID3.0.3.0\lib\net40\Id3.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Drawing" />
     <Reference Include="NAudio">
       <HintPath>..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
@@ -92,11 +95,25 @@
     <Compile Include="General\ExitAppTrigger.cs" />
     <Compile Include="General\AppTrigger.cs" />
     <Compile Include="General\StringExtensions.cs" />
+    <Compile Include="Library\AnalyzationFinishedEventHandler.cs" />
+    <Compile Include="Library\AnalyzeFolderRequest.cs" />
+    <Compile Include="Library\FolderAnalyzer.cs" />
+    <Compile Include="Modules\SongDataModule.cs" />
+    <Compile Include="SongData\DataFindMethods\Id3TagDataFindMethod.cs" />
+    <Compile Include="SongData\FindSongDataRequest.cs" />
+    <Compile Include="SongData\IDataFindMethod.cs" />
+    <Compile Include="SongData\DataFindMethodCollection.cs" />
+    <Compile Include="SongData\ISongDataFinder.cs" />
+    <Compile Include="SongData\FoundDataEventHandler.cs" />
+    <Compile Include="Library\FoundNewFileEventHandler.cs" />
     <Compile Include="Library\HansMusicLibrary.cs" />
     <Compile Include="Database\IStore.cs" />
     <Compile Include="Library\DefaultAudioLoader.cs" />
     <Compile Include="General\SearchFinishedEventHandler.cs" />
     <Compile Include="General\SearchRequest.cs" />
+    <Compile Include="Library\NewLibrarySongEventHandler.cs" />
+    <Compile Include="SongData\SongDataFinder.cs" />
+    <Compile Include="Library\SongDataResponse.cs" />
     <Compile Include="Modules\AudioModule.cs" />
     <Compile Include="Modules\DatabaseModule.cs" />
     <Compile Include="Services\RestSharpJsonSerializeWrapper.cs" />
