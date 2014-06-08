@@ -4,6 +4,7 @@ using FluentAssertions;
 using Hans.Database.Playlists;
 using Hans.Database.Songs;
 using Hans.Library;
+using Hans.SongData;
 using NUnit.Framework;
 
 namespace Hans.Tests.Library
