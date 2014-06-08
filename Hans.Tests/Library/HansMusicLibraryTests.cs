@@ -19,7 +19,7 @@ namespace Hans.Tests.Library
         public void SetUp()
         {
             _playListStore = A.Fake<IPlaylistStore>();
-            _musicLibrary = new HansMusicLibrary(_playListStore);
+            _musicLibrary = new HansMusicLibrary(_playListStore, A.Fake<ISongStore>(), A.Fake<ISongDataFinder>());
         }
 
         [Test]
