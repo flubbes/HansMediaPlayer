@@ -7,7 +7,10 @@ namespace Hans.Database.Songs
     {
         public HansSong(string filePath)
         {
+            Id = Guid.NewGuid();
             FilePath = filePath;
+            Artist = string.Empty;
+            Title = string.Empty;
         }
 
         public static HansSong FromOnlineServiceTrack(string path, IOnlineServiceTrack track)
