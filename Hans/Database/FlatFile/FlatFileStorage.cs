@@ -13,12 +13,23 @@ namespace Hans.Database.FlatFile
         private readonly List<T> _cache;
         private readonly object _threadLock;
         private DateTime _lastCacheUpdate;
+        private bool _cacheChanged;
 
         public FlatFileStorage(string path)
         {
             _path = path;
             _threadLock = new object();
             _cache = new List<T>(GetCacheFromFile() ?? new T[0]);
+            new Thread(CommitThread) {IsBackground = true}.Start();
+        }
+
+        private void CommitThread()
+        {
+            while (true)
+            {
+                CommitCachedChanges();
+                Thread.Sleep(1000);
+            }
         }
 
         public void Add(T item)
@@ -27,8 +38,13 @@ namespace Hans.Database.FlatFile
             {
                 _cache.Add(item);
             }
+            CacheUpdate();
+        }
+
+        private void CacheUpdate()
+        {
             _lastCacheUpdate = DateTime.Now;
-            CommitCachedChangesAsync();
+            _cacheChanged = true;
         }
 
         public void Remove(T item)
@@ -37,8 +53,7 @@ namespace Hans.Database.FlatFile
             {
                 _cache.Remove(item);
             }
-            _lastCacheUpdate = DateTime.Now;
-            CommitCachedChangesAsync();
+            CacheUpdate();
         }
 
         public IEnumerable<T> GetEnumerable()
@@ -56,8 +71,7 @@ namespace Hans.Database.FlatFile
                 var index = _cache.FindIndex(i => i.Equals(item));
                 _cache[index] = item;
             }
-            _lastCacheUpdate = DateTime.Now;
-            CommitCachedChangesAsync();
+            CacheUpdate();
         }
 
         /// <summary>
@@ -75,10 +89,10 @@ namespace Hans.Database.FlatFile
         /// <returns></returns>
         private string GetFileContent()
         {
-            return DatabaseFileDoesnNotExist() ? string.Empty : ReadFileContent();
+            return DatabaseFileDoesNotExist() ? string.Empty : ReadFileContent();
         }
 
-        private bool DatabaseFileDoesnNotExist()
+        private bool DatabaseFileDoesNotExist()
         {
             return !File.Exists(_path);
         }
@@ -129,9 +143,9 @@ namespace Hans.Database.FlatFile
             {
                 using (var fw = GetFileStreamWriter())
                 {
-                    fw.Write(JsonConvert.SerializeObject(_cache));
+                    fw.Write(JsonConvert.SerializeObject(_cache, Formatting.Indented));
                 }
-                _lastCacheUpdate = DateTime.Now;
+                _cacheChanged = false;
             }
         }
 
@@ -144,47 +158,14 @@ namespace Hans.Database.FlatFile
             return (DateTime.Now - _lastCacheUpdate);
         }
 
-
-        /// <summary>
-        /// Commites all changed made since the last commit to the file asynchronious
-        /// </summary>
-        private void CommitCachedChangesAsync()
-        {
-            if (ThreadIsNotLocked())
-            {
-                new Thread(CommitCachedChanges).Start();
-            }
-        }
-
-        /// <summary>
-        /// Checks whether the thread is locked
-        /// </summary>
-        /// <returns></returns>
-        private bool ThreadIsNotLocked()
-        {
-            return Monitor.TryEnter(_threadLock);
-        }
-
         /// <summary>
         /// Commites all changed made since the last commit to the file
         /// </summary>
         private void CommitCachedChanges()
         {
-            lock (_threadLock)
+            if (TimeSinceLastCacheChange().TotalSeconds >= 10 && _cacheChanged)
             {
-                WaitTillNothingHasChangedForTenSeconds();
                 WriteCacheToFile();
-            }
-        }
-
-        /// <summary>
-        /// Waits till nothing has changed for ten seconds
-        /// </summary>
-        private void WaitTillNothingHasChangedForTenSeconds()
-        {
-            while (TimeSinceLastCacheChange().TotalSeconds <= 10)
-            {
-                Thread.Sleep(10);
             }
         }
     }
