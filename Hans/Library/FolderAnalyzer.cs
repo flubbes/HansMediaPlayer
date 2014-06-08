@@ -1,4 +1,5 @@
 ﻿using Ninject.Infrastructure.Language;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -66,13 +67,27 @@ namespace Hans.Library
 
         private static string[] GetTopDirectories(string currentDirectory)
         {
-            return Directory.GetDirectories(currentDirectory, string.Empty,
+            try
+            {
+                return Directory.GetDirectories(currentDirectory, "*",
                 SearchOption.TopDirectoryOnly);
+            }
+            catch (Exception)
+            {
+                return new string[0];
+            }
         }
 
         private static string[] GetTopLevelFilesFromDirectoryWithFilter(string path, string filter)
         {
-            return Directory.GetFiles(path, filter, SearchOption.TopDirectoryOnly);
+            try
+            {
+                return Directory.GetFiles(path, filter, SearchOption.TopDirectoryOnly);
+            }
+            catch (Exception)
+            {
+                return new string[0];
+            }
         }
 
         private void AddFilesToResultFiles(string[] files)

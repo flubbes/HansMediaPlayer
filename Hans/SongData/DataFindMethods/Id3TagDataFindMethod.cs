@@ -31,29 +31,38 @@ namespace Hans.SongData.DataFindMethods
             }
         }
 
-        private static IEnumerable<PropertyInfo> GetTextFramePropertyInfos(Id3Tag tag)
+        private static IEnumerable<PropertyInfo> GetFramePropertyInfos(Id3Tag tag, Type type)
         {
-            return tag.GetType().GetProperties().Where(p => p.PropertyType.BaseType == typeof(TextFrame));
+            return tag.GetType().GetProperties().Where(p => p.PropertyType.BaseType == type);
         }
 
         private void HandleId3TagVersion(Id3Tag tag, Dictionary<string, string> dict)
         {
-            foreach (var propertyInfo in GetTextFramePropertyInfos(tag))
+            foreach (var textFrame in GetFramePropertyInfos(tag, typeof(TextFrame)))
             {
-                PropertyInfo info = propertyInfo;
-                HandleProperty(() => info.GetValue(tag) as TextFrame, dict);
+                var info = textFrame;
+                HandleTextFrame(() => info.GetValue(tag) as TextFrame, dict);
+            }
+            foreach (var listTextFrame in GetFramePropertyInfos(tag, typeof(ListTextFrame)))
+            {
+                var info = listTextFrame;
+                HandleTextFrame(() => info.GetValue(tag) as TextFrame, dict);
             }
         }
 
         private void HandleId3Versions(Mp3Stream file, Dictionary<string, string> dict)
         {
-            foreach (var tag in file.GetAllTags())
+            try
             {
-                HandleId3TagVersion(tag, dict);
+                foreach (var tag in file.GetAllTags())
+                {
+                    HandleId3TagVersion(tag, dict);
+                }
             }
+            catch { }
         }
 
-        private void HandleProperty(Func<TextFrame> func, Dictionary<string, string> dict)
+        private void HandleTextFrame(Func<TextFrame> func, Dictionary<string, string> dict)
         {
             var textFrame = func.Invoke();
             var key = textFrame.GetType().Name.Replace("Frame", "");

@@ -97,6 +97,7 @@
     <Compile Include="General\StringExtensions.cs" />
     <Compile Include="Library\AnalyzationFinishedEventHandler.cs" />
     <Compile Include="Library\AnalyzeFolderRequest.cs" />
+    <Compile Include="Library\FolderAddRequest.cs" />
     <Compile Include="Library\FolderAnalyzer.cs" />
     <Compile Include="Modules\SongDataModule.cs" />
     <Compile Include="SongData\DataFindMethods\Id3TagDataFindMethod.cs" />
