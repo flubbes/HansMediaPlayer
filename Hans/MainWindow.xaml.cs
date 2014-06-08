@@ -57,6 +57,12 @@ namespace Hans
             _hansAudioPlayer.SearchFinished += _hansAudioPlayer_SearchFinished;
             _hansAudioPlayer.SongQueueChanged += _hansAudioPlayer_SongQueueChanged;
             _hansAudioPlayer.NewSong += _hansAudioPlayer_NewSong;
+            _hansAudioPlayer.Library.NewSong += Library_NewSong;
+        }
+
+        void Library_NewSong(Database.Songs.HansSong song)
+        {
+            ListViewLibrarySearch.Items.Add(song);
         }
 
         void _hansAudioPlayer_NewSong()
@@ -236,6 +242,15 @@ namespace Hans
             vm.IsDirectoryChooser = true;
             var result = vm.Show();
             HandleDialogResultToLoadFolder(result, vm);
+        }
+
+        private void ButtonLibrarySearch_Click(object sender, RoutedEventArgs e)
+        {
+            ListViewLibrarySearch.Items.Clear();
+            foreach (var song in _hansAudioPlayer.Library.Search(TextBoxLibraryQuery.Text))
+            {
+                ListViewLibrarySearch.Items.Add(song);
+            }
         }
     }
 }

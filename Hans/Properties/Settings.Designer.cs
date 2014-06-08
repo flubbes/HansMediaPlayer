@@ -25,7 +25,7 @@ namespace Hans.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("songs.json")]
+        [global::System.Configuration.DefaultSettingValueAttribute("songStore.json")]
         public string Database_SongStore_Path {
             get {
                 return ((string)(this["Database_SongStore_Path"]));
