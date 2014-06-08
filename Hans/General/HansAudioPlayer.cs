@@ -252,6 +252,10 @@ namespace Hans.General
 
         public void LoadFolder(string path)
         {
+            Library.AddFolder(new FolderAddRequest
+            {
+                Path = path
+            });
         }
     }
 }
