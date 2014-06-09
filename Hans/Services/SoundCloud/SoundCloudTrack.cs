@@ -1,36 +1,31 @@
-using System;
 using Hans.General;
 using Hans.Web;
 using Newtonsoft.Json;
+using System;
 
 namespace Hans.Services.SoundCloud
 {
     public class SoundCloudTrack : IOnlineServiceTrack
     {
-        private string _streamUrl;
         private string _downloadUrl;
+        private string _streamUrl;
 
-        [JsonProperty("id")]
-        public long Id { get; set; }
-
-        [JsonProperty("downloadable")]
-        public bool Downloadable { get; set; }
-
-        [JsonProperty("streamable")]
-        public bool Streamable { get; set; }
-
-        [JsonProperty("genre")]
-        public string Genre { get; set; }
-
-        public string Artist {
+        public string Artist
+        {
             get { return User.Username; }
             set { User.Username = value; }
         }
 
-        [JsonProperty("title")]
-        public string Title { get; set; }
+        public string DisplayName
+        {
+            get
+            {
+                return Artist + " - " + Title;
+            }
+        }
 
-        public string Mp3Url { get; set; }
+        [JsonProperty("downloadable")]
+        public bool Downloadable { get; set; }
 
         [JsonProperty("download_url")]
         public string DownloadUrl
@@ -47,6 +42,22 @@ namespace Hans.Services.SoundCloud
             }
         }
 
+        [JsonProperty("genre")]
+        public string Genre { get; set; }
+
+        [JsonProperty("id")]
+        public long Id { get; set; }
+
+        public string Mp3Url { get; set; }
+
+        public string ServiceName
+        {
+            get { return "SoundCloud"; }
+        }
+
+        [JsonProperty("streamable")]
+        public bool Streamable { get; set; }
+
         [JsonProperty("stream_url")]
         public string StreamUrl
         {
@@ -62,27 +73,21 @@ namespace Hans.Services.SoundCloud
             }
         }
 
-
-        public string DisplayName
-        {
-            get
-            {
-                return Artist + " - " + Title;
-            }
-        }
+        [JsonProperty("title")]
+        public string Title { get; set; }
 
         [JsonProperty("user")]
         public SoundCloudUser User { get; set; }
+
+        public IDownloader GetDownloader()
+        {
+            return new HttpDownloader();
+        }
 
         public String GetFileName()
         {
             var fileName = string.Format("{0} - {1}.mp3", Artist, Title);
             return fileName.RemoveIllegalCharacters();
-        }
-
-        public IDownloader GetDownloader()
-        {
-            return new HttpDownloader();
         }
     }
 

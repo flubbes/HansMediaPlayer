@@ -2,12 +2,17 @@
 using Hans.Database.Songs;
 using Hans.General;
 using Hans.Services;
+using Hans.Services.LinkCrawl;
 using Hans.Services.YouTube;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Hans
 {
@@ -16,6 +21,7 @@ namespace Hans
     /// </summary>
     public partial class MainWindow
     {
+        private readonly DownloaderWindow _downloaderWindow;
         private readonly HansAudioPlayer _hansAudioPlayer;
 
         private Timer _formRefresher;
@@ -25,10 +31,27 @@ namespace Hans
         public MainWindow(HansAudioPlayer hansAudioPlayer)
         {
             _hansAudioPlayer = hansAudioPlayer;
+
             InitializeComponent();
             InitFormRefresher();
             InitHansAudioPlayer();
             InitServiceComboBox();
+            ListViewSongQueue.ItemsSource = SongQueueListViewItems;
+            _downloaderWindow = new DownloaderWindow(_hansAudioPlayer.SongDownloads);
+        }
+
+        public IEnumerable<SongQueueListViewItem> SongQueueListViewItems
+        {
+            get
+            {
+                return new ObservableCollection<SongQueueListViewItem>(_hansAudioPlayer.SongQueue.Select(hs => new SongQueueListViewItem
+                {
+                    Artist = hs.Artist,
+                    CurrentlyPlaying = _hansAudioPlayer.IsCurrentPlayingSong(hs),
+                    Length = new TimeSpan(),
+                    Title = hs.Title
+                }));
+            }
         }
 
         private bool InvokeRequired
@@ -46,42 +69,30 @@ namespace Hans
 
         private void _formRefresher_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if (InvokeRequired)
+            HandleInvoke(() =>
             {
-                Invoke(() => _formRefresher_Elapsed(sender, e));
-                return;
-            }
-            _volumeChangeIgnoreIndicator = true;
-            SliderVolume.Value = _hansAudioPlayer.Volume;
-            _volumeChangeIgnoreIndicator = false;
-            _progressChangeIgnoreIndicator = true;
-            SliderSongProgress.Value = _hansAudioPlayer.CurrentSongPosition;
-            _progressChangeIgnoreIndicator = false;
+                _volumeChangeIgnoreIndicator = true;
+                SliderVolume.Value = _hansAudioPlayer.Volume;
+                _volumeChangeIgnoreIndicator = false;
+                _progressChangeIgnoreIndicator = true;
+                SliderSongProgress.Value = _hansAudioPlayer.CurrentSongPosition;
+                _progressChangeIgnoreIndicator = false;
+            });
         }
 
         private void _hansAudioPlayer_NewSong()
         {
-            SliderSongProgress.Maximum = _hansAudioPlayer.CurrentSongLength;
+            HandleInvoke(() => SliderSongProgress.Maximum = _hansAudioPlayer.CurrentSongLength);
         }
 
         private void _hansAudioPlayer_SearchFinished(IEnumerable<IOnlineServiceTrack> tracks)
         {
-            if (InvokeRequired)
-            {
-                Invoke(() => _hansAudioPlayer_SearchFinished(tracks));
-                return;
-            }
-            FillListViewSearch(tracks);
+            HandleInvoke(() => FillListViewSearch(tracks));
         }
 
         private void _hansAudioPlayer_SongQueueChanged(object sender, EventArgs args)
         {
-            if (InvokeRequired)
-            {
-                Invoke(() => _hansAudioPlayer_SongQueueChanged(sender, args));
-                return;
-            }
-            RefreshSongQueueListView();
+            HandleInvoke(RefreshSongQueueListView);
         }
 
         private void AddItemsToSearchListView(IEnumerable<IOnlineServiceTrack> tracks)
@@ -89,14 +100,6 @@ namespace Hans
             foreach (var track in tracks)
             {
                 ListViewSearch.Items.Add(track);
-            }
-        }
-
-        private void AddItemsToSongQueueListView()
-        {
-            foreach (var track in _hansAudioPlayer.SongQueue)
-            {
-                ListViewSongQueue.Items.Add(track);
             }
         }
 
@@ -151,15 +154,7 @@ namespace Hans
 
         private void formRefresher_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if (InvokeRequired)
-            {
-                Invoke(() => formRefresher_Elapsed(sender, e));
-            }
-        }
-
-        private IOnlineServiceTrack GetSelectionAsOnlineServiceTrack()
-        {
-            return ListViewSearch.SelectedValue as IOnlineServiceTrack;
+            // HandleInvoke();
         }
 
         private void HandleDialogResultToLoadFolder(bool? result, OpenDialogViewModel vm)
@@ -168,6 +163,16 @@ namespace Hans
             {
                 _hansAudioPlayer.LoadFolder(vm.SelectedFolder.Path);
             }
+        }
+
+        private void HandleInvoke(Action action)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(action);
+                return;
+            }
+            action.Invoke();
         }
 
         private void InitFormRefresher()
@@ -190,6 +195,7 @@ namespace Hans
             ComboBoxService.DisplayMemberPath = "Name";
             ComboBoxService.Items.Add(typeof(Services.SoundCloud.SoundCloud));
             ComboBoxService.Items.Add(typeof(YouTube));
+            ComboBoxService.Items.Add(typeof(LinkCrawl));
             ComboBoxService.SelectedIndex = 0;
         }
 
@@ -213,14 +219,23 @@ namespace Hans
             return ListViewSearch.SelectedIndex == -1;
         }
 
+        private bool IsSongQueueSelectionEmpty()
+        {
+            return ListViewSongQueue.SelectedIndex != -1;
+        }
+
         private void Library_NewSong(Database.Songs.HansSong song)
         {
-            if (InvokeRequired)
+            HandleInvoke(() => ListViewLibrarySearch.Items.Add(song));
+        }
+
+        private void ListViewSongQueue_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!IsSongQueueSelectionEmpty())
             {
-                Invoke(() => Library_NewSong(song));
                 return;
             }
-            ListViewLibrarySearch.Items.Add(song);
+            _hansAudioPlayer.SetPlayingIndex(ListViewSongQueue.SelectedIndex);
         }
 
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
@@ -242,7 +257,10 @@ namespace Hans
             {
                 return;
             }
-            _hansAudioPlayer.Download(GetSelectionAsOnlineServiceTrack());
+            foreach (var selectedItem in ListViewSearch.SelectedItems)
+            {
+                _hansAudioPlayer.Download(selectedItem as IOnlineServiceTrack);
+            }
         }
 
         private void MenuItemAddToPlaylistFromLibrary_OnClick(object sender, RoutedEventArgs e)
@@ -251,14 +269,21 @@ namespace Hans
             {
                 return;
             }
-            _hansAudioPlayer.AddToCurrentPlayList(ListViewLibrarySearch.SelectedValue as HansSong);
+            foreach (var selectedItem in ListViewLibrarySearch.SelectedItems)
+            {
+                _hansAudioPlayer.AddToCurrentPlayList(selectedItem as HansSong);
+            }
             RefreshSongQueueListView();
+        }
+
+        private void MenuItemDownloads_OnClick(object sender, RoutedEventArgs e)
+        {
+            _downloaderWindow.Show();
         }
 
         private void RefreshSongQueueListView()
         {
-            ListViewSongQueue.Items.Clear();
-            AddItemsToSongQueueListView();
+            ListViewSongQueue.ItemsSource = SongQueueListViewItems;
         }
 
         private void SliderSongProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -278,5 +303,22 @@ namespace Hans
             }
             _hansAudioPlayer.Volume = (float)e.NewValue;
         }
+    }
+
+    public class SongQueueListViewItem
+    {
+        private string _artist;
+
+        public string Artist
+        {
+            get { return CurrentlyPlaying ? "♥ " + _artist : _artist; }
+            set { _artist = value; }
+        }
+
+        public bool CurrentlyPlaying { get; set; }
+
+        public TimeSpan Length { get; set; }
+
+        public string Title { get; set; }
     }
 }

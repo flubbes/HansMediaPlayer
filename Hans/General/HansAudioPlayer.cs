@@ -23,6 +23,9 @@ namespace Hans.General
         public HansAudioPlayer(HansMusicLibrary library, IAudioPlayer audioPlayer)
         {
             _audioPlayer = audioPlayer;
+            audioPlayer.StartedPlaying += audioPlayer_StartedPlaying;
+            audioPlayer.LoadingFailed += audioPlayer_LoadingFailed;
+            audioPlayer.SongFinished += audioPlayer_SongFinished;
             Library = library;
             _listPosition = 0;
             _songQueue = new List<HansSong>();
@@ -38,53 +41,18 @@ namespace Hans.General
 
         public event SongQueueChangedEventHandler SongQueueChanged;
 
-        public HansSong CurrentlyPlaying
-        {
-            get
-            {
-                return IsQueueEmpty() ? null : _songQueue.ElementAt(_listPosition);
-            }
-        }
-
-        public long CurrentProgress
-        {
-            get
-            {
-                return _audioFileReader != null ? _audioFileReader.Position * 100 / _audioFileReader.Length : 0;
-            }
-        }
-
         public double CurrentSongLength
         {
-            get { return _audioFileReader.Length; }
+            get { return _audioPlayer.Length; }
         }
 
         public long CurrentSongPosition
         {
-            get
-            {
-                try
-                {
-                    return _audioFileReader != null ? _audioFileReader.Position : 0;
-                }
-                catch
-                {
-                    return 0;
-                }
-            }
+            get { return _audioPlayer.Position; }
             set
             {
-                if (_audioFileReader == null)
-                {
-                    return;
-                }
-                _audioFileReader.Position = value;
+                _audioPlayer.SetPosition(value);
             }
-        }
-
-        public bool IsPlaying
-        {
-            get { return Player.PlaybackState == PlaybackState.Playing; }
         }
 
         public HansMusicLibrary Library { get; set; }
@@ -92,6 +60,11 @@ namespace Hans.General
         public bool Repeat { get; set; }
 
         public bool Shuffle { get; set; }
+
+        public SongDownloads SongDownloads
+        {
+            get { return _songDownloads; }
+        }
 
         public IEnumerable<HansSong> SongQueue
         {
@@ -108,15 +81,11 @@ namespace Hans.General
         {
             get
             {
-                return _audioFileReader != null ? _audioFileReader.Volume : 1.0f;
+                return _audioPlayer.Volume;
             }
             set
             {
-                if (_audioFileReader == null)
-                {
-                    return;
-                }
-                _audioFileReader.Volume = value;
+                _audioPlayer.SetVolume(value);
             }
         }
 
@@ -133,8 +102,14 @@ namespace Hans.General
                 FileName = track.GetFileName(),
                 OnlineServiceTrack = track,
                 Downloader = track.GetDownloader(),
+                ServiceName = track.ServiceName,
                 Uri = track.Mp3Url
             })).Start();
+        }
+
+        public bool IsCurrentPlayingSong(HansSong song)
+        {
+            return _audioPlayer.PlaybackState == PlaybackState.Playing && _songQueue.ElementAt(_listPosition).Equals(song);
         }
 
         public void LoadFolder(string path)
@@ -152,10 +127,7 @@ namespace Hans.General
 
         public void Pause()
         {
-            if (IsPlaying)
-            {
-                Player.Pause();
-            }
+            _audioPlayer.Pause();
         }
 
         public void Play()
@@ -164,31 +136,8 @@ namespace Hans.General
             {
                 return;
             }
-
             var song = _songQueue[_listPosition];
-            try
-            {
-                if (_audioFileReader != null)
-                {
-                    try
-                    {
-                        _audioFileReader.Close();
-                        _audioFileReader.Dispose();
-                    }
-                    catch
-                    {
-                    }
-                    _audioFileReader = null;
-                }
-                _audioFileReader = _audioLoader.Load(song);
-                Player.Init(_audioFileReader);
-                Player.Play();
-                OnNewSong();
-            }
-            catch (Exception)
-            {
-                PlayNextSong();
-            }
+            _audioPlayer.Play(song);
         }
 
         public void Previous()
@@ -204,9 +153,15 @@ namespace Hans.General
             }.Start();
         }
 
+        public void SetPlayingIndex(int value)
+        {
+            _listPosition = value;
+            Play();
+        }
+
         public void Stop()
         {
-            Player.Stop();
+            _audioPlayer.Stop();
         }
 
         protected virtual void OnNewSong()
@@ -226,6 +181,23 @@ namespace Hans.General
                             args.DownloadRequest.OnlineServiceTrack
                         )
                 );
+            OnSongQueueChanged();
+        }
+
+        private void audioPlayer_LoadingFailed(object sender, EventArgs e)
+        {
+            Next();
+        }
+
+        private void audioPlayer_SongFinished(object sender, EventArgs e)
+        {
+            Next();
+            OnSongQueueChanged();
+        }
+
+        private void audioPlayer_StartedPlaying(HansSong song)
+        {
+            OnNewSong();
             OnSongQueueChanged();
         }
 
@@ -306,11 +278,6 @@ namespace Hans.General
             {
                 SongQueueChanged(this, EventArgs.Empty);
             }
-        }
-
-        private void Player_PlaybackStopped(object sender, StoppedEventArgs e)
-        {
-            PlayNextSong();
         }
 
         private void PlayNextSong()
