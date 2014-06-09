@@ -1,7 +1,8 @@
-﻿using System.Windows;
-using Hans.General;
+﻿using Hans.General;
 using Hans.Modules;
 using Ninject;
+using System;
+using System.Windows;
 
 namespace Hans
 {
