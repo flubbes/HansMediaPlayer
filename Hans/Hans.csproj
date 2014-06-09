@@ -94,6 +94,7 @@
     <Compile Include="General\GotTriggeredEventHandler.cs" />
     <Compile Include="General\ExitAppTrigger.cs" />
     <Compile Include="General\AppTrigger.cs" />
+    <Compile Include="General\IAudioPlayer.cs" />
     <Compile Include="General\StringExtensions.cs" />
     <Compile Include="Library\AnalyzationFinishedEventHandler.cs" />
     <Compile Include="Library\AnalyzeFolderRequest.cs" />

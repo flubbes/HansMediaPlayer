@@ -8,6 +8,7 @@ namespace Hans.Library
         /// <summary>
         /// Prepares the audio file to play
         /// </summary>
+
         AudioFileReader Load(HansSong song);
 
         /// <summary>

@@ -6,6 +6,7 @@ using Hans.Web;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -14,20 +15,17 @@ namespace Hans.General
 {
     public class HansAudioPlayer
     {
-        private readonly IAudioLoader _audioLoader;
         private readonly SongDownloads _songDownloads;
-        private AudioFileReader _audioFileReader;
+        private IAudioPlayer _audioPlayer;
         private volatile int _listPosition;
         private volatile List<HansSong> _songQueue;
 
-        public HansAudioPlayer(HansMusicLibrary library, IAudioLoader audioLoader)
+        public HansAudioPlayer(HansMusicLibrary library, IAudioPlayer audioPlayer)
         {
-            _audioLoader = audioLoader;
+            _audioPlayer = audioPlayer;
             Library = library;
             _listPosition = 0;
             _songQueue = new List<HansSong>();
-            Player = new WaveOut();
-            Player.PlaybackStopped += Player_PlaybackStopped;
             _songDownloads = new SongDownloads();
             _songDownloads.DownloadFinished += _songDownloads_DownloadFinished;
         }
@@ -65,7 +63,14 @@ namespace Hans.General
         {
             get
             {
-                return _audioFileReader != null ? _audioFileReader.Position : 0;
+                try
+                {
+                    return _audioFileReader != null ? _audioFileReader.Position : 0;
+                }
+                catch
+                {
+                    return 0;
+                }
             }
             set
             {
@@ -115,8 +120,6 @@ namespace Hans.General
             }
         }
 
-        private IWavePlayer Player { get; set; }
-
         public void AddToCurrentPlayList(HansSong hansSong)
         {
             _songQueue.Add(hansSong);
@@ -144,6 +147,7 @@ namespace Hans.General
 
         public void Next()
         {
+            PlayNextSong();
         }
 
         public void Pause()
@@ -160,13 +164,22 @@ namespace Hans.General
             {
                 return;
             }
-            if (IsPlaying)
-            {
-                return;
-            }
+
             var song = _songQueue[_listPosition];
             try
             {
+                if (_audioFileReader != null)
+                {
+                    try
+                    {
+                        _audioFileReader.Close();
+                        _audioFileReader.Dispose();
+                    }
+                    catch
+                    {
+                    }
+                    _audioFileReader = null;
+                }
                 _audioFileReader = _audioLoader.Load(song);
                 Player.Init(_audioFileReader);
                 Player.Play();
@@ -174,12 +187,13 @@ namespace Hans.General
             }
             catch (Exception)
             {
-                MessageBox.Show("Unable to play");
+                PlayNextSong();
             }
         }
 
         public void Previous()
         {
+            PlayPreviousSong();
         }
 
         public void Search(SearchRequest searchRequest)
@@ -215,6 +229,64 @@ namespace Hans.General
             OnSongQueueChanged();
         }
 
+        private bool BuildNextPosition()
+        {
+            if (Shuffle)
+            {
+                _listPosition = new Random().Next(0, _songQueue.Count);
+            }
+            else
+            {
+                if (IsAtEndOfSongQueue())
+                {
+                    if (!Repeat)
+                    {
+                        return false;
+                    }
+                    _listPosition = 0;
+                }
+                else
+                {
+                    _listPosition++;
+                }
+            }
+            return true;
+        }
+
+        private bool BuildPreviousPosition()
+        {
+            if (Shuffle)
+            {
+                _listPosition = new Random().Next(0, _songQueue.Count);
+            }
+            else
+            {
+                if (IsAtStartOfSongQueue())
+                {
+                    if (!Repeat)
+                    {
+                        return false;
+                    }
+                    _listPosition = _songQueue.Count - 1;
+                }
+                else
+                {
+                    _listPosition--;
+                }
+            }
+            return true;
+        }
+
+        private bool IsAtEndOfSongQueue()
+        {
+            return _listPosition == _songQueue.Count - 1;
+        }
+
+        private bool IsAtStartOfSongQueue()
+        {
+            return _listPosition == 0;
+        }
+
         private bool IsQueueEmpty()
         {
             return !_songQueue.Any();
@@ -238,31 +310,23 @@ namespace Hans.General
 
         private void Player_PlaybackStopped(object sender, StoppedEventArgs e)
         {
-            //TODO refactor
-            if (IsQueueEmpty())
+            PlayNextSong();
+        }
+
+        private void PlayNextSong()
+        {
+            if (!IsQueueEmpty() && BuildNextPosition())
             {
-                return;
+                Play();
             }
-            if (Shuffle)
+        }
+
+        private void PlayPreviousSong()
+        {
+            if (!IsQueueEmpty() && BuildPreviousPosition())
             {
-                _listPosition = new Random().Next(0, _songQueue.Count);
+                Play();
             }
-            else
-            {
-                if (_listPosition == _songQueue.Count)
-                {
-                    if (!Repeat)
-                    {
-                        return;
-                    }
-                    _listPosition = 0;
-                }
-                else
-                {
-                    _listPosition++;
-                }
-            }
-            Play();
         }
 
         private void StartSearch(SearchRequest searchRequest)

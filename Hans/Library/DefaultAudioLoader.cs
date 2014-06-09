@@ -1,9 +1,10 @@
 ﻿using Hans.Database.Songs;
 using NAudio.Wave;
+using System.IO;
 
 namespace Hans.Library
 {
-    class DefaultAudioLoader : IAudioLoader
+    internal class DefaultAudioLoader : IAudioLoader
     {
         public AudioFileReader Load(HansSong song)
         {
@@ -12,7 +13,6 @@ namespace Hans.Library
 
         public void UnLoad()
         {
-            
         }
     }
 }
