@@ -11,20 +11,8 @@ namespace Hans
     /// </summary>
     public partial class App
     {
-        private IKernel _kernel;
         private ExitAppTrigger _exitAppTrigger;
-
-        /// <summary>
-        /// On program start up
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-            BuildKernel();
-            BuildForm();
-            Current.MainWindow.Show();
-        }
+        private IKernel _kernel;
 
         /// <summary>
         /// Gets triggered when the app exits
@@ -37,15 +25,16 @@ namespace Hans
         }
 
         /// <summary>
-        /// Builds the kernel
+        /// On program start up
         /// </summary>
-        private void BuildKernel()
+        /// <param name="e"></param>
+        protected override void OnStartup(StartupEventArgs e)
         {
-            InitializeTriggers();
-            _kernel = new StandardKernel();
-            BindTriggers();
-            LoadModules();
-            
+            base.OnStartup(e);
+            Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+            BuildKernel();
+            BuildForm();
+            Current.MainWindow.Show();
         }
 
         /// <summary>
@@ -57,15 +46,30 @@ namespace Hans
         }
 
         /// <summary>
-        /// Loads all the modules
+        /// builds the form
         /// </summary>
-        private void LoadModules()
+        private void BuildForm()
         {
-            _kernel.Load<DatabaseModule>();
-            _kernel.Load<AudioModule>();
-            _kernel.Load<SongDataModule>();
+            Current.MainWindow = _kernel.Get<MainWindow>();
+            Current.MainWindow.Title = "HansAudioPlayer";
         }
 
+        /// <summary>
+        /// Builds the kernel
+        /// </summary>
+        private void BuildKernel()
+        {
+            InitializeTriggers();
+            _kernel = new StandardKernel();
+            BindTriggers();
+            LoadModules();
+        }
+
+        private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            MessageBox.Show(e.Exception.Message, e.Exception.Source);
+        }
 
         /// <summary>
         /// Initializes the triggers
@@ -76,12 +80,13 @@ namespace Hans
         }
 
         /// <summary>
-        /// builds the form
+        /// Loads all the modules
         /// </summary>
-        private void BuildForm()
+        private void LoadModules()
         {
-            Current.MainWindow = _kernel.Get<MainWindow>();
-            Current.MainWindow.Title = "HansAudioPlayer";
+            _kernel.Load<DatabaseModule>();
+            _kernel.Load<AudioModule>();
+            _kernel.Load<SongDataModule>();
         }
     }
 }
