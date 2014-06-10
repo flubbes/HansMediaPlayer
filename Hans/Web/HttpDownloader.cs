@@ -1,6 +1,4 @@
-﻿using Hans.General;
-using System;
-using System.IO;
+﻿using System;
 using System.Net;
 
 namespace Hans.Web
@@ -18,12 +16,15 @@ namespace Hans.Web
 
         public void Start(DownloadRequest request)
         {
-            //TODO request.URI can be null. implement download failed event
-            _webClient = new WebClient();
-            _webClient.DownloadProgressChanged += webClient_DownloadProgressChanged;
-            _webClient.DownloadFileCompleted += webClient_DownloadFileCompleted;
-            var uri = new Uri(request.Uri);
-            _webClient.DownloadFileAsync(uri, request.GetRelativePath());
+            if (request.Uri != null)
+            {
+                //TODO request.URI can be null. implement download failed event
+                _webClient = new WebClient();
+                _webClient.DownloadProgressChanged += webClient_DownloadProgressChanged;
+                _webClient.DownloadFileCompleted += webClient_DownloadFileCompleted;
+                var uri = new Uri(request.Uri);
+                _webClient.DownloadFileAsync(uri, request.GetRelativePath());
+            }
         }
 
         private void webClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
