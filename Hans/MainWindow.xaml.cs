@@ -1,4 +1,5 @@
-﻿using Gat.Controls;
+﻿using System.Diagnostics;
+using Gat.Controls;
 using Hans.Database.Songs;
 using Hans.General;
 using Hans.Services;
@@ -109,6 +110,14 @@ namespace Hans
             foreach (var song in _hansAudioPlayer.Library.Search(TextBoxLibraryQuery.Text))
             {
                 ListViewLibrarySearch.Items.Add(song);
+            }
+        }
+
+        private void TextBoxQueryOnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                ButtonSearch_Click(null, null);
             }
         }
 
