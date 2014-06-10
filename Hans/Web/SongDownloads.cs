@@ -2,12 +2,13 @@
 using System.IO;
 using System.Threading;
 using Hans.Properties;
+using Ninject.Infrastructure.Language;
 
 namespace Hans.Web
 {
     public class SongDownloads
     {
-        private readonly List<DownloadRequest> _activeDownloads;
+        private volatile List<DownloadRequest> _activeDownloads;
         public event DownloadFinishedEventHandler DownloadFinished;
 
         public SongDownloads()
@@ -30,21 +31,24 @@ namespace Hans.Web
 
         private void CheckProgress()
         {
-            for (var i = 0; i < _activeDownloads.Count; i++)
+            lock (_activeDownloads)
             {
-                CheckProgress(i);
+                for (var i = 0; i < _activeDownloads.Count; i++)
+                {
+                    CheckProgress(i);
+                }
             }
         }
 
         private void CheckProgress(int i)
         {
-            var request = _activeDownloads[i];
-            if (request.Downloader.Progress != 100)
-            {
-                return;
-            }
-            OnDownloadFinished(request);
-            _activeDownloads.RemoveAt(i);
+                var request = _activeDownloads[i];
+                if (request.Downloader.Progress != 100)
+                {
+                    return;
+                }
+                OnDownloadFinished(request);
+                _activeDownloads.RemoveAt(i);
         }
 
         private void OnDownloadFinished(DownloadRequest request)
@@ -58,7 +62,10 @@ namespace Hans.Web
         public void Start(DownloadRequest downloadRequest)
         {
             CreateTempDirectoryIfNotExists();
-            _activeDownloads.Add(downloadRequest);
+            lock(_activeDownloads)
+            {
+                _activeDownloads.Add(downloadRequest);
+            }
             downloadRequest.Downloader.Start(downloadRequest);
         }
 
@@ -73,7 +80,13 @@ namespace Hans.Web
 
         public IEnumerable<DownloadRequest> ActiveDownloads
         {
-            get { return _activeDownloads; }
+            get
+            {
+                lock(_activeDownloads)
+                {
+                    return _activeDownloads.ToEnumerable();
+                }
+            }
         }
     }
 }
