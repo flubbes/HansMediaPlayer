@@ -76,7 +76,7 @@ namespace Hans.Services.YouTube
 
         public string GetFileName()
         {
-            return string.Format("{0} - {1}{2}", Artist, Title, FileExtension);
+            return string.Format("{0} - {1}{2}", Artist, Title, ".mp3");
         }
     }
 }
