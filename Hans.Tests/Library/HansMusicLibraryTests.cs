@@ -4,6 +4,7 @@ using FluentAssertions;
 using Hans.Database.Playlists;
 using Hans.Database.Songs;
 using Hans.Library;
+using Hans.SongData;
 using NUnit.Framework;
 
 namespace Hans.Tests.Library
@@ -18,7 +19,7 @@ namespace Hans.Tests.Library
         public void SetUp()
         {
             _playListStore = A.Fake<IPlaylistStore>();
-            _musicLibrary = new HansMusicLibrary(_playListStore);
+            _musicLibrary = new HansMusicLibrary(_playListStore, A.Fake<ISongStore>(), A.Fake<ISongDataFinder>());
         }
 
         [Test]

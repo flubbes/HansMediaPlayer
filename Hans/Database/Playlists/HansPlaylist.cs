@@ -8,8 +8,6 @@ namespace Hans.Database.Playlists
     {
         public Guid Id;
 
-        public IEnumerable<HansSong> Songs { get; set; }
-
         public string Name { get; set; }
     }
 }

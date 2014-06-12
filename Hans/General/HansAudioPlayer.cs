@@ -1,102 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using Hans.Database.Songs;
+﻿using Hans.Database.Songs;
 using Hans.Library;
 using Hans.Properties;
 using Hans.Services;
 using Hans.Web;
 using NAudio.Wave;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Windows;
 
 namespace Hans.General
 {
     public class HansAudioPlayer
     {
-        private readonly IAudioLoader _audioLoader;
-        private volatile int _listPosition;
         private readonly SongDownloads _songDownloads;
+        private IAudioPlayer _audioPlayer;
+        private volatile int _listPosition;
         private volatile List<HansSong> _songQueue;
-        private AudioFileReader _audioFileReader;
+
+        public HansAudioPlayer(HansMusicLibrary library, IAudioPlayer audioPlayer)
+        {
+            _audioPlayer = audioPlayer;
+            audioPlayer.StartedPlaying += audioPlayer_StartedPlaying;
+            audioPlayer.LoadingFailed += audioPlayer_LoadingFailed;
+            audioPlayer.SongFinished += audioPlayer_SongFinished;
+            Library = library;
+            _listPosition = 0;
+            _songQueue = new List<HansSong>();
+            _songDownloads = new SongDownloads();
+            _songDownloads.DownloadFinished += _songDownloads_DownloadFinished;
+        }
 
         public delegate void NewSongEventHandler();
 
         public event NewSongEventHandler NewSong;
 
-        public HansAudioPlayer(HansMusicLibrary library, IAudioLoader audioLoader)
-        {
-            _audioLoader = audioLoader;
-            Library = library;
-            _listPosition = 0;
-            _songQueue = new List<HansSong>();
-            Player = new WaveOut();
-            Player.PlaybackStopped += Player_PlaybackStopped;
-            _songDownloads = new SongDownloads();
-            _songDownloads.DownloadFinished += _songDownloads_DownloadFinished;
-        }
-
-        void Player_PlaybackStopped(object sender, StoppedEventArgs e)
-        {
-            //TODO refactor
-            if (IsQueueEmpty())
-            {
-                return;
-            }
-            if (Shuffle)
-            {
-                _listPosition = new Random().Next(0, _songQueue.Count);
-            }
-            else
-            {
-                if (_listPosition == _songQueue.Count)
-                {
-                    if (!Repeat)
-                    {
-                        return;
-                    }
-                    _listPosition = 0;
-                }
-                else
-                {
-                    _listPosition++;
-                }
-            }
-            Play();
-        }
-
-        protected virtual void OnNewSong()
-        {
-            var handler = NewSong;
-            if (handler != null)
-            {
-                handler();
-            }
-        }
-
         public event SearchFinishedEventHandler SearchFinished;
 
         public event SongQueueChangedEventHandler SongQueueChanged;
 
-        public HansSong CurrentlyPlaying
+        public double CurrentSongLength
         {
-            get
+            get { return _audioPlayer.Length; }
+        }
+
+        public long CurrentSongPosition
+        {
+            get { return _audioPlayer.Position; }
+            set
             {
-                return IsQueueEmpty() ? null : _songQueue.ElementAt(_listPosition);
+                _audioPlayer.SetPosition(value);
             }
         }
 
-        public HansMusicLibrary Library { get; set; } 
-
-        public bool IsPlaying
-        {
-            get { return Player.PlaybackState == PlaybackState.Playing; }
-        }
-
-        private IWavePlayer Player { get; set; }
+        public HansMusicLibrary Library { get; set; }
 
         public bool Repeat { get; set; }
 
         public bool Shuffle { get; set; }
+
+        public SongDownloads SongDownloads
+        {
+            get { return _songDownloads; }
+        }
 
         public IEnumerable<HansSong> SongQueue
         {
@@ -113,75 +81,53 @@ namespace Hans.General
         {
             get
             {
-                return _audioFileReader != null ? _audioFileReader.Volume : 1.0f;
+                return _audioPlayer.Volume;
             }
             set
             {
-                if (_audioFileReader == null)
-                {
-                    return;
-                }
-                _audioFileReader.Volume = value;
+                _audioPlayer.SetVolume(value);
             }
         }
 
-        public long CurrentProgress 
+        public void AddToCurrentPlayList(HansSong hansSong)
         {
-            get
-            {
-                return _audioFileReader != null ? _audioFileReader.Position*100/_audioFileReader.Length : 0;
-            }
-        }
-
-        public double CurrentSongLength
-        {
-            get { return _audioFileReader.Length; }
-        }
-
-        public long CurrentSongPosition
-        {
-            get
-            {
-                return _audioFileReader != null ? _audioFileReader.Position : 0;
-            }
-            set
-            {
-                if (_audioFileReader == null)
-                {
-                    return;
-                }
-                _audioFileReader.Position = value;
-            }
+            _songQueue.Add(hansSong);
         }
 
         public void Download(IOnlineServiceTrack track)
         {
-            // Async
-            // mp3???
-            // Catch 403
-            // TODO iDownloader hasFailed
             new Thread(() => _songDownloads.Start(new DownloadRequest
             {
                 DestinationDirectory = Settings.Default.Download_Temp_Directory,
                 FileName = track.GetFileName(),
                 OnlineServiceTrack = track,
                 Downloader = track.GetDownloader(),
+                ServiceName = track.ServiceName,
                 Uri = track.Mp3Url
             })).Start();
-            ;
+        }
+
+        public bool IsCurrentPlayingSong(HansSong song)
+        {
+            return _audioPlayer.PlaybackState == PlaybackState.Playing && _songQueue.ElementAt(_listPosition).Equals(song);
+        }
+
+        public void LoadFolder(string path)
+        {
+            Library.AddFolder(new FolderAddRequest
+            {
+                Path = path,
+            });
         }
 
         public void Next()
         {
-
+            PlayNextSong();
         }
 
         public void Pause()
         {
-            if (IsPlaying)
-            {
-                Player.Pause();
-            }
+            _audioPlayer.Pause();
         }
 
         public void Play()
@@ -191,15 +137,12 @@ namespace Hans.General
                 return;
             }
             var song = _songQueue[_listPosition];
-            _audioFileReader = _audioLoader.Load(song);
-            Player.Init(_audioFileReader);
-            Player.Play();
-            OnNewSong();
+            _audioPlayer.Play(song);
         }
 
         public void Previous()
         {
-
+            PlayPreviousSong();
         }
 
         public void Search(SearchRequest searchRequest)
@@ -210,9 +153,24 @@ namespace Hans.General
             }.Start();
         }
 
+        public void SetPlayingIndex(int value)
+        {
+            _listPosition = value;
+            Play();
+        }
+
         public void Stop()
         {
+            _audioPlayer.Stop();
+        }
 
+        protected virtual void OnNewSong()
+        {
+            var handler = NewSong;
+            if (handler != null)
+            {
+                handler();
+            }
         }
 
         private void _songDownloads_DownloadFinished(object sender, DownloadFinishedEventHandlerArgs args)
@@ -224,6 +182,81 @@ namespace Hans.General
                         )
                 );
             OnSongQueueChanged();
+        }
+
+        private void audioPlayer_LoadingFailed(object sender, EventArgs e)
+        {
+            Next();
+        }
+
+        private void audioPlayer_SongFinished(object sender, EventArgs e)
+        {
+            Next();
+            OnSongQueueChanged();
+        }
+
+        private void audioPlayer_StartedPlaying(HansSong song)
+        {
+            OnNewSong();
+            OnSongQueueChanged();
+        }
+
+        private bool BuildNextPosition()
+        {
+            if (Shuffle)
+            {
+                _listPosition = new Random().Next(0, _songQueue.Count);
+            }
+            else
+            {
+                if (IsAtEndOfSongQueue())
+                {
+                    if (!Repeat)
+                    {
+                        return false;
+                    }
+                    _listPosition = 0;
+                }
+                else
+                {
+                    _listPosition++;
+                }
+            }
+            return true;
+        }
+
+        private bool BuildPreviousPosition()
+        {
+            if (Shuffle)
+            {
+                _listPosition = new Random().Next(0, _songQueue.Count);
+            }
+            else
+            {
+                if (IsAtStartOfSongQueue())
+                {
+                    if (!Repeat)
+                    {
+                        return false;
+                    }
+                    _listPosition = _songQueue.Count - 1;
+                }
+                else
+                {
+                    _listPosition--;
+                }
+            }
+            return true;
+        }
+
+        private bool IsAtEndOfSongQueue()
+        {
+            return _listPosition == _songQueue.Count - 1;
+        }
+
+        private bool IsAtStartOfSongQueue()
+        {
+            return _listPosition == 0;
         }
 
         private bool IsQueueEmpty()
@@ -246,13 +279,26 @@ namespace Hans.General
                 SongQueueChanged(this, EventArgs.Empty);
             }
         }
+
+        private void PlayNextSong()
+        {
+            if (!IsQueueEmpty() && BuildNextPosition())
+            {
+                Play();
+            }
+        }
+
+        private void PlayPreviousSong()
+        {
+            if (!IsQueueEmpty() && BuildPreviousPosition())
+            {
+                Play();
+            }
+        }
+
         private void StartSearch(SearchRequest searchRequest)
         {
             OnSearchFinished(searchRequest.OnlineService.Search(searchRequest.Query));
-        }
-
-        public void LoadFolder(string path)
-        {
         }
     }
 }

@@ -36,12 +36,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsQuery">
+      <HintPath>..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
+    </Reference>
     <Reference Include="GAPI, Version=0.5.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\GAPI.dll</HintPath>
     </Reference>
     <Reference Include="Gat.Controls.OpenDialog">
       <HintPath>..\packages\OpenDialog.1.1.1\lib\net45\Gat.Controls.OpenDialog.dll</HintPath>
+    </Reference>
+    <Reference Include="Id3">
+      <HintPath>..\packages\ID3.0.3.0\lib\net40\Id3.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Drawing" />
     <Reference Include="NAudio">
@@ -80,20 +86,44 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Database\PlaylistSongs\FlatFile\FlatFilePlaylistSongStore.cs" />
+    <Compile Include="Database\PlaylistSongs\IPlaylistSongStore.cs" />
+    <Compile Include="Database\PlaylistSongs\PlaylistSong.cs" />
     <Compile Include="Database\Playlists\FlatFile\FlatFilePlaylistStore.cs" />
     <Compile Include="Database\Songs\FlatFile\FlatFileSongStore.cs" />
     <Compile Include="Database\FlatFile\FlatFileStorage.cs" />
     <Compile Include="Database\Playlists\IPlaylistStore.cs" />
     <Compile Include="Database\Songs\ISongStore.cs" />
+    <Compile Include="DownloaderWindow.xaml.cs">
+      <DependentUpon>DownloaderWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="General\GotTriggeredEventHandler.cs" />
     <Compile Include="General\ExitAppTrigger.cs" />
     <Compile Include="General\AppTrigger.cs" />
+    <Compile Include="General\IAudioPlayer.cs" />
     <Compile Include="General\StringExtensions.cs" />
+    <Compile Include="Library\AnalyzationFinishedEventHandler.cs" />
+    <Compile Include="Library\AnalyzeFolderRequest.cs" />
+    <Compile Include="Library\FolderAddRequest.cs" />
+    <Compile Include="Library\FolderAnalyzer.cs" />
+    <Compile Include="Modules\SongDataModule.cs" />
+    <Compile Include="Services\LinkCrawl\LinkCrawl.cs" />
+    <Compile Include="Services\LinkCrawl\LinkCrawlTrack.cs" />
+    <Compile Include="SongData\DataFindMethods\Id3TagDataFindMethod.cs" />
+    <Compile Include="SongData\FindSongDataRequest.cs" />
+    <Compile Include="SongData\IDataFindMethod.cs" />
+    <Compile Include="SongData\DataFindMethodCollection.cs" />
+    <Compile Include="SongData\ISongDataFinder.cs" />
+    <Compile Include="SongData\FoundDataEventHandler.cs" />
+    <Compile Include="Library\FoundNewFileEventHandler.cs" />
     <Compile Include="Library\HansMusicLibrary.cs" />
     <Compile Include="Database\IStore.cs" />
     <Compile Include="Library\DefaultAudioLoader.cs" />
     <Compile Include="General\SearchFinishedEventHandler.cs" />
     <Compile Include="General\SearchRequest.cs" />
+    <Compile Include="Library\NewLibrarySongEventHandler.cs" />
+    <Compile Include="SongData\SongDataFinder.cs" />
+    <Compile Include="Library\SongDataResponse.cs" />
     <Compile Include="Modules\AudioModule.cs" />
     <Compile Include="Modules\DatabaseModule.cs" />
     <Compile Include="Services\RestSharpJsonSerializeWrapper.cs" />
@@ -114,6 +144,10 @@
     <Compile Include="Services\SoundCloud\SoundCloudTrack.cs" />
     <Compile Include="Web\SongDownloads.cs" />
     <Compile Include="Web\YouTubeDownloader.cs" />
+    <Page Include="DownloaderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

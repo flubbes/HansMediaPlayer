@@ -1,236 +1,261 @@
 ﻿<Window
-        Closing="MainWindow_OnClosing"
+    x:Class="Hans.MainWindow"
+    Closing="MainWindow_OnClosing"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:hans="clr-namespace:Hans"
+    mc:Ignorable="d"
 
-        Title="MainWindow" Height="572" Width="864" Activated="Window_Activated">
-	<Window.Resources>
-		<Style x:Key="ButtonPauze" TargetType="{x:Type Button}">
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type Button}">
-						<Grid>
-							<VisualStateManager.VisualStateGroups>
-								<VisualStateGroup x:Name="CommonStates">
-									<VisualState x:Name="Normal"/>
-									<VisualState x:Name="MouseOver"/>
-									<VisualState x:Name="Pressed">
-										<Storyboard>
-											<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="image">
-												<EasingDoubleKeyFrame KeyTime="0" Value="-3"/>
-											</DoubleAnimationUsingKeyFrames>
-											<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="image">
-												<EasingDoubleKeyFrame KeyTime="0" Value="-2"/>
-											</DoubleAnimationUsingKeyFrames>
-										</Storyboard>
-									</VisualState>
-									<VisualState x:Name="Disabled"/>
-								</VisualStateGroup>
-							</VisualStateManager.VisualStateGroups>
-							<Image x:Name="image" Source="pausebtn.png" Stretch="Fill" RenderTransformOrigin="0.5,0.5">
-								<Image.RenderTransform>
-									<TransformGroup>
-										<ScaleTransform/>
-										<SkewTransform/>
-										<RotateTransform/>
-										<TranslateTransform/>
-									</TransformGroup>
-								</Image.RenderTransform>
-							</Image>
-							<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-						</Grid>
-						<ControlTemplate.Triggers>
-							<Trigger Property="IsFocused" Value="True"/>
-							<Trigger Property="IsDefaulted" Value="True"/>
-							<Trigger Property="IsMouseOver" Value="True"/>
-							<Trigger Property="IsPressed" Value="True"/>
-							<Trigger Property="IsEnabled" Value="False"/>
-						</ControlTemplate.Triggers>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
-		<Style x:Key="ButtonPrev" TargetType="{x:Type Button}">
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type Button}">
-						<Grid>
-							<Image RenderTransformOrigin="-0.094,0.545" Source="previousbtn.png" Stretch="Fill"/>
-							<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-						</Grid>
-						<ControlTemplate.Triggers>
-							<Trigger Property="IsFocused" Value="True"/>
-							<Trigger Property="IsDefaulted" Value="True"/>
-							<Trigger Property="IsMouseOver" Value="True"/>
-							<Trigger Property="IsPressed" Value="True"/>
-							<Trigger Property="IsEnabled" Value="False"/>
-						</ControlTemplate.Triggers>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
-		<Style x:Key="ButtonStop" TargetType="{x:Type Button}">
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type Button}">
-						<Grid>
-							<Image Source="stopbtn.png" Stretch="Fill"/>
-							<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-						</Grid>
-						<ControlTemplate.Triggers>
-							<Trigger Property="IsFocused" Value="True"/>
-							<Trigger Property="IsDefaulted" Value="True"/>
-							<Trigger Property="IsMouseOver" Value="True"/>
-							<Trigger Property="IsPressed" Value="True"/>
-							<Trigger Property="IsEnabled" Value="False"/>
-						</ControlTemplate.Triggers>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
-		<Style x:Key="ButtonNext" TargetType="{x:Type Button}">
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type Button}">
-						<Grid>
-							<Image Source="nextbtn.png" Stretch="Fill"/>
-							<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-						</Grid>
-						<ControlTemplate.Triggers>
-							<Trigger Property="IsFocused" Value="True"/>
-							<Trigger Property="IsDefaulted" Value="True"/>
-							<Trigger Property="IsMouseOver" Value="True"/>
-							<Trigger Property="IsPressed" Value="True"/>
-							<Trigger Property="IsEnabled" Value="False"/>
-						</ControlTemplate.Triggers>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
-		<Style x:Key="ButtonPlay" TargetType="{x:Type Button}">
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type Button}">
-						<Grid>
-							<Image Source="playbtn.png" Stretch="Fill"/>
-							<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-						</Grid>
-						<ControlTemplate.Triggers>
-							<Trigger Property="IsFocused" Value="True"/>
-							<Trigger Property="IsDefaulted" Value="True"/>
-							<Trigger Property="IsMouseOver" Value="True"/>
-							<Trigger Property="IsPressed" Value="True"/>
-							<Trigger Property="IsEnabled" Value="False"/>
-						</ControlTemplate.Triggers>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
-		<Style x:Key="ButtonPause" TargetType="{x:Type Button}">
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type Button}">
-						<Grid>
-							<Image Source="pausebtn.png" Stretch="Fill"/>
-							<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-						</Grid>
-						<ControlTemplate.Triggers>
-							<Trigger Property="IsFocused" Value="True"/>
-							<Trigger Property="IsDefaulted" Value="True"/>
-							<Trigger Property="IsMouseOver" Value="True"/>
-							<Trigger Property="IsPressed" Value="True"/>
-							<Trigger Property="IsEnabled" Value="False"/>
-						</ControlTemplate.Triggers>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
-	</Window.Resources>
+    Height="598" Width="864" MinWidth="864" MinHeight="612" Title="Hans Audio Player 1.0 (&quot;Schlauchboot&quot;)"
+    d:DataContext="{d:DesignData hans:MainWindow}">
+    <Window.Resources>
+        <Style x:Key="ButtonPauze" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver" />
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="image">
+                                                <EasingDoubleKeyFrame KeyTime="0" Value="-3" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="image">
+                                                <EasingDoubleKeyFrame KeyTime="0" Value="-2" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Image x:Name="image" Source="pausebtn.png" Stretch="Fill" RenderTransformOrigin="0.5,0.5">
+                                <Image.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform />
+                                        <SkewTransform />
+                                        <RotateTransform />
+                                        <TranslateTransform />
+                                    </TransformGroup>
+                                </Image.RenderTransform>
+                            </Image>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True" />
+                            <Trigger Property="IsDefaulted" Value="True" />
+                            <Trigger Property="IsMouseOver" Value="True" />
+                            <Trigger Property="IsPressed" Value="True" />
+                            <Trigger Property="IsEnabled" Value="False" />
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonPrev" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Image RenderTransformOrigin="-0.094,0.545" Source="previousbtn.png" Stretch="Fill" />
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True" />
+                            <Trigger Property="IsDefaulted" Value="True" />
+                            <Trigger Property="IsMouseOver" Value="True" />
+                            <Trigger Property="IsPressed" Value="True" />
+                            <Trigger Property="IsEnabled" Value="False" />
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonStop" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Image Source="stopbtn.png" Stretch="Fill" />
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True" />
+                            <Trigger Property="IsDefaulted" Value="True" />
+                            <Trigger Property="IsMouseOver" Value="True" />
+                            <Trigger Property="IsPressed" Value="True" />
+                            <Trigger Property="IsEnabled" Value="False" />
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonNext" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Image Source="nextbtn.png" Stretch="Fill" />
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True" />
+                            <Trigger Property="IsDefaulted" Value="True" />
+                            <Trigger Property="IsMouseOver" Value="True" />
+                            <Trigger Property="IsPressed" Value="True" />
+                            <Trigger Property="IsEnabled" Value="False" />
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonPlay" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Image Source="playbtn.png" Stretch="Fill" />
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True" />
+                            <Trigger Property="IsDefaulted" Value="True" />
+                            <Trigger Property="IsMouseOver" Value="True" />
+                            <Trigger Property="IsPressed" Value="True" />
+                            <Trigger Property="IsEnabled" Value="False" />
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonPause" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Image Source="pausebtn.png" Stretch="Fill" />
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True" />
+                            <Trigger Property="IsDefaulted" Value="True" />
+                            <Trigger Property="IsMouseOver" Value="True" />
+                            <Trigger Property="IsPressed" Value="True" />
+                            <Trigger Property="IsEnabled" Value="False" />
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid Background="#FF804144">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75*" />
+            <RowDefinition Height="402*" />
+            <RowDefinition Height="63*" />
+            <RowDefinition Height="41*" />
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="335*"/>
-            <ColumnDefinition Width="521*"/>
+            <ColumnDefinition Width="335*" />
+            <ColumnDefinition Width="175*" />
+            <ColumnDefinition Width="346*" />
         </Grid.ColumnDefinitions>
-        <Slider x:Name="SliderSongProgress" HorizontalAlignment="Left" Margin="35,523,0,0" VerticalAlignment="Top" Width="300"/>
-        <Slider x:Name="SliderVolume" Margin="78,523,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="103" ValueChanged="SliderVolume_ValueChanged" LargeChange="0.01" TickFrequency="0.01" Maximum="1" Value="1" Grid.Column="1"/>
-        <Grid HorizontalAlignment="Left" Height="410.96" VerticalAlignment="Top" Width="266" Background="#FF856767" Grid.Column="1" Margin="255,41.04,0,0"/>
-        <ListView x:Name="ListViewSongQueue" HorizontalAlignment="Center" Height="371" Margin="268,72,10,0" VerticalAlignment="Top" Width="243" Grid.Column="1" Background="#FFD8D8D8">
-            <ListView.View>
-                <GridView>
-                	<GridViewColumn Header="Artist" DisplayMemberBinding="{Binding Artist}"/>
-                	<GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}"/>					
-                	<GridViewColumn Header="Length" DisplayMemberBinding="{Binding Title}"/>
-                </GridView>
-            </ListView.View>
-        	<ComboBox Height="100" Width="120"/>
-        </ListView>
-        <TabControl HorizontalAlignment="Left" Height="442" VerticalAlignment="Top" Width="423" Margin="10,10,0,0" Background="#FF856767" Grid.ColumnSpan="2">
-            <TabItem Header="TabItem">
-            	<TabItem.Background>
-            		<LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-            			<GradientStop Color="#FFF0F0F0" Offset="0"/>
-            			<GradientStop Color="#FFB89B9B" Offset="1"/>
-            		</LinearGradientBrush>
-            	</TabItem.Background>
-                <Grid Background="#FFE5E5E5" Margin="84,172,0,21" HorizontalAlignment="Left" Width="221">
+        <Slider ValueChanged="SliderSongProgress_ValueChanged" x:Name="SliderSongProgress" Margin="10,6,10,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Grid.Row="3" Height="18" />
+        <Slider ValueChanged="SliderVolume_ValueChanged" x:Name="SliderVolume" Margin="9,21.666,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="155" LargeChange="0.01" TickFrequency="0.01" Maximum="1" Value="1" Grid.Column="1" RenderTransformOrigin="0.5,0.5" Grid.Row="2" Height="18" />
+        <Grid Background="#FF856767" Grid.Column="2" Margin="10,32,10,8" Grid.RowSpan="3">
+            <Label Content="Playlist" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontFamily="Segoe UI" />
+            <ListView x:Name="ListViewSongQueue" Margin="10,41,10,10" Background="#FFD8D8D8" ItemsSource="{Binding}"  SelectionMode="Single" MouseDoubleClick="ListViewSongQueue_OnMouseDoubleClick">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="100" Header="Artist" DisplayMemberBinding="{Binding Artist}" />
+                        <GridViewColumn Width="150" Header="Title" DisplayMemberBinding="{Binding Title}" />
+                        <GridViewColumn Header="Length" DisplayMemberBinding="{Binding Length}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <TabControl Margin="10,35,10,8" Background="#FF856767" Grid.ColumnSpan="2"
+                    Grid.Column="0" Grid.RowSpan="2">
+            <TabItem Header="Library">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF0F0F0" Offset="0" />
+                        <GradientStop Color="#FFB89B9B" Offset="1" />
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <Grid Background="#FF856767"  Margin="0,3,0,-3">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="29*"/>
-                        <ColumnDefinition Width="30*"/>
-                        <ColumnDefinition Width="36*"/>
-                        <ColumnDefinition Width="17*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="55*"/>
+                        <ColumnDefinition Width="41*" />
+                        <ColumnDefinition Width="150*"/>
+                        <ColumnDefinition Width="51*" />
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="ButtonSearch" Content="Search" HorizontalAlignment="Left" Margin="31,-167,0,0" VerticalAlignment="Top" Width="79" Click="ButtonSearch_Click" Grid.Column="2" Background="#FFDDDDDD" Height="19.96" Grid.ColumnSpan="4"/>
-                    <TextBox x:Name="TextBoxQuery" Height="23" Margin="-78,-167,33.68,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="3" Background="White"/>
-                    <ListView x:Name="ListViewSearch" HorizontalAlignment="Right" Height="372" Margin="-78,-139,-106,-11.96" VerticalAlignment="Top" Width="405" Grid.ColumnSpan="6" Background="#FFD8D8D8">
+                    <Button Content="Search" HorizontalAlignment="Left" Margin="12,13,0,0" VerticalAlignment="Top" Width="80" Background="#FFDDDDDD" Height="20" Grid.Column="2" Click="ButtonLibrarySearch_Click" />
+                    <TextBox x:Name="TextBoxLibraryQuery" Height="23" Margin="10,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="White" Grid.ColumnSpan="2" />
+                    <ListView x:Name="ListViewLibrarySearch" Background="#FFD8D8D8" Margin="10,44,10,10" Grid.ColumnSpan="3">
                         <ListView.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Add to playlist" x:Name="MenuItemAddToPlaylist" Click="MenuItemAddToPlaylist_OnClick"/>
+                                <MenuItem Header="Add to playlist" Click="MenuItemAddToPlaylistFromLibrary_OnClick" />
                             </ContextMenu>
                         </ListView.ContextMenu>
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Artist" DisplayMemberBinding="{Binding Artist}"/>
-                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}"/>
-                            	<GridViewColumn Header="Length" DisplayMemberBinding="{Binding Title}"/>
+                                <GridViewColumn Width="170" Header="Artist" DisplayMemberBinding="{Binding Artist}" />
+                                <GridViewColumn Width="230" Header="Title" DisplayMemberBinding="{Binding Title}" />
+                                <GridViewColumn Width="50" Header="Length" DisplayMemberBinding="{Binding Length}" />
                             </GridView>
                         </ListView.View>
                     </ListView>
                 </Grid>
             </TabItem>
-            <TabItem Header="TabItem">
-            	<TabItem.Background>
-            		<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-            			<GradientStop Color="#FFF0F0F0" Offset="0"/>
-            			<GradientStop Color="#FFB89B9B" Offset="1"/>
-            		</LinearGradientBrush>
-            	</TabItem.Background>
+            <TabItem Header="Online search">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF0F0F0" Offset="0" />
+                        <GradientStop Color="#FFB89B9B" Offset="1" />
+                    </LinearGradientBrush>
+                </TabItem.Background>
                 <Grid Background="#FF856767" Margin="0,3,0,-1">
-                	<ListView x:Name="ListViewSearch_Copy" HorizontalAlignment="Right" Height="388.04" Margin="0,29.04,10,0" VerticalAlignment="Top" Width="397" Background="#FFD8D8D8">
-                		<ListView.ContextMenu>
-                			<ContextMenu>
-                				<MenuItem Header="Add to playlist" x:Name="MenuItemAddToPlaylist1" Click="MenuItemAddToPlaylist_OnClick"/>
-                			</ContextMenu>
-                		</ListView.ContextMenu>
-                		<ListView.View>
-                			<GridView>
-                				<GridViewColumn Header="Artist" DisplayMemberBinding="{Binding Artist}"/>
-                				<GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}"/>
-                			</GridView>
-                		</ListView.View>
-                	</ListView>
-                	<TextBox x:Name="TextBoxQuery_Copy" HorizontalAlignment="Left" Height="23" Margin="5,1.04,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="270"/>
-                	<ComboBox x:Name="ComboBoxService_Copy" HorizontalAlignment="Left" Margin="275,2.08,0,0" VerticalAlignment="Top" Width="142"/>
-                	<Button x:Name="ButtonSearch_Copy" Content="Search" HorizontalAlignment="Left" Margin="427,4.08,0,0" VerticalAlignment="Top" Width="75" Click="ButtonSearch_Click"/>
+                    <ListView x:Name="ListViewSearch" Margin="10,29,10,10" Background="#FFD8D8D8" SelectionMode="Extended">
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Add to playlist" Click="MenuItemAddToPlaylist_OnClick" />
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="150" Header="Artist" DisplayMemberBinding="{Binding Artist}" />
+                                <GridViewColumn Width="240" Header="Title" DisplayMemberBinding="{Binding Title}" />
+                                <GridViewColumn Width="50" Header="Length" DisplayMemberBinding="{Binding Length}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <TextBox x:Name="TextBoxQuery" HorizontalAlignment="Left" Height="23" Margin="10,1,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="247"  KeyDown="TextBoxQueryOnKeyDown" />
+                    <ComboBox x:Name="ComboBoxService" HorizontalAlignment="Left" Margin="269,0,0,0" VerticalAlignment="Top" Width="125" Height="24" />
+                    <Button Content="Search" HorizontalAlignment="Left" Margin="399,0,0,0" VerticalAlignment="Top" Width="75" Click="ButtonSearch_Click" Height="24" />
                 </Grid>
             </TabItem>
         </TabControl>
-        <Label Content="Playlist" Grid.Column="1" HorizontalAlignment="Left" Margin="363,41.04,0,0" VerticalAlignment="Top" FontFamily="Segoe UI"/>
-        <Button Content="Button" Margin="211,467.586,78,29" Style="{DynamicResource ButtonStop}"/>
-        <Button Content="Button" Margin="126,466,161.357,29" Style="{DynamicResource ButtonPlay}"/>
-        <Button Content="Button" Margin="289,466,0,29" Style="{DynamicResource ButtonNext}"/>
-        <Button x:Name="Previous" Content="Button" Margin="35,468,257.517,29" Style="{DynamicResource ButtonPrev}"/>
-        <Button Content="Button" Margin="117,466,172,29" Style="{DynamicResource ButtonPause}"/>
+
+        <Button Width="42" Height="42" Margin="183,9,110,12" Style="{DynamicResource ButtonStop}" Grid.Row="2" Grid.Column="0" Click="ButtonStop_Click" />
+        <Button Width="42" Height="42" Margin="78,9,215,12" Style="{DynamicResource ButtonPlay}" Grid.Row="2" Grid.Column="0" Click="ButtonPlay_Click" />
+        <Button Width="42" Height="42" Margin="240,9,53,12" Style="{DynamicResource ButtonNext}" Grid.Row="2" Grid.Column="0" Click="ButtonNext_OnClick" />
+        <Button Width="42" Height="42" Margin="24,5,269,8" Style="{DynamicResource ButtonPrev}" Grid.Row="2" Grid.Column="0" Click="ButtonPrevious_OnClick" />
+        <Button Width="42" Height="42" Margin="125,9,168,12" Style="{DynamicResource ButtonPause}" Grid.Row="2" Grid.Column="0" Click="ButtonPause_Click" />
+        <Menu Height="20" Margin="10,10,10,0" VerticalAlignment="Top" Grid.Row="0"
+		      Grid.ColumnSpan="3" Grid.Column="0" Background="White">
+            <MenuItem Header="File">
+                <MenuItem Header="Exit" />
+            </MenuItem>
+            <MenuItem Header="Library">
+                <MenuItem Header="Add From Directory" Click="MenuItemAddFromDirectory_OnClick" />
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="Downloads" Click="MenuItemDownloads_OnClick" />
+            </MenuItem>
+        </Menu>
     </Grid>
 </Window>

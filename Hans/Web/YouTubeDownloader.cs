@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using Hans.General;
 using YoutubeExtractor;
 
@@ -16,7 +17,15 @@ namespace Hans.Web
         {
             InitialzeAudioDownloader(request, GetVideoInfo(request));
             HookEvents();
-            _audioDownloader.Execute();
+
+            try
+            {
+                _audioDownloader.Execute();
+            }
+            catch (WebException e)
+            {
+                Debug.WriteLine("Song not available");
+            }
         }
 
         private void InitialzeAudioDownloader(DownloadRequest request, VideoInfo video)
