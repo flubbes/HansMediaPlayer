@@ -20,7 +20,6 @@ namespace Hans
         /// <param name="e"></param>
         protected override void OnExit(ExitEventArgs e)
         {
-            _exitAppTrigger.Trigger();
             base.OnExit(e);
         }
 
@@ -31,7 +30,7 @@ namespace Hans
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+            Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             BuildKernel();
             BuildForm();
             Current.MainWindow.Show();

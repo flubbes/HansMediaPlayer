@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using Hans.General;
 using Hans.Properties;
 using Ninject.Infrastructure.Language;
 
@@ -9,10 +10,12 @@ namespace Hans.Web
     public class SongDownloads
     {
         private volatile List<DownloadRequest> _activeDownloads;
+        private bool _exit;
         public event DownloadFinishedEventHandler DownloadFinished;
 
-        public SongDownloads()
+        public SongDownloads(ExitAppTrigger exitAppTrigger)
         {
+            exitAppTrigger.GotTriggered += exitAppTrigger_GotTriggered;
             _activeDownloads = new List<DownloadRequest>();
             new Thread(DownloadProgressCheckerMethod)
             {
@@ -20,9 +23,14 @@ namespace Hans.Web
             }.Start();
         }
 
+        void exitAppTrigger_GotTriggered()
+        {
+            _exit = true;
+        }
+
         private void DownloadProgressCheckerMethod()
         {
-            while (true)
+            while (!_exit)
             {
                 CheckProgress();
                 Thread.Sleep(50);

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Gat.Controls;
+﻿using Gat.Controls;
 using Hans.Database.Songs;
 using Hans.General;
 using Hans.Services;
@@ -12,7 +11,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Timers;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Hans
@@ -24,15 +22,16 @@ namespace Hans
     {
         private readonly DownloaderWindow _downloaderWindow;
         private readonly HansAudioPlayer _hansAudioPlayer;
+        private readonly ExitAppTrigger _exitAppTrigger;
 
         private Timer _formRefresher;
         private bool _progressChangeIgnoreIndicator;
         private bool _volumeChangeIgnoreIndicator;
 
-        public MainWindow(HansAudioPlayer hansAudioPlayer)
+        public MainWindow(HansAudioPlayer hansAudioPlayer, ExitAppTrigger exitAppTrigger)
         {
             _hansAudioPlayer = hansAudioPlayer;
-
+            _exitAppTrigger = exitAppTrigger;
             InitializeComponent();
             InitFormRefresher();
             InitHansAudioPlayer();
@@ -250,6 +249,8 @@ namespace Hans
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
             _formRefresher.Stop();
+            _exitAppTrigger.Trigger();
+            Environment.Exit(0);
         }
 
         private void MenuItemAddFromDirectory_OnClick(object sender, RoutedEventArgs e)

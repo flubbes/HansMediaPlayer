@@ -5,36 +5,40 @@ namespace Hans.Web
 {
     public class HttpDownloader : IDownloader
     {
-        private WebClient _webClient;
-
         public int Progress { get; private set; }
 
         public void Abort()
         {
-            _webClient.CancelAsync();
+            
+        }
+
+        public event EventHandler Failed;
+
+        protected virtual void OnFailed()
+        {
+            var handler = Failed;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
         }
 
         public void Start(DownloadRequest request)
         {
             if (request.Uri != null)
             {
-                //TODO request.URI can be null. implement download failed event
-                _webClient = new WebClient();
-                _webClient.DownloadProgressChanged += webClient_DownloadProgressChanged;
-                _webClient.DownloadFileCompleted += webClient_DownloadFileCompleted;
-                var uri = new Uri(request.Uri);
-                _webClient.DownloadFileAsync(uri, request.GetRelativePath());
+                OnFailed();
+                return;
             }
-        }
-
-        private void webClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-        {
-            Progress = 100;
-        }
-
-        private void webClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            Progress = e.ProgressPercentage;
+            var httpRequest = HttpWebRequest.CreateHttp(request.Uri);
+            var webResponse = httpRequest.GetResponse();
+            var responseStream = webResponse.GetResponseStream();
+            var buffer = new byte[4096];
+            var position = 0;
+            while (responseStream.Read(buffer, position, buffer.Length) != 0)
+            {
+                
+            }
         }
     }
 }

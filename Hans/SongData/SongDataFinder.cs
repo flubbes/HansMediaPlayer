@@ -1,4 +1,5 @@
-﻿using Hans.Library;
+﻿using Hans.General;
+using Hans.Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,19 @@ namespace Hans.SongData
         public const char Splitter = '◘';
         private readonly DataFindMethodCollection _dataFindMethod;
         private readonly List<FindSongDataRequest> _requests;
+        private bool _exit;
 
-        public SongDataFinder(DataFindMethodCollection dataFindMethod)
+        public SongDataFinder(DataFindMethodCollection dataFindMethod, ExitAppTrigger exitAppTrigger)
         {
+            exitAppTrigger.GotTriggered += exitAppTrigger_GotTriggered;
             _dataFindMethod = dataFindMethod;
             _requests = new List<FindSongDataRequest>();
             new Thread(DataFinderThreadMethod) { IsBackground = true }.Start();
+        }
+
+        void exitAppTrigger_GotTriggered()
+        {
+            _exit = true;
         }
 
         public event FoundDataEventHandler FoundData;
@@ -46,7 +54,7 @@ namespace Hans.SongData
 
         private void DataFinderThreadMethod()
         {
-            while (true)
+            while (!_exit)
             {
                 while (HasRequests())
                 {

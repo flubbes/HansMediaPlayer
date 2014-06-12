@@ -6,10 +6,8 @@ using Hans.Web;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Windows;
 
 namespace Hans.General
 {
@@ -20,16 +18,16 @@ namespace Hans.General
         private volatile int _listPosition;
         private volatile List<HansSong> _songQueue;
 
-        public HansAudioPlayer(HansMusicLibrary library, IAudioPlayer audioPlayer)
+        public HansAudioPlayer(HansMusicLibrary library, IAudioPlayer audioPlayer, SongDownloads songDownloads)
         {
+            _songQueue = new List<HansSong>();
             _audioPlayer = audioPlayer;
+            _songDownloads = songDownloads;
             audioPlayer.StartedPlaying += audioPlayer_StartedPlaying;
             audioPlayer.LoadingFailed += audioPlayer_LoadingFailed;
             audioPlayer.SongFinished += audioPlayer_SongFinished;
             Library = library;
             _listPosition = 0;
-            _songQueue = new List<HansSong>();
-            _songDownloads = new SongDownloads();
             _songDownloads.DownloadFinished += _songDownloads_DownloadFinished;
         }
 
@@ -104,7 +102,7 @@ namespace Hans.General
                 Downloader = track.GetDownloader(),
                 ServiceName = track.ServiceName,
                 Uri = track.Mp3Url
-            })).Start();
+            })){IsBackground = true}.Start();
         }
 
         public bool IsCurrentPlayingSong(HansSong song)

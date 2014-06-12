@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Hans.Database.FlatFile;
+using Hans.General;
 using Hans.Properties;
 
 namespace Hans.Database.PlaylistSongs.FlatFile
@@ -8,10 +9,10 @@ namespace Hans.Database.PlaylistSongs.FlatFile
     {
         private readonly FlatFileStorage<PlaylistSong> _flatFileStorage;
 
-        public FlatFilePlaylistSongStore()
+        public FlatFilePlaylistSongStore(ExitAppTrigger exitAppTrigger)
         {
             _flatFileStorage = new FlatFileStorage<PlaylistSong>(
-                Settings.Default.Database_PlaylistSongStore_Path);
+                Settings.Default.Database_PlaylistSongStore_Path, exitAppTrigger);
         }
 
         public void Add(PlaylistSong item)

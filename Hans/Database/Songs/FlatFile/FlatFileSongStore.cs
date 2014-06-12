@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
 using Hans.Database.FlatFile;
+using Hans.General;
 using Hans.Properties;
 
 namespace Hans.Database.Songs.FlatFile
 {
     public class FlatFileSongStore : ISongStore
     {
-        private readonly FlatFileStorage<HansSong> _flatFileStorage; 
+        private readonly FlatFileStorage<HansSong> _flatFileStorage;
 
-        public FlatFileSongStore()
+        public FlatFileSongStore(ExitAppTrigger exitAppTrigger)
         {
             _flatFileStorage = new FlatFileStorage<HansSong>(
-                Settings.Default.Database_SongStore_Path);
+                Settings.Default.Database_SongStore_Path, exitAppTrigger);
         }
 
         public void Add(HansSong item)
