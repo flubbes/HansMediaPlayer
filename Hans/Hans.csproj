@@ -98,6 +98,15 @@
     <Compile Include="DownloaderWindow.xaml.cs">
       <DependentUpon>DownloaderWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FileSystem\Can.cs" />
+    <Compile Include="FileSystem\Default\DefaultExists.cs" />
+    <Compile Include="FileSystem\Default\DefaultGet.cs" />
+    <Compile Include="FileSystem\Default\DefaultOpen.cs" />
+    <Compile Include="FileSystem\Default\DefaultReadWrite.cs" />
+    <Compile Include="FileSystem\IExists.cs" />
+    <Compile Include="FileSystem\IGet.cs" />
+    <Compile Include="FileSystem\IOpen.cs" />
+    <Compile Include="FileSystem\IReadWrite.cs" />
     <Compile Include="General\GotTriggeredEventHandler.cs" />
     <Compile Include="General\ExitAppTrigger.cs" />
     <Compile Include="General\AppTrigger.cs" />
