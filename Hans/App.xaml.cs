@@ -118,6 +118,14 @@ namespace Hans
             _kernel.Load<DatabaseModule>();
             _kernel.Load<AudioModule>();
             _kernel.Load<SongDataModule>();
+            _kernel.Load<FileSystemModule>();
+        }
+
+        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            e.SetObserved();
+            var jsonException = JsonConvert.SerializeObject(e.Exception, Formatting.Indented);
+            HandleError(jsonException);
         }
     }
 }
