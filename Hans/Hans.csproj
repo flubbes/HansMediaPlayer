@@ -116,6 +116,7 @@
     <Compile Include="Library\AnalyzeFolderRequest.cs" />
     <Compile Include="Library\FolderAddRequest.cs" />
     <Compile Include="Library\FolderAnalyzer.cs" />
+    <Compile Include="Modules\FileSystemModule.cs" />
     <Compile Include="Modules\SongDataModule.cs" />
     <Compile Include="Services\LinkCrawl\LinkCrawl.cs" />
     <Compile Include="Services\LinkCrawl\LinkCrawlTrack.cs" />
