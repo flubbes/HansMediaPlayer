@@ -1,4 +1,5 @@
 ﻿using Hans.Database.Songs;
+using Hans.FileSystem;
 using Hans.Library;
 using Hans.Properties;
 using Hans.Services;
@@ -6,30 +7,30 @@ using Hans.Web;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Windows;
 
 namespace Hans.General
 {
     public class HansAudioPlayer
     {
+        private readonly FileSystem.FileSystem _fileSystem;
         private readonly SongDownloads _songDownloads;
         private IAudioPlayer _audioPlayer;
         private volatile int _listPosition;
         private volatile List<HansSong> _songQueue;
 
-        public HansAudioPlayer(HansMusicLibrary library, IAudioPlayer audioPlayer)
+        public HansAudioPlayer(HansMusicLibrary library, IAudioPlayer audioPlayer, SongDownloads songDownloads, FileSystem.FileSystem fileSystem)
         {
+            _songQueue = new List<HansSong>();
             _audioPlayer = audioPlayer;
+            _songDownloads = songDownloads;
+            _fileSystem = fileSystem;
             audioPlayer.StartedPlaying += audioPlayer_StartedPlaying;
             audioPlayer.LoadingFailed += audioPlayer_LoadingFailed;
             audioPlayer.SongFinished += audioPlayer_SongFinished;
             Library = library;
             _listPosition = 0;
-            _songQueue = new List<HansSong>();
-            _songDownloads = new SongDownloads();
             _songDownloads.DownloadFinished += _songDownloads_DownloadFinished;
         }
 
@@ -103,8 +104,9 @@ namespace Hans.General
                 OnlineServiceTrack = track,
                 Downloader = track.GetDownloader(),
                 ServiceName = track.ServiceName,
-                Uri = track.Mp3Url
-            })).Start();
+                Uri = track.Mp3Url,
+                FileSystem = _fileSystem
+            })) { IsBackground = true }.Start();
         }
 
         public bool IsCurrentPlayingSong(HansSong song)
@@ -175,12 +177,7 @@ namespace Hans.General
 
         private void _songDownloads_DownloadFinished(object sender, DownloadFinishedEventHandlerArgs args)
         {
-            _songQueue.Add(
-                    HansSong.FromOnlineServiceTrack(
-                            args.DownloadRequest.GetAbsolutePath(),
-                            args.DownloadRequest.OnlineServiceTrack
-                        )
-                );
+            _songQueue.Add(BuildHansSongFromDownloadRequest(args));
             OnSongQueueChanged();
         }
 
@@ -199,6 +196,14 @@ namespace Hans.General
         {
             OnNewSong();
             OnSongQueueChanged();
+        }
+
+        private HansSong BuildHansSongFromDownloadRequest(DownloadFinishedEventHandlerArgs args)
+        {
+            var directory = args.DownloadRequest.DestinationDirectory;
+            var fileName = args.DownloadRequest.FileName;
+            var fullPath = _fileSystem.Get.CombinationFullPath(directory, fileName);
+            return HansSong.FromOnlineServiceTrack(fullPath, args.DownloadRequest.OnlineServiceTrack);
         }
 
         private bool BuildNextPosition()

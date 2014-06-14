@@ -48,12 +48,20 @@ namespace Hans.General
         private bool _setPosition;
         private bool _setVolume;
         private bool _stop;
+        private bool _exit;
 
-        public AudioPlayer(IAudioLoader audioLoader)
+        public AudioPlayer(IAudioLoader audioLoader, ExitAppTrigger exitAppTrigger)
         {
             _audioLoader = audioLoader;
+            exitAppTrigger.GotTriggered += exitAppTrigger_GotTriggered;
             _wavePlayer = new WaveOut();
             new Thread(PlayerThread) { IsBackground = true }.Start();
+        }
+
+        void exitAppTrigger_GotTriggered()
+        {
+            _exit = true;
+            _stop = true;
         }
 
         public event EventHandler LoadingFailed;
@@ -224,7 +232,7 @@ namespace Hans.General
 
         private void PlayerThread()
         {
-            while (true)
+            while (!_exit)
             {
                 if (_loadCurrent)
                 {

@@ -1,4 +1,6 @@
+using Hans.General;
 using Newtonsoft.Json;
+using Ninject;
 using Ninject.Infrastructure.Language;
 using System;
 using System.Collections.Generic;
@@ -14,13 +16,23 @@ namespace Hans.Database.FlatFile
         private readonly object _threadLock;
         private bool _cacheChanged;
         private DateTime _lastCacheUpdate;
+        private bool _exit;
 
-        public FlatFileStorage(string path)
+        public FlatFileStorage(string path, ExitAppTrigger exitAppTrigger)
         {
+            exitAppTrigger.GotTriggered += exitAppTrigger_GotTriggered;
             _path = path;
             _threadLock = new object();
             _cache = new List<T>(GetCacheFromFile() ?? new T[0]);
-            new Thread(CommitThread) { IsBackground = true }.Start();
+            new Thread(CommitThread)
+            {
+                IsBackground = true
+            }.Start();
+        }
+
+        void exitAppTrigger_GotTriggered()
+        {
+            _exit = true;
         }
 
         public void Add(T item)
@@ -88,7 +100,7 @@ namespace Hans.Database.FlatFile
 
         private void CommitThread()
         {
-            while (true)
+            while (!_exit)
             {
                 CommitCachedChanges();
                 Thread.Sleep(1000);

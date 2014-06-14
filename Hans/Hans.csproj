@@ -77,8 +77,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="YoutubeExtractor">
-      <HintPath>..\packages\YoutubeExtractor.0.9.5\lib\net35\YoutubeExtractor.dll</HintPath>
+    <Reference Include="YoutubeExtractor, Version=0.10.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\YoutubeExtractor.0.10.1\lib\net35\YoutubeExtractor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +98,15 @@
     <Compile Include="DownloaderWindow.xaml.cs">
       <DependentUpon>DownloaderWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FileSystem\Can.cs" />
+    <Compile Include="FileSystem\Default\DefaultExists.cs" />
+    <Compile Include="FileSystem\Default\DefaultGet.cs" />
+    <Compile Include="FileSystem\Default\DefaultOpen.cs" />
+    <Compile Include="FileSystem\Default\DefaultReadWrite.cs" />
+    <Compile Include="FileSystem\IExists.cs" />
+    <Compile Include="FileSystem\IGet.cs" />
+    <Compile Include="FileSystem\IOpen.cs" />
+    <Compile Include="FileSystem\IReadWrite.cs" />
     <Compile Include="General\GotTriggeredEventHandler.cs" />
     <Compile Include="General\ExitAppTrigger.cs" />
     <Compile Include="General\AppTrigger.cs" />
@@ -106,6 +116,7 @@
     <Compile Include="Library\AnalyzeFolderRequest.cs" />
     <Compile Include="Library\FolderAddRequest.cs" />
     <Compile Include="Library\FolderAnalyzer.cs" />
+    <Compile Include="Modules\FileSystemModule.cs" />
     <Compile Include="Modules\SongDataModule.cs" />
     <Compile Include="Services\LinkCrawl\LinkCrawl.cs" />
     <Compile Include="Services\LinkCrawl\LinkCrawlTrack.cs" />
@@ -142,6 +153,7 @@
     <Compile Include="Services\IOnlineServiceTrack.cs" />
     <Compile Include="Services\SoundCloud\SoundCloud.cs" />
     <Compile Include="Services\SoundCloud\SoundCloudTrack.cs" />
+    <Compile Include="FileSystem\FileSystem.cs" />
     <Compile Include="Web\SongDownloads.cs" />
     <Compile Include="Web\YouTubeDownloader.cs" />
     <Page Include="DownloaderWindow.xaml">

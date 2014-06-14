@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using FakeItEasy;
 using FluentAssertions;
+using Hans.General;
 using Hans.Web;
 using NUnit.Framework;
 
@@ -17,7 +18,7 @@ namespace Hans.Tests.Web
         [SetUp]
         public void SetUp()
         {
-            _songDownloads = new SongDownloads();
+            _songDownloads = new SongDownloads(A.Fake<ExitAppTrigger>());
             _downloaderFake = A.Fake<IDownloader>();
         }
 
@@ -53,7 +54,7 @@ namespace Hans.Tests.Web
             var checker = A.Fake<Action>();
             
             
-            var songDownloads = new SongDownloads();
+            var songDownloads = new SongDownloads(A.Fake<ExitAppTrigger>());
             songDownloads.DownloadFinished += (sender, args) => checker.Invoke();
             A.CallTo(() => downloadRequest.Downloader.Progress).Returns(100);
             songDownloads.Start(downloadRequest);

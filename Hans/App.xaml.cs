@@ -1,7 +1,11 @@
-﻿using Hans.General;
+﻿using CsQuery.Utility;
+using Hans.General;
 using Hans.Modules;
+using Newtonsoft.Json;
 using Ninject;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Hans
@@ -15,26 +19,27 @@ namespace Hans
         private IKernel _kernel;
 
         /// <summary>
-        /// Gets triggered when the app exits
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnExit(ExitEventArgs e)
-        {
-            _exitAppTrigger.Trigger();
-            base.OnExit(e);
-        }
-
-        /// <summary>
         /// On program start up
         /// </summary>
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+            HookExceptions();
             BuildKernel();
             BuildForm();
             Current.MainWindow.Show();
+        }
+
+        private static void HandleError(string jsonException)
+        {
+            var now = DateTime.Now;
+            var fileName = string.Format("error_{0}-{1}-{2}_{3}-{4}-{5}-{6}", now.Year, now.Month, now.Day, now.Hour, now.Minute,
+                now.Second, now.Millisecond);
+            using (var sw = new StreamWriter(fileName))
+            {
+                sw.Write(jsonException);
+            }
         }
 
         /// <summary>
@@ -68,7 +73,33 @@ namespace Hans
         private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-            MessageBox.Show(e.Exception.Message, e.Exception.Source);
+            var jsonException = JsonConvert.SerializeObject(e.Exception, Formatting.Indented);
+            HandleError(jsonException);
+        }
+
+        private void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
+        {
+            var jsonException = JsonConvert.SerializeObject(e.Exception, Formatting.Indented);
+            HandleError(jsonException);
+        }
+
+        /// <summary>
+        /// Get triggered when an unhandled exception occures
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var jsonException = JsonConvert.SerializeObject(e.ExceptionObject, Formatting.Indented);
+            HandleError(jsonException);
+        }
+
+        private void HookExceptions()
+        {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+            Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         }
 
         /// <summary>
@@ -87,6 +118,14 @@ namespace Hans
             _kernel.Load<DatabaseModule>();
             _kernel.Load<AudioModule>();
             _kernel.Load<SongDataModule>();
+            _kernel.Load<FileSystemModule>();
+        }
+
+        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            e.SetObserved();
+            var jsonException = JsonConvert.SerializeObject(e.Exception, Formatting.Indented);
+            HandleError(jsonException);
         }
     }
 }
