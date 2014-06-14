@@ -19,25 +19,27 @@ namespace Hans
         private IKernel _kernel;
 
         /// <summary>
-        /// Gets triggered when the app exits
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnExit(ExitEventArgs e)
-        {
-            base.OnExit(e);
-        }
-
-        /// <summary>
         /// On program start up
         /// </summary>
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+            HookExceptions();
             BuildKernel();
             BuildForm();
             Current.MainWindow.Show();
+        }
+
+        private static void HandleError(string jsonException)
+        {
+            var now = DateTime.Now;
+            var fileName = string.Format("error_{0}-{1}-{2}_{3}-{4}-{5}-{6}", now.Year, now.Month, now.Day, now.Hour, now.Minute,
+                now.Second, now.Millisecond);
+            using (var sw = new StreamWriter(fileName))
+            {
+                sw.Write(jsonException);
+            }
         }
 
         /// <summary>
