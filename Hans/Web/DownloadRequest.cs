@@ -13,23 +13,13 @@ namespace Hans.Web
 
         public string FileName { get; set; }
 
+        public FileSystem.FileSystem FileSystem { get; set; }
+
         public IOnlineServiceTrack OnlineServiceTrack { get; set; }
 
         public string ServiceName { get; set; }
 
         public string Uri { get; set; }
-
-        public string GetAbsolutePath()
-        {
-            return Path.GetFullPath(GetRelativePath());
-        }
-
-        public string GetRelativePath()
-        {
-            var directory = DestinationDirectory;
-            var fileName = GetSafeFileName();
-            return Path.Combine(directory, fileName);
-        }
 
         private string GetSafeFileName()
         {
