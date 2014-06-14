@@ -227,6 +227,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="darkwoodpanels.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -246,6 +249,8 @@
     <Resource Include="playbtn.png" />
     <Resource Include="previousbtn.png" />
     <Resource Include="stopbtn.png" />
+    <Resource Include="volumeup.png" />
+    <Resource Include="volume_up.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Fonts\" />
