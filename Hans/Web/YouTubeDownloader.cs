@@ -1,23 +1,31 @@
-﻿using System;
+﻿using Hans.General;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using Hans.General;
 using YoutubeExtractor;
 
 namespace Hans.Web
 {
-    class YouTubeDownloader : IDownloader
+    public class YouTubeDownloader : IDownloader
     {
         private AudioDownloader _audioDownloader;
+
+        public event EventHandler Failed;
+
+        public int Progress { get; private set; }
+
+        public void Abort()
+        {
+            // TODO find a way to abort the youtube downloader
+        }
 
         public void Start(DownloadRequest request)
         {
             InitialzeAudioDownloader(request, GetVideoInfo(request));
             HookEvents();
-
             try
             {
                 _audioDownloader.Execute();
@@ -25,13 +33,22 @@ namespace Hans.Web
             catch (WebException e)
             {
                 Debug.WriteLine("Song not available");
+                OnFailed();
             }
         }
 
-        private void InitialzeAudioDownloader(DownloadRequest request, VideoInfo video)
+        protected virtual void OnFailed()
         {
-            _audioDownloader = new AudioDownloader(video,
-                Path.Combine(request.DestinationDirectory, request.OnlineServiceTrack.DisplayName.RemoveIllegalCharacters() + video.AudioExtension));
+            var handler = Failed;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
+        }
+
+        private static VideoInfo GetFirstVideoWithExtractableAudio(IEnumerable<VideoInfo> videoInfos)
+        {
+            return videoInfos.Where(info => info.CanExtractAudio).OrderByDescending(info => info.AudioBitrate).First();
         }
 
         private static VideoInfo GetVideoInfo(DownloadRequest request)
@@ -40,9 +57,19 @@ namespace Hans.Web
             return GetFirstVideoWithExtractableAudio(videoInfos);
         }
 
-        private static VideoInfo GetFirstVideoWithExtractableAudio(IEnumerable<VideoInfo> videoInfos)
+        private void _audioExtractionProgressChanged(object sender, ProgressEventArgs args)
         {
-            return videoInfos.Where(info => info.CanExtractAudio).OrderByDescending(info => info.AudioBitrate).First();
+            Progress = Convert.ToInt32(85 + args.ProgressPercentage * 0.15);
+        }
+
+        private void _downloadFinished(object sender, EventArgs e)
+        {
+            Progress = 100;
+        }
+
+        private void _downloadProgressChanged(object sender, ProgressEventArgs args)
+        {
+            Progress = Convert.ToInt32(args.ProgressPercentage * 0.85);
         }
 
         private void HookEvents()
@@ -52,27 +79,10 @@ namespace Hans.Web
             _audioDownloader.DownloadFinished += _downloadFinished;
         }
 
-        private void _downloadFinished(object sender, EventArgs e)
+        private void InitialzeAudioDownloader(DownloadRequest request, VideoInfo video)
         {
-            Progress = 100;
-        }
-
-        void _downloadProgressChanged(object sender, ProgressEventArgs args)
-        {
-            Progress = Convert.ToInt32(args.ProgressPercentage*0.85);
-        }
-
-        void _audioExtractionProgressChanged(object sender, ProgressEventArgs args)
-        {
-            Progress = Convert.ToInt32(85 + args.ProgressPercentage * 0.15);
-        }
-
-        public int Progress { get; private set; }
-
-        public void Abort()
-        {   
-            // Stop audioDownloader.Execute(); 
-            // Non-existing atm.
+            _audioDownloader = new AudioDownloader(video,
+                Path.Combine(request.DestinationDirectory, request.OnlineServiceTrack.DisplayName.RemoveIllegalCharacters() + video.AudioExtension));
         }
     }
 }
