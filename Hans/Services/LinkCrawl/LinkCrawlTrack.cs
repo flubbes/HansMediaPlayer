@@ -2,7 +2,7 @@
 
 namespace Hans.Services.LinkCrawl
 {
-    internal class LinkCrawlTrack : IOnlineServiceTrack
+    public class LinkCrawlTrack : IOnlineServiceTrack
     {
         public string Artist { get; set; }
 
