@@ -15,7 +15,7 @@ namespace Hans.Web
 
         public void Abort()
         {
-            _thread.Abort();
+            _abort = true;
         }
 
         public void Start(DownloadRequest request)
@@ -40,11 +40,6 @@ namespace Hans.Web
             {
                 handler(this, EventArgs.Empty);
             }
-        }
-
-        private bool CanAccessFile(string filePath)
-        {
-            throw new NotImplementedException();
         }
 
         private void Download(DownloadRequest request, string absoluteFilePath)

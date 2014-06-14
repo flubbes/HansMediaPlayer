@@ -30,7 +30,7 @@ namespace Hans.Web
             {
                 _audioDownloader.Execute();
             }
-            catch (WebException e)
+            catch
             {
                 Debug.WriteLine("Song not available");
                 OnFailed();
