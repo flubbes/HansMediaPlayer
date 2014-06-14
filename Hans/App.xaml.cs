@@ -49,7 +49,13 @@ namespace Hans
             var now = DateTime.Now;
             var fileName = string.Format("error_{0}-{1}-{2}_{3}-{4}-{5}-{6}", now.Year, now.Month, now.Day, now.Hour, now.Minute,
                 now.Second, now.Millisecond);
-            using (var sw = new StreamWriter(fileName))
+            int counter = 1;
+            string safeFileName = fileName;
+            while (File.Exists(fileName))
+            {
+                safeFileName = fileName + counter + ".json";
+            }
+            using (var sw = new StreamWriter(safeFileName))
             {
                 sw.Write(jsonException);
             }
@@ -110,9 +116,9 @@ namespace Hans
         private void HookExceptions()
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
-            Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
-            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+            //AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+            //Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+            //TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         }
 
         /// <summary>
@@ -136,7 +142,6 @@ namespace Hans
 
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
-            e.SetObserved();
             var jsonException = JsonConvert.SerializeObject(e.Exception, Formatting.Indented);
             HandleError(jsonException);
         }

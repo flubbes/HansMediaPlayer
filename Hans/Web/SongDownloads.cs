@@ -1,16 +1,21 @@
-﻿using Hans.General;
+﻿using CsQuery.ExtensionMethods;
+using CsQuery.ExtensionMethods.Internal;
+using Hans.General;
 using Hans.Properties;
 using Ninject.Infrastructure.Language;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace Hans.Web
 {
     public class SongDownloads
     {
-        private volatile List<DownloadRequest> _activeDownloads;
+        private readonly List<DownloadRequest> _activeDownloads;
+        private readonly object _lock = new object();
         private bool _exit;
 
         public SongDownloads(ExitAppTrigger exitAppTrigger)
@@ -21,6 +26,7 @@ namespace Hans.Web
             {
                 IsBackground = true
             }.Start();
+            ParalelDownloads = 1;
         }
 
         public event DownloadFinishedEventHandler DownloadFinished;
@@ -29,21 +35,16 @@ namespace Hans.Web
         {
             get
             {
-                lock (_activeDownloads)
-                {
-                    return _activeDownloads.ToEnumerable();
-                }
+                return _activeDownloads.BuildThreadSafeCopy();
             }
         }
+
+        public int ParalelDownloads { get; set; }
 
         public void Start(DownloadRequest downloadRequest)
         {
             CreateTempDirectoryIfNotExists();
-            lock (_activeDownloads)
-            {
-                _activeDownloads.Add(downloadRequest);
-            }
-            downloadRequest.Downloader.Start(downloadRequest);
+            _activeDownloads.Add(downloadRequest);
         }
 
         private static void CreateTempDirectoryIfNotExists()
@@ -57,7 +58,7 @@ namespace Hans.Web
 
         private void CheckProgress()
         {
-            lock (_activeDownloads)
+            lock (_lock)
             {
                 for (var i = 0; i < _activeDownloads.Count; i++)
                 {
@@ -77,10 +78,26 @@ namespace Hans.Web
             _activeDownloads.RemoveAt(i);
         }
 
+        private int CountActiveDownloads()
+        {
+            return _activeDownloads.Count(d => d.Downloader.IsDownloading);
+        }
+
         private void DownloadProgressCheckerMethod()
         {
             while (!_exit)
             {
+                lock (_lock)
+                {
+                    while (_activeDownloads.Any(d => !d.Downloader.IsDownloading) && CountActiveDownloads() < ParalelDownloads)
+                    {
+                        var request = _activeDownloads.FirstOrDefault(d => !d.Downloader.IsDownloading);
+                        if (request != null)
+                        {
+                            request.Downloader.Start(request);
+                        }
+                    }
+                }
                 CheckProgress();
                 Thread.Sleep(50);
             }

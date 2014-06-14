@@ -4,10 +4,14 @@ namespace Hans.Web
 {
     public interface IDownloader
     {
-        void Start(DownloadRequest request);
+        event EventHandler Failed;
+
+        bool IsDownloading { get; }
+
         int Progress { get; }
+
         void Abort();
 
-        event EventHandler Failed;
+        void Start(DownloadRequest request);
     }
 }

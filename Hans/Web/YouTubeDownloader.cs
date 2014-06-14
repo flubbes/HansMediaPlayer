@@ -15,6 +15,8 @@ namespace Hans.Web
 
         public event EventHandler Failed;
 
+        public bool IsDownloading { get; private set; }
+
         public int Progress { get; private set; }
 
         public void Abort()
@@ -24,6 +26,7 @@ namespace Hans.Web
 
         public void Start(DownloadRequest request)
         {
+            IsDownloading = true;
             InitialzeAudioDownloader(request, GetVideoInfo(request));
             HookEvents();
             try
@@ -44,6 +47,7 @@ namespace Hans.Web
             {
                 handler(this, EventArgs.Empty);
             }
+            IsDownloading = false;
         }
 
         private static VideoInfo GetFirstVideoWithExtractableAudio(IEnumerable<VideoInfo> videoInfos)
@@ -65,6 +69,7 @@ namespace Hans.Web
         private void _downloadFinished(object sender, EventArgs e)
         {
             Progress = 100;
+            IsDownloading = false;
         }
 
         private void _downloadProgressChanged(object sender, ProgressEventArgs args)

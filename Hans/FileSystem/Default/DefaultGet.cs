@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Hans.General;
+using System.IO;
 
 namespace Hans.FileSystem.Default
 {
@@ -6,7 +7,7 @@ namespace Hans.FileSystem.Default
     {
         public string Combination(string part1, string part2)
         {
-            return Path.Combine(part1, part2);
+            return Path.Combine(part1.RemoveIllegalCharacters(), part2.RemoveIllegalCharacters());
         }
 
         public string CombinationFullPath(string part1, string part2)
