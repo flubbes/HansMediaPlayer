@@ -1,7 +1,11 @@
-﻿using Hans.General;
+﻿using CsQuery.Utility;
+using Hans.General;
 using Hans.Modules;
+using Newtonsoft.Json;
 using Ninject;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Hans
