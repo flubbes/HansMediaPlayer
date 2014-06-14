@@ -177,12 +177,7 @@ namespace Hans.General
 
         private void _songDownloads_DownloadFinished(object sender, DownloadFinishedEventHandlerArgs args)
         {
-            _songQueue.Add(
-                    HansSong.FromOnlineServiceTrack(
-                            args.DownloadRequest.GetAbsolutePath(),
-                            args.DownloadRequest.OnlineServiceTrack
-                        )
-                );
+            _songQueue.Add(BuildHansSongFromDownloadRequest(args));
             OnSongQueueChanged();
         }
 
@@ -201,6 +196,14 @@ namespace Hans.General
         {
             OnNewSong();
             OnSongQueueChanged();
+        }
+
+        private HansSong BuildHansSongFromDownloadRequest(DownloadFinishedEventHandlerArgs args)
+        {
+            var directory = args.DownloadRequest.DestinationDirectory;
+            var fileName = args.DownloadRequest.FileName;
+            var fullPath = _fileSystem.Get.CombinationFullPath(directory, fileName);
+            return HansSong.FromOnlineServiceTrack(fullPath, args.DownloadRequest.OnlineServiceTrack);
         }
 
         private bool BuildNextPosition()
