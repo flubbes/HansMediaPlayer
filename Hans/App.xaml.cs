@@ -73,7 +73,33 @@ namespace Hans
         private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-            MessageBox.Show(e.Exception.Message, e.Exception.Source);
+            var jsonException = JsonConvert.SerializeObject(e.Exception, Formatting.Indented);
+            HandleError(jsonException);
+        }
+
+        private void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
+        {
+            var jsonException = JsonConvert.SerializeObject(e.Exception, Formatting.Indented);
+            HandleError(jsonException);
+        }
+
+        /// <summary>
+        /// Get triggered when an unhandled exception occures
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var jsonException = JsonConvert.SerializeObject(e.ExceptionObject, Formatting.Indented);
+            HandleError(jsonException);
+        }
+
+        private void HookExceptions()
+        {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+            Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         }
 
         /// <summary>
