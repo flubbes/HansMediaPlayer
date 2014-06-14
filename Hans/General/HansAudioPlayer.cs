@@ -104,8 +104,9 @@ namespace Hans.General
                 OnlineServiceTrack = track,
                 Downloader = track.GetDownloader(),
                 ServiceName = track.ServiceName,
-                Uri = track.Mp3Url
-            })){IsBackground = true}.Start();
+                Uri = track.Mp3Url,
+                FileSystem = _fileSystem
+            })) { IsBackground = true }.Start();
         }
 
         public bool IsCurrentPlayingSong(HansSong song)
