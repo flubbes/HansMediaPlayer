@@ -74,6 +74,7 @@
     <Compile Include="Library\FolderAnalyzerTests.cs" />
     <Compile Include="Library\HansMusicLibraryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\HttpDownloaderTests.cs" />
     <Compile Include="Web\SongDownloadsTests.cs" />
   </ItemGroup>
   <ItemGroup>
