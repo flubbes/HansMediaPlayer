@@ -14,16 +14,18 @@ namespace Hans.General
 {
     public class HansAudioPlayer
     {
+        private readonly FileSystem.FileSystem _fileSystem;
         private readonly SongDownloads _songDownloads;
         private IAudioPlayer _audioPlayer;
         private volatile int _listPosition;
         private volatile List<HansSong> _songQueue;
 
-        public HansAudioPlayer(HansMusicLibrary library, IAudioPlayer audioPlayer, SongDownloads songDownloads)
+        public HansAudioPlayer(HansMusicLibrary library, IAudioPlayer audioPlayer, SongDownloads songDownloads, FileSystem.FileSystem fileSystem)
         {
             _songQueue = new List<HansSong>();
             _audioPlayer = audioPlayer;
             _songDownloads = songDownloads;
+            _fileSystem = fileSystem;
             audioPlayer.StartedPlaying += audioPlayer_StartedPlaying;
             audioPlayer.LoadingFailed += audioPlayer_LoadingFailed;
             audioPlayer.SongFinished += audioPlayer_SongFinished;
