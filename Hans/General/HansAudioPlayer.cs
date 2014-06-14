@@ -34,9 +34,7 @@ namespace Hans.General
             _songDownloads.DownloadFinished += _songDownloads_DownloadFinished;
         }
 
-        public delegate void NewSongEventHandler();
-
-        public event NewSongEventHandler NewSong;
+        public event EventHandler NewSong;
 
         public event SearchFinishedEventHandler SearchFinished;
 
@@ -171,7 +169,7 @@ namespace Hans.General
             var handler = NewSong;
             if (handler != null)
             {
-                handler();
+                handler(this, EventArgs.Empty);
             }
         }
 
@@ -192,7 +190,7 @@ namespace Hans.General
             OnSongQueueChanged();
         }
 
-        private void audioPlayer_StartedPlaying(HansSong song)
+        private void audioPlayer_StartedPlaying(object sender, StartedPlayingEventArgs e)
         {
             OnNewSong();
             OnSongQueueChanged();
@@ -273,7 +271,7 @@ namespace Hans.General
         {
             if (SearchFinished != null)
             {
-                SearchFinished(tracks);
+                SearchFinished(this, new SearchFinishedEventArgs { Tracks = tracks });
             }
         }
 

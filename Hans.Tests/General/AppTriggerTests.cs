@@ -12,7 +12,7 @@ namespace Hans.Tests.General
         {
             var appTrigger = new ExitAppTrigger();
             var triggered = false;
-            appTrigger.GotTriggered += () => triggered = true;
+            appTrigger.GotTriggered += delegate { triggered = true; };
             appTrigger.Trigger();
             triggered.Should().BeTrue();
         }

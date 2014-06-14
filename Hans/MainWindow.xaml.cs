@@ -1,6 +1,7 @@
 ﻿using Gat.Controls;
 using Hans.Database.Songs;
 using Hans.General;
+using Hans.Library;
 using Hans.Services;
 using Hans.Services.LinkCrawl;
 using Hans.Services.YouTube;
@@ -18,12 +19,11 @@ namespace Hans
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow : IDisposable
     {
         private readonly DownloaderWindow _downloaderWindow;
-        private readonly HansAudioPlayer _hansAudioPlayer;
         private readonly ExitAppTrigger _exitAppTrigger;
-
+        private readonly HansAudioPlayer _hansAudioPlayer;
         private Timer _formRefresher;
         private bool _progressChangeIgnoreIndicator;
         private bool _volumeChangeIgnoreIndicator;
@@ -59,6 +59,11 @@ namespace Hans
             get { return !Dispatcher.CheckAccess(); }
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
         private static OpenDialogViewModel BuildOpenDialog(string caption)
         {
             var openDialogView = new OpenDialogView();
@@ -80,14 +85,14 @@ namespace Hans
             });
         }
 
-        private void _hansAudioPlayer_NewSong()
+        private void _hansAudioPlayer_NewSong(object sender, EventArgs eventArgs)
         {
             HandleInvoke(() => SliderSongProgress.Maximum = _hansAudioPlayer.CurrentSongLength);
         }
 
-        private void _hansAudioPlayer_SearchFinished(IEnumerable<IOnlineServiceTrack> tracks)
+        private void _hansAudioPlayer_SearchFinished(object sender, SearchFinishedEventArgs e)
         {
-            HandleInvoke(() => FillListViewSearch(tracks));
+            HandleInvoke(() => FillListViewSearch(e.Tracks));
         }
 
         private void _hansAudioPlayer_SongQueueChanged(object sender, EventArgs args)
@@ -109,14 +114,6 @@ namespace Hans
             foreach (var song in _hansAudioPlayer.Library.Search(TextBoxLibraryQuery.Text))
             {
                 ListViewLibrarySearch.Items.Add(song);
-            }
-        }
-
-        private void TextBoxQueryOnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Return)
-            {
-                ButtonSearch_Click(null, null);
             }
         }
 
@@ -152,6 +149,15 @@ namespace Hans
         private void ButtonStop_Click(object sender, RoutedEventArgs e)
         {
             _hansAudioPlayer.Stop();
+        }
+
+        private void Dispose(bool cleanAll)
+        {
+            if (cleanAll)
+            {
+                _formRefresher.Dispose();
+            }
+            _downloaderWindow.Dispose();
         }
 
         private void FillListViewSearch(IEnumerable<IOnlineServiceTrack> tracks)
@@ -232,9 +238,9 @@ namespace Hans
             return ListViewSongQueue.SelectedIndex != -1;
         }
 
-        private void Library_NewSong(Database.Songs.HansSong song)
+        private void Library_NewSong(object sender, NewLibrarySongEventArgs e)
         {
-            HandleInvoke(() => ListViewLibrarySearch.Items.Add(song));
+            HandleInvoke(() => ListViewLibrarySearch.Items.Add(e.Song));
         }
 
         private void ListViewSongQueue_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -312,6 +318,14 @@ namespace Hans
                 return;
             }
             _hansAudioPlayer.Volume = (float)e.NewValue;
+        }
+
+        private void TextBoxQueryOnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                ButtonSearch_Click(null, null);
+            }
         }
     }
 

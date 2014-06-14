@@ -2,7 +2,7 @@
 
 namespace Hans.Web
 {
-    public delegate void DownloadFinishedEventHandler(object sender, DownloadFinishedEventHandlerArgs args);
+    public delegate void DownloadFinishedEventHandler(object sender, DownloadFinishedEventHandlerArgs e);
 
     public class DownloadFinishedEventHandlerArgs : EventArgs
     {

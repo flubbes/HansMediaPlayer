@@ -13,10 +13,23 @@ namespace Hans
     /// <summary>
     /// Interaktionslogik für "App.xaml"
     /// </summary>
-    public partial class App
+    public partial class App : IDisposable
     {
         private ExitAppTrigger _exitAppTrigger;
         private IKernel _kernel;
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        protected virtual void Dispose(bool cleanAll)
+        {
+            if (cleanAll)
+            {
+            }
+            _kernel.Dispose();
+        }
 
         /// <summary>
         /// On program start up

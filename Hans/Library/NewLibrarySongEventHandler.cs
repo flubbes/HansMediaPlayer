@@ -1,6 +1,4 @@
-﻿using Hans.Database.Songs;
-
-namespace Hans.Library
+﻿namespace Hans.Library
 {
-    public delegate void NewLibrarySongEventHandler(HansSong song);
+    public delegate void NewLibrarySongEventHandler(object sender, NewLibrarySongEventArgs e);
 }

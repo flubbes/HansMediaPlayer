@@ -22,7 +22,7 @@ namespace Hans
     /// <summary>
     /// Interaction logic for DownloaderWindow.xaml
     /// </summary>
-    public partial class DownloaderWindow : Window
+    public partial class DownloaderWindow : Window, IDisposable
     {
         private readonly SongDownloads _songDownloads;
         private Timer _formTimer;
@@ -40,6 +40,19 @@ namespace Hans
         private bool InvokeRequired
         {
             get { return !Dispatcher.CheckAccess(); }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        protected virtual void Dispose(bool cleanAll)
+        {
+            if (cleanAll)
+            {
+                _formTimer.Dispose();
+            }
         }
 
         private void _formTimer_Elapsed(object sender, ElapsedEventArgs e)

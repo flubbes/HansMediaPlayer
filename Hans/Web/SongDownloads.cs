@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using Hans.General;
+﻿using Hans.General;
 using Hans.Properties;
 using Ninject.Infrastructure.Language;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 
 namespace Hans.Web
 {
@@ -11,7 +12,6 @@ namespace Hans.Web
     {
         private volatile List<DownloadRequest> _activeDownloads;
         private bool _exit;
-        public event DownloadFinishedEventHandler DownloadFinished;
 
         public SongDownloads(ExitAppTrigger exitAppTrigger)
         {
@@ -23,17 +23,35 @@ namespace Hans.Web
             }.Start();
         }
 
-        void exitAppTrigger_GotTriggered()
+        public event DownloadFinishedEventHandler DownloadFinished;
+
+        public IEnumerable<DownloadRequest> ActiveDownloads
         {
-            _exit = true;
+            get
+            {
+                lock (_activeDownloads)
+                {
+                    return _activeDownloads.ToEnumerable();
+                }
+            }
         }
 
-        private void DownloadProgressCheckerMethod()
+        public void Start(DownloadRequest downloadRequest)
         {
-            while (!_exit)
+            CreateTempDirectoryIfNotExists();
+            lock (_activeDownloads)
             {
-                CheckProgress();
-                Thread.Sleep(50);
+                _activeDownloads.Add(downloadRequest);
+            }
+            downloadRequest.Downloader.Start(downloadRequest);
+        }
+
+        private static void CreateTempDirectoryIfNotExists()
+        {
+            var downloadTempDirectory = Settings.Default.Download_Temp_Directory;
+            if (!Directory.Exists(downloadTempDirectory))
+            {
+                Directory.CreateDirectory(downloadTempDirectory);
             }
         }
 
@@ -50,13 +68,27 @@ namespace Hans.Web
 
         private void CheckProgress(int i)
         {
-                var request = _activeDownloads[i];
-                if (request.Downloader.Progress != 100)
-                {
-                    return;
-                }
-                OnDownloadFinished(request);
-                _activeDownloads.RemoveAt(i);
+            var request = _activeDownloads[i];
+            if (request.Downloader.Progress != 100)
+            {
+                return;
+            }
+            OnDownloadFinished(request);
+            _activeDownloads.RemoveAt(i);
+        }
+
+        private void DownloadProgressCheckerMethod()
+        {
+            while (!_exit)
+            {
+                CheckProgress();
+                Thread.Sleep(50);
+            }
+        }
+
+        private void exitAppTrigger_GotTriggered(object sender, EventArgs eventArgs)
+        {
+            _exit = true;
         }
 
         private void OnDownloadFinished(DownloadRequest request)
@@ -64,36 +96,6 @@ namespace Hans.Web
             if (DownloadFinished != null)
             {
                 DownloadFinished(this, new DownloadFinishedEventHandlerArgs(request));
-            }
-        }
-
-        public void Start(DownloadRequest downloadRequest)
-        {
-            CreateTempDirectoryIfNotExists();
-            lock(_activeDownloads)
-            {
-                _activeDownloads.Add(downloadRequest);
-            }
-            downloadRequest.Downloader.Start(downloadRequest);
-        }
-
-        private static void CreateTempDirectoryIfNotExists()
-        {
-            var downloadTempDirectory = Settings.Default.Download_Temp_Directory;
-            if (!Directory.Exists(downloadTempDirectory))
-            {
-                Directory.CreateDirectory(downloadTempDirectory);
-            }
-        }
-
-        public IEnumerable<DownloadRequest> ActiveDownloads
-        {
-            get
-            {
-                lock(_activeDownloads)
-                {
-                    return _activeDownloads.ToEnumerable();
-                }
             }
         }
     }

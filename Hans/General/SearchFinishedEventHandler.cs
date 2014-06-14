@@ -1,7 +1,13 @@
-﻿using System.Collections.Generic;
-using Hans.Services;
+﻿using Hans.Services;
+using System;
+using System.Collections.Generic;
 
 namespace Hans.General
 {
-    public delegate void SearchFinishedEventHandler(IEnumerable<IOnlineServiceTrack> tracks);
+    public delegate void SearchFinishedEventHandler(object sender, SearchFinishedEventArgs e);
+
+    public class SearchFinishedEventArgs : EventArgs
+    {
+        public IEnumerable<IOnlineServiceTrack> Tracks { get; set; }
+    }
 }

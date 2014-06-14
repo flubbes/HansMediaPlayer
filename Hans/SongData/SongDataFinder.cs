@@ -22,11 +22,6 @@ namespace Hans.SongData
             new Thread(DataFinderThreadMethod) { IsBackground = true }.Start();
         }
 
-        void exitAppTrigger_GotTriggered()
-        {
-            _exit = true;
-        }
-
         public event FoundDataEventHandler FoundData;
 
         public void FindAsync(FindSongDataRequest request)
@@ -42,7 +37,7 @@ namespace Hans.SongData
             var handler = FoundData;
             if (handler != null)
             {
-                handler(songdata);
+                handler(this, new FoundDataEventArgs { SongData = songdata });
             }
         }
 
@@ -86,6 +81,11 @@ namespace Hans.SongData
                 _requests.RemoveAt(0);
                 return result;
             }
+        }
+
+        private void exitAppTrigger_GotTriggered(object sender, EventArgs eventArgs)
+        {
+            _exit = true;
         }
 
         private string ExtractString(Dictionary<string, string> data, string key)

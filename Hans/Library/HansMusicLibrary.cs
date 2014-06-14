@@ -97,7 +97,7 @@ namespace Hans.Library
             var handler = NewSong;
             if (handler != null)
             {
-                handler(song);
+                handler(this, new NewLibrarySongEventArgs { Song = song });
             }
         }
 
@@ -106,9 +106,9 @@ namespace Hans.Library
             return _songStore.GetEnumerable().Any(s => s.Id == id);
         }
 
-        private void folderAnalyzer_FoundNewfile(string file)
+        private void folderAnalyzer_FoundNewfile(object sender, FoundNewFileEventArgs e)
         {
-            var hansSong = new HansSong(file);
+            var hansSong = new HansSong(e.File);
             SongDataFinder.FindAsync(new FindSongDataRequest
             {
                 PathToFile = hansSong.FilePath,
@@ -116,8 +116,9 @@ namespace Hans.Library
             });
         }
 
-        private void songDataFinder_FoundData(SongDataResponse songData)
+        private void songDataFinder_FoundData(object sender, FoundDataEventArgs e)
         {
+            var songData = e.SongData;
             if (Exists(songData.SongId))
             {
                 var hansSong = _songStore.GetEnumerable().Single(s => s.Id == songData.SongId);

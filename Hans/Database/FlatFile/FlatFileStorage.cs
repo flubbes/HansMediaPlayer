@@ -15,8 +15,8 @@ namespace Hans.Database.FlatFile
         private readonly string _path;
         private readonly object _threadLock;
         private bool _cacheChanged;
-        private DateTime _lastCacheUpdate;
         private bool _exit;
+        private DateTime _lastCacheUpdate;
 
         public FlatFileStorage(string path, ExitAppTrigger exitAppTrigger)
         {
@@ -28,11 +28,6 @@ namespace Hans.Database.FlatFile
             {
                 IsBackground = true
             }.Start();
-        }
-
-        void exitAppTrigger_GotTriggered()
-        {
-            _exit = true;
         }
 
         public void Add(T item)
@@ -110,6 +105,11 @@ namespace Hans.Database.FlatFile
         private bool DatabaseFileDoesNotExist()
         {
             return !File.Exists(_path);
+        }
+
+        private void exitAppTrigger_GotTriggered(object sender, EventArgs eventArgs)
+        {
+            _exit = true;
         }
 
         /// <summary>

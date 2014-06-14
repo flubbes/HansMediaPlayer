@@ -16,7 +16,7 @@ namespace Hans.Library
             _resultFiles = new List<string>();
         }
 
-        public event AnalyzationFinishedEventHandler AnalyzationFinished;
+        public event EventHandler AnalyzationFinished;
 
         public event FoundNewFileEventHandler FoundNewfile;
 
@@ -52,7 +52,7 @@ namespace Hans.Library
             var handler = AnalyzationFinished;
             if (handler != null)
             {
-                handler();
+                handler(this, EventArgs.Empty);
             }
         }
 
@@ -61,7 +61,7 @@ namespace Hans.Library
             var handler = FoundNewfile;
             if (handler != null)
             {
-                handler(file);
+                handler(this, new FoundNewFileEventArgs { File = file });
             }
         }
 
