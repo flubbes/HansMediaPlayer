@@ -163,13 +163,14 @@
             <RowDefinition Height="41*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="335*" />
+            <ColumnDefinition Width="285*" />
+            <ColumnDefinition Width="50*" />
             <ColumnDefinition Width="175*" />
             <ColumnDefinition Width="346*" />
         </Grid.ColumnDefinitions>
-        <Slider ValueChanged="SliderSongProgress_ValueChanged" x:Name="SliderSongProgress" Margin="78,14.464,70.667,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Grid.Row="3" Height="16.536" Background="{x:Null}" Foreground="White" />
-        <Slider ValueChanged="SliderVolume_ValueChanged" x:Name="SliderVolume" Margin="9,21.666,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="155" LargeChange="0.01" TickFrequency="0.01" Maximum="1" Value="1" Grid.Column="1" RenderTransformOrigin="0.5,0.5" Grid.Row="2" Height="18" />
-        <Grid Background="#FF1AA0A6" Grid.Column="2" Margin="10,35,10,8" Grid.RowSpan="3">
+        <Slider ValueChanged="SliderSongProgress_ValueChanged" x:Name="SliderSongProgress" Margin="78,14,71,0" VerticalAlignment="Top" Grid.ColumnSpan="4" Grid.Row="3" Height="17" Background="{x:Null}" Foreground="White" />
+        <Slider ValueChanged="SliderVolume_ValueChanged" x:Name="SliderVolume" Margin="10,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="155" LargeChange="0.01" TickFrequency="0.01" Maximum="1" Value="1" Grid.Column="2" RenderTransformOrigin="0.5,0.5" Grid.Row="2" Height="31" />
+        <Grid Background="#FF1AA0A6" Grid.Column="3" Margin="10,35,10,8" Grid.RowSpan="3">
             <Label Content="Playlist" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontFamily="Segoe UI" />
             <ListView x:Name="ListViewSongQueue" Margin="10,41,10,10" Background="#FFD8D8D8" ItemsSource="{Binding}"  SelectionMode="Single" MouseDoubleClick="ListViewSongQueue_OnMouseDoubleClick" BorderBrush="#FF06F7EC">
                 <ListView.View>
@@ -181,7 +182,7 @@
                 </ListView.View>
             </ListView>
         </Grid>
-        <TabControl Margin="10,35,10,8" Background="#FF1AA0A6" Grid.ColumnSpan="2"
+        <TabControl Margin="10,35,10,8" Background="#FF1AA0A6" Grid.ColumnSpan="3"
                     Grid.Column="0" Grid.RowSpan="2">
             <TabItem Header="Library">
                 <TabItem.Background>
@@ -243,13 +244,13 @@
             </TabItem>
         </TabControl>
 
-        <Button Width="42" Height="42" Margin="172,9,121,12" Style="{DynamicResource ButtonStop}" Grid.Row="2" Grid.Column="0" Click="ButtonStop_Click" RenderTransformOrigin="-0.381,0.5" MinWidth="42" MinHeight="42" />
-        <Button Width="42" Height="42" Margin="78,9,215,12" Style="{DynamicResource ButtonPlay}" Grid.Row="2" Grid.Column="0" Click="ButtonPlay_Click" MinWidth="42" MinHeight="42" />
-        <Button Width="42" Height="42" Margin="219,9,74,12" Style="{DynamicResource ButtonNext}" Grid.Row="2" Grid.Column="0" Click="ButtonNext_OnClick" MinWidth="42" MinHeight="42" />
-        <Button Width="42" Height="42" Margin="31,9,262,12" Style="{DynamicResource ButtonPrev}" Grid.Row="2" Grid.Column="0" Click="ButtonPrevious_OnClick" MinWidth="42" MinHeight="42" />
-        <Button Width="42" Height="42" Margin="125,9,168,12" Style="{DynamicResource ButtonPause}" Grid.Row="2" Grid.Column="0" Click="ButtonPause_Click" MinWidth="42" MinHeight="42" />
+        <Button Width="42" Height="42" Margin="172,9,71,12" Style="{DynamicResource ButtonStop}" Grid.Row="2" Grid.Column="0" Click="ButtonStop_Click" RenderTransformOrigin="-0.381,0.5" MinWidth="42" MinHeight="42" />
+        <Button Width="42" Height="42" Margin="78,9,165,12" Style="{DynamicResource ButtonPlay}" Grid.Row="2" Grid.Column="0" Click="ButtonPlay_Click" MinWidth="42" MinHeight="42" />
+        <Button Width="42" Height="42" Margin="219,9,24,12" Style="{DynamicResource ButtonNext}" Grid.Row="2" Grid.Column="0" Click="ButtonNext_OnClick" MinWidth="42" MinHeight="42" />
+        <Button Width="42" Height="42" Margin="31,9,212,12" Style="{DynamicResource ButtonPrev}" Grid.Row="2" Grid.Column="0" Click="ButtonPrevious_OnClick" MinWidth="42" MinHeight="42" />
+        <Button Width="42" Height="42" Margin="125,9,118,12" Style="{DynamicResource ButtonPause}" Grid.Row="2" Grid.Column="0" Click="ButtonPause_Click" MinWidth="42" MinHeight="42" />
         <Menu Height="20" Margin="10,10,10,0" VerticalAlignment="Top" Grid.Row="0"
-		      Grid.ColumnSpan="3" Grid.Column="0" Background="#FF74EAE4">
+		      Grid.ColumnSpan="4" Grid.Column="0" Background="#FF74EAE4">
             <MenuItem Header="File" BorderBrush="#FF74EAE4" Background="#FF74EAE4">
                 <MenuItem Header="Exit" />
             </MenuItem>
@@ -260,7 +261,7 @@
                 <MenuItem Header="Downloads" Click="MenuItemDownloads_OnClick" />
             </MenuItem>
         </Menu>
-        <Image Margin="315,21.666,0,21.334" Grid.Row="2" Source="volumeup.png" Stretch="Fill" MinWidth="20" MinHeight="20" Width="Auto" Height="Auto" />
-        <Label Content="Label" HorizontalAlignment="Left" Margin="31,5.04,0,0" Grid.Row="3" VerticalAlignment="Top" Foreground="White" />
+        <Image MaxHeight="20" MaxWidth="20" Margin="30,20,0,23" Grid.Row="2" Source="volumeup.png" Stretch="Fill" MinWidth="20" MinHeight="20" Width="Auto" Height="Auto" Grid.Column="1" />
+        <Label Content="Label" HorizontalAlignment="Left" Margin="31,5,0,0" Grid.Row="3" VerticalAlignment="Top" Foreground="White" />
     </Grid>
 </Window>

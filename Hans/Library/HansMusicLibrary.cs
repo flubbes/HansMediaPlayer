@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace Hans.Library
 {
-    public class HansMusicLibrary
+    public sealed class HansMusicLibrary
     {
         private readonly IPlaylistStore _playlistStore;
         private ISongStore _songStore;
@@ -101,24 +101,6 @@ namespace Hans.Library
             })).Start();
         }
 
-        protected virtual void OnNewSong(HansSong song)
-        {
-            var handler = NewSong;
-            if (handler != null)
-            {
-                handler(this, new NewLibrarySongEventArgs { Song = song });
-            }
-        }
-
-        protected virtual void OnSearchFinished(LibrarySearchFinishedEventArgs e)
-        {
-            var handler = SearchFinished;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
-
         private bool Exists(Guid id)
         {
             return _songStore.GetEnumerable().Any(s => s.Id == id);
@@ -132,6 +114,24 @@ namespace Hans.Library
                 PathToFile = hansSong.FilePath,
                 SongId = hansSong.Id
             });
+        }
+
+        private void OnNewSong(HansSong song)
+        {
+            var handler = NewSong;
+            if (handler != null)
+            {
+                handler(this, new NewLibrarySongEventArgs { Song = song });
+            }
+        }
+
+        private void OnSearchFinished(LibrarySearchFinishedEventArgs e)
+        {
+            var handler = SearchFinished;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
         }
 
         private void songDataFinder_FoundData(object sender, FoundDataEventArgs e)
