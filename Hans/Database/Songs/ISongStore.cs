@@ -1,6 +1,9 @@
 ﻿namespace Hans.Database.Songs
 {
-    public interface ISongStore :  IStore<HansSong>
+    /// <summary>
+    /// The needed ninject dependency injection interface
+    /// </summary>
+    public interface ISongStore : IStore<HansSong>
     {
     }
 }
