@@ -262,6 +262,6 @@
             </MenuItem>
         </Menu>
         <Image MaxHeight="20" MaxWidth="20" Margin="30,20,0,23" Grid.Row="2" Source="volumeup.png" Stretch="Fill" MinWidth="20" MinHeight="20" Width="Auto" Height="Auto" Grid.Column="1" />
-        <Label Content="Label" HorizontalAlignment="Left" Margin="31,5,0,0" Grid.Row="3" VerticalAlignment="Top" Foreground="White" />
+        <Label x:Name="LabelVolume" Content="Label" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="3" VerticalAlignment="Top" Foreground="White" Width="63" />
     </Grid>
 </Window>

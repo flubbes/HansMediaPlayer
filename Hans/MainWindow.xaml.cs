@@ -13,7 +13,10 @@ using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using Timer = System.Timers.Timer;
 
 namespace Hans
 {
@@ -168,11 +171,11 @@ namespace Hans
             // HandleInvoke();
         }
 
-        private void HandleDialogResultToLoadFolder(bool? result, OpenDialogViewModel vm)
+        private void HandleDialogResultToLoadFolder(DialogResult result, string selectedPath)
         {
-            if (result ?? false)
+            if (result == System.Windows.Forms.DialogResult.OK)
             {
-                _hansAudioPlayer.LoadFolder(vm.SelectedFolder.Path);
+                _hansAudioPlayer.LoadFolder(selectedPath);
             }
         }
 
@@ -271,10 +274,13 @@ namespace Hans
 
         private void MenuItemAddFromDirectory_OnClick(object sender, RoutedEventArgs e)
         {
-            var vm = BuildOpenDialog("Open a folder to add to your music library");
-            vm.IsDirectoryChooser = true;
-            var result = vm.Show();
-            HandleDialogResultToLoadFolder(result, vm);
+            var fbd = new FolderBrowserDialog
+            {
+                Description = "Open a folder to add to your music library",
+                SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic),
+                ShowNewFolderButton = true
+            };
+            HandleDialogResultToLoadFolder(fbd.ShowDialog(), fbd.SelectedPath);
         }
 
         private void MenuItemAddToPlaylist_OnClick(object sender, RoutedEventArgs e)
