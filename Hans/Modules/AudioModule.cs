@@ -1,17 +1,17 @@
 ﻿using Hans.Audio;
-using Hans.General;
 using Hans.Library;
 using Ninject.Modules;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hans.Modules
 {
+    /// <summary>
+    /// The audio module of hans
+    /// </summary>
     public class AudioModule : NinjectModule
     {
+        /// <summary>
+        /// Loads the module
+        /// </summary>
         public override void Load()
         {
             Bind<IAudioLoader>().To<DefaultAudioLoader>();
