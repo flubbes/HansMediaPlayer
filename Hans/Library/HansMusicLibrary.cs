@@ -90,12 +90,13 @@ namespace Hans.Library
 
         public void Search(string term)
         {
+            var t = term.ToLower();
             new Thread(() => OnSearchFinished(new LibrarySearchFinishedEventArgs
             {
                 Tracks = _songStore.GetEnumerable()
-                    .Where(s => s.Artists.Any(a => a.ToLower().Contains(term))
-                                || s.Title.ToLower().Contains(term)
-                                || s.FilePath.ToLower().Contains(term)
+                    .Where(s => s.Artists.Any(a => a.ToLower().Contains(t))
+                                || s.Title.ToLower().Contains(t)
+                                || s.FilePath.ToLower().Contains(t)
                     ).OrderBy(a => a.Title).BuildThreadSafeCopy()
             })).Start();
         }
