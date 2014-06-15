@@ -130,6 +130,7 @@
     <Compile Include="Database\FlatFile\FlatFileStorage.cs" />
     <Compile Include="Database\Playlists\IPlaylistStore.cs" />
     <Compile Include="Database\Songs\ISongStore.cs" />
+    <Compile Include="Models\DownloaderListViewitem.cs" />
     <Compile Include="DownloaderWindow.xaml.cs">
       <DependentUpon>DownloaderWindow.xaml</DependentUpon>
     </Compile>
@@ -187,7 +188,7 @@
     <Compile Include="Services\YouTube\YouTube.cs" />
     <Compile Include="Services\YouTube\YouTubeTrack.cs" />
     <Compile Include="General\SongQueueChangedEventHandler.cs" />
-    <Compile Include="SongQueueListViewItem.cs" />
+    <Compile Include="Models\SongQueueListViewItem.cs" />
     <Compile Include="Web\DownloadFinishedEventHandler.cs" />
     <Compile Include="Web\DownloadRequest.cs" />
     <Compile Include="Web\HttpDownloader.cs" />

@@ -1,6 +1,7 @@
 ﻿using Hans.Database.Songs;
 using Hans.General;
 using Hans.Library;
+using Hans.Models;
 using Hans.Properties;
 using Hans.Services;
 using Hans.Services.LinkCrawl;
