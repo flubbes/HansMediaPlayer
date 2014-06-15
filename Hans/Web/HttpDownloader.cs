@@ -13,6 +13,8 @@ namespace Hans.Web
 
         public event EventHandler Failed;
 
+        public bool IsComplete { get; private set; }
+
         public bool IsDownloading { get; private set; }
 
         public int Progress { get; private set; }
@@ -101,6 +103,7 @@ namespace Hans.Web
                 Progress = writtenTotal * 100 / g;
             } while (written > 0 && !_abort);
             IsDownloading = false;
+            IsComplete = true;
         }
     }
 }

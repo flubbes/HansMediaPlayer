@@ -15,6 +15,8 @@ namespace Hans.Web
 
         public event EventHandler Failed;
 
+        public bool IsComplete { get; private set; }
+
         public bool IsDownloading { get; private set; }
 
         public int Progress { get; private set; }
@@ -70,6 +72,7 @@ namespace Hans.Web
         {
             Progress = 100;
             IsDownloading = false;
+            IsComplete = true;
         }
 
         private void _downloadProgressChanged(object sender, ProgressEventArgs args)

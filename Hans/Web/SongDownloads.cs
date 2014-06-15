@@ -56,28 +56,6 @@ namespace Hans.Web
             }
         }
 
-        private void CheckProgress()
-        {
-            lock (_lock)
-            {
-                for (var i = 0; i < _activeDownloads.Count; i++)
-                {
-                    CheckProgress(i);
-                }
-            }
-        }
-
-        private void CheckProgress(int i)
-        {
-            var request = _activeDownloads[i];
-            if (request.Downloader.Progress != 100)
-            {
-                return;
-            }
-            OnDownloadFinished(request);
-            _activeDownloads.RemoveAt(i);
-        }
-
         private int CountActiveDownloads()
         {
             return _activeDownloads.Count(d => d.Downloader.IsDownloading);
@@ -87,18 +65,8 @@ namespace Hans.Web
         {
             while (!_exit)
             {
-                lock (_lock)
-                {
-                    while (_activeDownloads.Any(d => !d.Downloader.IsDownloading) && CountActiveDownloads() < ParalelDownloads)
-                    {
-                        var request = _activeDownloads.FirstOrDefault(d => !d.Downloader.IsDownloading);
-                        if (request != null)
-                        {
-                            request.Downloader.Start(request);
-                        }
-                    }
-                }
-                CheckProgress();
+                RemoveFinishedDownload();
+                StartDownloadsIfNecessary();
                 Thread.Sleep(50);
             }
         }
@@ -113,6 +81,43 @@ namespace Hans.Web
             if (DownloadFinished != null)
             {
                 DownloadFinished(this, new DownloadFinishedEventHandlerArgs(request));
+            }
+        }
+
+        private void RemoveFinishedDownload()
+        {
+            lock (_lock)
+            {
+                for (var i = 0; i < _activeDownloads.Count; i++)
+                {
+                    RemoveIfDownloadFinished(i);
+                }
+            }
+        }
+
+        private void RemoveIfDownloadFinished(int i)
+        {
+            var request = _activeDownloads[i];
+            if (request.Downloader.Progress != 100)
+            {
+                return;
+            }
+            OnDownloadFinished(request);
+            _activeDownloads.RemoveAt(i);
+        }
+
+        private void StartDownloadsIfNecessary()
+        {
+            lock (_lock)
+            {
+                while (_activeDownloads.Any(d => !d.Downloader.IsDownloading && !d.Downloader.IsComplete) && CountActiveDownloads() < ParalelDownloads)
+                {
+                    var request = _activeDownloads.FirstOrDefault(d => !d.Downloader.IsDownloading && !d.Downloader.IsComplete);
+                    if (request != null)
+                    {
+                        request.Downloader.Start(request);
+                    }
+                }
             }
         }
     }
