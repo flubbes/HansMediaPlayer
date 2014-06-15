@@ -1,6 +1,5 @@
 ﻿using Hans.Audio;
 using Hans.Database.Songs;
-using Hans.FileSystem;
 using Hans.Library;
 using Hans.Properties;
 using Hans.Services;
@@ -13,6 +12,9 @@ using System.Threading;
 
 namespace Hans.General
 {
+    /// <summary>
+    /// The base class from the hans audio player
+    /// </summary>
     public class HansAudioPlayer
     {
         private readonly FileSystem.FileSystem _fileSystem;
@@ -21,6 +23,13 @@ namespace Hans.General
         private volatile int _listPosition;
         private volatile List<HansSong> _songQueue;
 
+        /// <summary>
+        /// Initializes a new instance of the hans audio player
+        /// </summary>
+        /// <param name="library"></param>
+        /// <param name="audioPlayer"></param>
+        /// <param name="songDownloads"></param>
+        /// <param name="fileSystem"></param>
         public HansAudioPlayer(HansMusicLibrary library, IAudioPlayer audioPlayer, SongDownloads songDownloads, FileSystem.FileSystem fileSystem)
         {
             _songQueue = new List<HansSong>();
@@ -35,17 +44,32 @@ namespace Hans.General
             _songDownloads.DownloadFinished += _songDownloads_DownloadFinished;
         }
 
+        /// <summary>
+        /// When a new song is playing
+        /// </summary>
         public event EventHandler NewSong;
 
+        /// <summary>
+        /// When the search finished
+        /// </summary>
         public event SearchFinishedEventHandler SearchFinished;
 
+        /// <summary>
+        /// When the song queue changed
+        /// </summary>
         public event SongQueueChangedEventHandler SongQueueChanged;
 
+        /// <summary>
+        /// The current song length of the song that is currently playing
+        /// </summary>
         public double CurrentSongLength
         {
             get { return _audioPlayer.Length; }
         }
 
+        /// <summary>
+        /// The current song position
+        /// </summary>
         public long CurrentSongPosition
         {
             get { return _audioPlayer.Position; }
@@ -55,17 +79,32 @@ namespace Hans.General
             }
         }
 
+        /// <summary>
+        /// The hans music library
+        /// </summary>
         public HansMusicLibrary Library { get; set; }
 
+        /// <summary>
+        /// Repeat the playlist at the end
+        /// </summary>
         public bool Repeat { get; set; }
 
+        /// <summary>
+        /// Shuffle the songs whileplaying
+        /// </summary>
         public bool Shuffle { get; set; }
 
+        /// <summary>
+        /// The downloads
+        /// </summary>
         public SongDownloads SongDownloads
         {
             get { return _songDownloads; }
         }
 
+        /// <summary>
+        /// The songqueue --> current playlist
+        /// </summary>
         public IEnumerable<HansSong> SongQueue
         {
             get
@@ -77,6 +116,9 @@ namespace Hans.General
             }
         }
 
+        /// <summary>
+        /// The colume of the player
+        /// </summary>
         public float Volume
         {
             get

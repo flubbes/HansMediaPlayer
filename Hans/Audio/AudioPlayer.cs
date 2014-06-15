@@ -295,6 +295,7 @@ namespace Hans.Audio
             if (_setVolume)
             {
                 audioFileReader.Volume = _newVolume;
+                Volume = _newVolume;
                 _setVolume = false;
             }
         }
@@ -343,7 +344,7 @@ namespace Hans.Audio
         {
             Length = audioFileReader.Length;
             Position = audioFileReader.Position;
-            Volume = audioFileReader.Volume;
+            audioFileReader.Volume = Volume;
         }
 
         /// <summary>
