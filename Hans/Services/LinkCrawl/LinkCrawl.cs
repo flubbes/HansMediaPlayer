@@ -15,7 +15,10 @@ namespace Hans.Services.LinkCrawl
         /// <summary>
         /// The name of the service
         /// </summary>
-        public string Name { get; private set; }
+        public string Name
+        {
+            get { return "LinkCrawl"; }
+        }
 
         /// <summary>
         /// Crawls links from the given link

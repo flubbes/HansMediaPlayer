@@ -1,38 +1,25 @@
 ﻿using Hans.Web;
 using Newtonsoft.Json;
-using System;
 
 namespace Hans.Services.YouTube
 {
-    public class YouTubeId
-    {
-        [JsonProperty("kind")]
-        public string Kind { get; set; }
-
-        [JsonProperty("videoId")]
-        public string VideoId { get; set; }
-    }
-
-    public class YouTubeSnippet
-    {
-        [JsonProperty("channelTitle")]
-        public string ChannelTitle { get; set; }
-
-        [JsonProperty("publishedAt")]
-        public string PublishDate { get; set; }
-
-        [JsonProperty("title")]
-        public string Title { get; set; }
-    }
-
+    /// <summary>
+    /// The youtube track
+    /// </summary>
     internal class YouTubeTrack : IOnlineServiceTrack
     {
+        /// <summary>
+        /// The artist of the track
+        /// </summary>
         public string Artist
         {
             get { return Snippet.ChannelTitle; }
             set { Snippet.ChannelTitle = value; }
         }
 
+        /// <summary>
+        /// THe display name
+        /// </summary>
         public string DisplayName
         {
             get
@@ -41,19 +28,31 @@ namespace Hans.Services.YouTube
             }
         }
 
+        /// <summary>
+        /// The fileextension
+        /// </summary>
         public string FileExtension { get; set; }
 
+        /// <summary>
+        /// The mp3Url
+        /// </summary>
         public string Mp3Url
         {
             get { return "https://www.youtube.com/watch?v=" + Id.VideoId; }
             set { Id.VideoId = value; }
         }
 
+        /// <summary>
+        /// The service name
+        /// </summary>
         public string ServiceName
         {
             get { return "Youtube"; }
         }
 
+        /// <summary>
+        /// The title of the track
+        /// </summary>
         [JsonProperty("title")]
         public string Title
         {
@@ -61,19 +60,31 @@ namespace Hans.Services.YouTube
             set { Snippet.Title = value; }
         }
 
+        /// <summary>
+        /// The id of the song
+        /// </summary>
         [JsonProperty("id")]
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private YouTubeId Id { get; set; }
 
+        /// <summary>
+        /// The snippet of the song
+        /// </summary>
         [JsonProperty("snippet")]
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private YouTubeSnippet Snippet { get; set; }
 
+        /// <summary>
+        /// Gets the downloader
+        /// </summary>
+        /// <returns></returns>
         public IDownloader GetDownloader()
         {
             return new YouTubeDownloader();
         }
 
+        /// <summary>
+        /// Gets the filenames
+        /// </summary>
+        /// <returns></returns>
         public string GetFileName()
         {
             return string.Format("{0} - {1}{2}", Artist, Title, ".mp3");
