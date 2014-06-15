@@ -26,7 +26,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -148,18 +148,20 @@
     <Compile Include="FileSystem\IGet.cs" />
     <Compile Include="FileSystem\IOpen.cs" />
     <Compile Include="FileSystem\IReadWrite.cs" />
-    <Compile Include="General\AudioPlayer.cs" />
+    <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="General\EnumerableExtension.cs" />
     <Compile Include="General\GotTriggeredEventHandler.cs" />
     <Compile Include="General\ExitAppTrigger.cs" />
     <Compile Include="General\AppTrigger.cs" />
-    <Compile Include="General\IAudioPlayer.cs" />
+    <Compile Include="Audio\IAudioPlayer.cs" />
     <Compile Include="General\StartedPlayingEventArgs.cs" />
     <Compile Include="General\StartedPlayingEventHandler.cs" />
     <Compile Include="General\StringExtensions.cs" />
     <Compile Include="Library\AnalyzeFolderRequest.cs" />
     <Compile Include="Library\FolderAddRequest.cs" />
     <Compile Include="Library\FolderAnalyzer.cs" />
+    <Compile Include="Library\LibrarySearchFinishedEventArgs.cs" />
+    <Compile Include="Library\LibrarySearchFinishedEventHandler.cs" />
     <Compile Include="Library\NewLibrarySongEventArgs.cs" />
     <Compile Include="Modules\FileSystemModule.cs" />
     <Compile Include="Modules\SongDataModule.cs" />
@@ -187,6 +189,7 @@
     <Compile Include="Services\YouTube\YouTube.cs" />
     <Compile Include="Services\YouTube\YouTubeTrack.cs" />
     <Compile Include="General\SongQueueChangedEventHandler.cs" />
+    <Compile Include="SongQueueListViewItem.cs" />
     <Compile Include="Web\DownloadFinishedEventHandler.cs" />
     <Compile Include="Web\DownloadRequest.cs" />
     <Compile Include="Web\HttpDownloader.cs" />

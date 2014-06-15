@@ -1,9 +1,12 @@
 ﻿using Hans.Database.Playlists;
 using Hans.Database.Songs;
+using Hans.General;
 using Hans.SongData;
+using Ninject.Infrastructure.Language;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Hans.Library
 {
@@ -24,6 +27,8 @@ namespace Hans.Library
         }
 
         public event NewLibrarySongEventHandler NewSong;
+
+        public event LibrarySearchFinishedEventHandler SearchFinished;
 
         /// <summary>
         /// Alls playlists in this library
@@ -83,13 +88,16 @@ namespace Hans.Library
             _songStore.Remove(hansSong);
         }
 
-        public IEnumerable<HansSong> Search(string term)
+        public void Search(string term)
         {
-            return _songStore.GetEnumerable()
-                .Where(s => s.Artists.Any(a => a.ToLower().Contains(term))
-                || s.Title.ToLower().Contains(term)
-                || s.FilePath.ToLower().Contains(term)
-                ).OrderBy(a => a.Title).ToArray();
+            new Thread(() => OnSearchFinished(new LibrarySearchFinishedEventArgs
+            {
+                Tracks = _songStore.GetEnumerable()
+                    .Where(s => s.Artists.Any(a => a.ToLower().Contains(term))
+                                || s.Title.ToLower().Contains(term)
+                                || s.FilePath.ToLower().Contains(term)
+                    ).OrderBy(a => a.Title).BuildThreadSafeCopy()
+            })).Start();
         }
 
         protected virtual void OnNewSong(HansSong song)
@@ -98,6 +106,15 @@ namespace Hans.Library
             if (handler != null)
             {
                 handler(this, new NewLibrarySongEventArgs { Song = song });
+            }
+        }
+
+        protected virtual void OnSearchFinished(LibrarySearchFinishedEventArgs e)
+        {
+            var handler = SearchFinished;
+            if (handler != null)
+            {
+                handler(this, e);
             }
         }
 

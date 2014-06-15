@@ -1,4 +1,5 @@
-﻿using Hans.Database.Songs;
+﻿using Hans.Audio;
+using Hans.Database.Songs;
 using Hans.FileSystem;
 using Hans.Library;
 using Hans.Properties;

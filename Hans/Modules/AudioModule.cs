@@ -1,4 +1,5 @@
-﻿using Hans.General;
+﻿using Hans.Audio;
+using Hans.General;
 using Hans.Library;
 using Ninject.Modules;
 using System;

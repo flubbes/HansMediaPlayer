@@ -1,4 +1,5 @@
 ﻿using FakeItEasy;
+using Hans.Audio;
 using Hans.FileSystem;
 using Hans.General;
 using Hans.Library;

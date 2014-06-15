@@ -153,9 +153,9 @@
         </Style>
     </Window.Resources>
     <Grid>
-    	<Grid.Background>
-    		<ImageBrush ImageSource="pack://siteoforigin:,,,/darkwoodpanels.jpg"/>
-    	</Grid.Background>
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://siteoforigin:,,,/darkwoodpanels.jpg" />
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="75*" />
             <RowDefinition Height="402*" />
@@ -193,11 +193,11 @@
                 <Grid Background="#FF1AA0A6"  Margin="0,3,0,-3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="41*" />
-                        <ColumnDefinition Width="150*"/>
+                        <ColumnDefinition Width="150*" />
                         <ColumnDefinition Width="51*" />
                     </Grid.ColumnDefinitions>
                     <Button Content="Search" HorizontalAlignment="Left" Margin="12,0,0,0" VerticalAlignment="Top" Width="80" Background="#FFDDDDDD" Height="20" Grid.Column="2" Click="ButtonLibrarySearch_Click" RenderTransformOrigin="0.45,-1.948" />
-                    <TextBox x:Name="TextBoxLibraryQuery" Height="23" Margin="10,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="White" Grid.ColumnSpan="2" />
+                    <TextBox KeyDown="TextBoxLibraryQuery_OnKeyDown" TextChanged="TextBoxLibraryQuery_OnTextChanged" x:Name="TextBoxLibraryQuery" Height="23" Margin="10,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="White" Grid.ColumnSpan="2" />
                     <ListView x:Name="ListViewLibrarySearch" Background="#FFD8D8D8" Margin="10,28,10,10" Grid.ColumnSpan="3" BorderBrush="#FF06F7EC" OpacityMask="{DynamicResource DefaultedBorderBrush}">
                         <ListView.ContextMenu>
                             <ContextMenu>
@@ -260,7 +260,7 @@
                 <MenuItem Header="Downloads" Click="MenuItemDownloads_OnClick" />
             </MenuItem>
         </Menu>
-        <Image Margin="315,21.666,0,21.334" Grid.Row="2" Source="volumeup.png" Stretch="Fill" MinWidth="20" MinHeight="20" Width="Auto" Height="Auto"/>
-        <Label Content="Label" HorizontalAlignment="Left" Margin="31,5.04,0,0" Grid.Row="3" VerticalAlignment="Top" Foreground="White"/>
+        <Image Margin="315,21.666,0,21.334" Grid.Row="2" Source="volumeup.png" Stretch="Fill" MinWidth="20" MinHeight="20" Width="Auto" Height="Auto" />
+        <Label Content="Label" HorizontalAlignment="Left" Margin="31,5.04,0,0" Grid.Row="3" VerticalAlignment="Top" Foreground="White" />
     </Grid>
 </Window>

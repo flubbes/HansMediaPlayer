@@ -1,8 +1,9 @@
 ﻿using Hans.Database.Songs;
+using Hans.General;
 using NAudio.Wave;
 using System;
 
-namespace Hans.General
+namespace Hans.Audio
 {
     public interface IAudioPlayer
     {

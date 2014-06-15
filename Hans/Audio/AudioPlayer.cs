@@ -1,15 +1,15 @@
 using Hans.Database.Songs;
+using Hans.General;
 using Hans.Library;
 using NAudio.Wave;
 using System;
 using System.Threading;
 
-namespace Hans.General
+namespace Hans.Audio
 {
     public class AudioPlayer : IAudioPlayer, IDisposable
     {
         private readonly IAudioLoader _audioLoader;
-        private readonly IWavePlayer _wavePlayer;
         private HansSong _current;
         private bool _exit;
         private bool _loadCurrent;
@@ -20,13 +20,13 @@ namespace Hans.General
         private bool _setPosition;
         private bool _setVolume;
         private bool _stop;
+        private IWavePlayer _wavePlayer;
 
         public AudioPlayer(IAudioLoader audioLoader, ExitAppTrigger exitAppTrigger)
         {
             _audioLoader = audioLoader;
             exitAppTrigger.GotTriggered += exitAppTrigger_GotTriggered;
-            _wavePlayer = new WaveOut();
-            new Thread(PlayerThread) { IsBackground = true }.Start();
+            new Thread(PlayerThread).Start();
         }
 
         public event EventHandler LoadingFailed;
@@ -157,7 +157,7 @@ namespace Hans.General
                 while (_wavePlayer.PlaybackState != PlaybackState.Stopped)
                 {
                     HandlePlayEvents(audioFileReader);
-                    Thread.Sleep(1);
+                    Thread.Sleep(50);
                 }
             }
             if (!_reload)
@@ -216,6 +216,7 @@ namespace Hans.General
 
         private void PlayerThread()
         {
+            _wavePlayer = new WaveOut();
             while (!_exit)
             {
                 if (_loadCurrent)

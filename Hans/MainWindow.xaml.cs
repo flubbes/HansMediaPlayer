@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Hans
@@ -110,11 +111,7 @@ namespace Hans
 
         private void ButtonLibrarySearch_Click(object sender, RoutedEventArgs e)
         {
-            ListViewLibrarySearch.Items.Clear();
-            foreach (var song in _hansAudioPlayer.Library.Search(TextBoxLibraryQuery.Text))
-            {
-                ListViewLibrarySearch.Items.Add(song);
-            }
+            _hansAudioPlayer.Library.Search(TextBoxLibraryQuery.Text);
         }
 
         private void ButtonNext_OnClick(object sender, RoutedEventArgs e)
@@ -202,6 +199,7 @@ namespace Hans
             _hansAudioPlayer.SongQueueChanged += _hansAudioPlayer_SongQueueChanged;
             _hansAudioPlayer.NewSong += _hansAudioPlayer_NewSong;
             _hansAudioPlayer.Library.NewSong += Library_NewSong;
+            _hansAudioPlayer.Library.SearchFinished += Library_SearchFinished;
         }
 
         private void InitServiceComboBox()
@@ -241,6 +239,18 @@ namespace Hans
         private void Library_NewSong(object sender, NewLibrarySongEventArgs e)
         {
             HandleInvoke(() => ListViewLibrarySearch.Items.Add(e.Song));
+        }
+
+        private void Library_SearchFinished(object sender, LibrarySearchFinishedEventArgs e)
+        {
+            HandleInvoke(() =>
+            {
+                ListViewLibrarySearch.Items.Clear();
+                foreach (var song in e.Tracks)
+                {
+                    ListViewLibrarySearch.Items.Add(song);
+                }
+            });
         }
 
         private void ListViewSongQueue_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -320,6 +330,19 @@ namespace Hans
             _hansAudioPlayer.Volume = (float)e.NewValue;
         }
 
+        private void TextBoxLibraryQuery_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                ButtonLibrarySearch_Click(null, null);
+            }
+        }
+
+        private void TextBoxLibraryQuery_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            ButtonLibrarySearch_Click(null, null);
+        }
+
         private void TextBoxQueryOnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
@@ -327,22 +350,5 @@ namespace Hans
                 ButtonSearch_Click(null, null);
             }
         }
-    }
-
-    public class SongQueueListViewItem
-    {
-        private string _artist;
-
-        public string Artist
-        {
-            get { return CurrentlyPlaying ? "♥ " + _artist : _artist; }
-            set { _artist = value; }
-        }
-
-        public bool CurrentlyPlaying { get; set; }
-
-        public TimeSpan Length { get; set; }
-
-        public string Title { get; set; }
     }
 }
