@@ -264,7 +264,7 @@ namespace Hans.General
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        private void _songDownloads_DownloadFinished(object sender, DownloadFinishedEventHandlerArgs args)
+        private void _songDownloads_DownloadFinished(object sender, DownloadFinishedEventArgs args)
         {
             _songQueue.Add(BuildHansSongFromDownloadRequest(args));
             OnSongQueueChanged();
@@ -307,7 +307,7 @@ namespace Hans.General
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        private HansSong BuildHansSongFromDownloadRequest(DownloadFinishedEventHandlerArgs args)
+        private HansSong BuildHansSongFromDownloadRequest(DownloadFinishedEventArgs args)
         {
             var directory = args.DownloadRequest.DestinationDirectory;
             var fileName = args.DownloadRequest.FileName;

@@ -1,23 +1,26 @@
-﻿using CsQuery.ExtensionMethods;
-using CsQuery.ExtensionMethods.Internal;
-using Hans.General;
+﻿using Hans.General;
 using Hans.Properties;
-using Ninject.Infrastructure.Language;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace Hans.Web
 {
+    /// <summary>
+    /// The song downloader
+    /// </summary>
     public class SongDownloads
     {
         private readonly List<DownloadRequest> _activeDownloads;
         private readonly object _lock = new object();
         private bool _exit;
 
+        /// <summary>
+        /// Initializes a new instance of the song downloader
+        /// </summary>
+        /// <param name="exitAppTrigger"></param>
         public SongDownloads(ExitAppTrigger exitAppTrigger)
         {
             exitAppTrigger.GotTriggered += exitAppTrigger_GotTriggered;
@@ -29,8 +32,14 @@ namespace Hans.Web
             ParalelDownloads = 1;
         }
 
+        /// <summary>
+        /// When a download is finished
+        /// </summary>
         public event DownloadFinishedEventHandler DownloadFinished;
 
+        /// <summary>
+        /// Gets the active and pending downloads
+        /// </summary>
         public IEnumerable<DownloadRequest> ActiveDownloads
         {
             get
@@ -39,14 +48,24 @@ namespace Hans.Web
             }
         }
 
+        /// <summary>
+        /// The maximum allowed downloads
+        /// </summary>
         public int ParalelDownloads { get; set; }
 
+        /// <summary>
+        /// Starts a new download
+        /// </summary>
+        /// <param name="downloadRequest"></param>
         public void Start(DownloadRequest downloadRequest)
         {
             CreateTempDirectoryIfNotExists();
             _activeDownloads.Add(downloadRequest);
         }
 
+        /// <summary>
+        /// Creates the temp directory if necessary
+        /// </summary>
         private static void CreateTempDirectoryIfNotExists()
         {
             var downloadTempDirectory = Settings.Default.Download_Temp_Directory;
@@ -56,35 +75,54 @@ namespace Hans.Web
             }
         }
 
+        /// <summary>
+        /// Counts the active downloads
+        /// </summary>
+        /// <returns></returns>
         private int CountActiveDownloads()
         {
             return _activeDownloads.Count(d => d.Downloader.IsDownloading);
         }
 
+        /// <summary>
+        /// The download progress checker thread method
+        /// </summary>
         private void DownloadProgressCheckerMethod()
         {
             while (!_exit)
             {
-                RemoveFinishedDownload();
+                RemoveFinishedDownloads();
                 StartDownloadsIfNecessary();
                 Thread.Sleep(50);
             }
         }
 
+        /// <summary>
+        /// Gets called when the app exits
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void exitAppTrigger_GotTriggered(object sender, EventArgs eventArgs)
         {
             _exit = true;
         }
 
+        /// <summary>
+        /// Triggers the download finished event
+        /// </summary>
+        /// <param name="request"></param>
         private void OnDownloadFinished(DownloadRequest request)
         {
             if (DownloadFinished != null)
             {
-                DownloadFinished(this, new DownloadFinishedEventHandlerArgs(request));
+                DownloadFinished(this, new DownloadFinishedEventArgs { DownloadRequest = request });
             }
         }
 
-        private void RemoveFinishedDownload()
+        /// <summary>
+        /// Removes all finished downloads
+        /// </summary>
+        private void RemoveFinishedDownloads()
         {
             lock (_lock)
             {
@@ -95,6 +133,10 @@ namespace Hans.Web
             }
         }
 
+        /// <summary>
+        /// Removes an index from the download queue if necessary
+        /// </summary>
+        /// <param name="i"></param>
         private void RemoveIfDownloadFinished(int i)
         {
             var request = _activeDownloads[i];
@@ -106,6 +148,9 @@ namespace Hans.Web
             _activeDownloads.RemoveAt(i);
         }
 
+        /// <summary>
+        /// Starts downloads if necessary
+        /// </summary>
         private void StartDownloadsIfNecessary()
         {
             lock (_lock)

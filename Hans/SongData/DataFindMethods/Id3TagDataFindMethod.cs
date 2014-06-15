@@ -8,8 +8,16 @@ using System.Reflection;
 
 namespace Hans.SongData.DataFindMethods
 {
+    /// <summary>
+    /// Finds id3 tags in a file
+    /// </summary>
     public class Id3TagDataFindMethod : IDataFindMethod
     {
+        /// <summary>
+        /// Gets the id3 tags from a file
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public Dictionary<string, string> GetData(FindSongDataRequest request)
         {
             var dict = new Dictionary<string, string>();
@@ -20,6 +28,12 @@ namespace Hans.SongData.DataFindMethods
             return dict;
         }
 
+        /// <summary>
+        /// Adds a value to a dictionary
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <param name="value"></param>
+        /// <param name="key"></param>
         private static void AddToDictionary(Dictionary<string, string> dict, string value, string key)
         {
             if (!string.IsNullOrWhiteSpace(value))
@@ -31,11 +45,22 @@ namespace Hans.SongData.DataFindMethods
             }
         }
 
+        /// <summary>
+        /// Gets the frame property infos
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
         private static IEnumerable<PropertyInfo> GetFramePropertyInfos(Id3Tag tag, Type type)
         {
             return tag.GetType().GetProperties().Where(p => p.PropertyType.BaseType == type);
         }
 
+        /// <summary>
+        /// Handles the id3 tag version
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="dict"></param>
         private void HandleId3TagVersion(Id3Tag tag, Dictionary<string, string> dict)
         {
             foreach (var textFrame in GetFramePropertyInfos(tag, typeof(TextFrame)))
@@ -50,6 +75,11 @@ namespace Hans.SongData.DataFindMethods
             }
         }
 
+        /// <summary>
+        /// Handles the id3 versions
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="dict"></param>
         private void HandleId3Versions(Mp3Stream file, Dictionary<string, string> dict)
         {
             try
@@ -62,6 +92,11 @@ namespace Hans.SongData.DataFindMethods
             catch { }
         }
 
+        /// <summary>
+        /// Handles a text frame
+        /// </summary>
+        /// <param name="func"></param>
+        /// <param name="dict"></param>
         private void HandleTextFrame(Func<TextFrame> func, Dictionary<string, string> dict)
         {
             var textFrame = func.Invoke();
@@ -70,6 +105,11 @@ namespace Hans.SongData.DataFindMethods
             AddToDictionary(dict, value, key);
         }
 
+        /// <summary>
+        /// read all id3 tags from a file
+        /// </summary>
+        /// <param name="fileStream"></param>
+        /// <param name="dict"></param>
         private void ReadId3TagsFromFile(FileStream fileStream, Dictionary<string, string> dict)
         {
             var file = new Mp3Stream(fileStream);

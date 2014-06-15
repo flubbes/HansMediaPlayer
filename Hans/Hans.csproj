@@ -159,8 +159,12 @@
     <Compile Include="Library\NewLibrarySongEventArgs.cs" />
     <Compile Include="Modules\FileSystemModule.cs" />
     <Compile Include="Modules\SongDataModule.cs" />
+    <Compile Include="Services\LinkCrawl\Compare.cs" />
     <Compile Include="Services\LinkCrawl\LinkCrawl.cs" />
     <Compile Include="Services\LinkCrawl\LinkCrawlTrack.cs" />
+    <Compile Include="Services\SoundCloud\SoundCloudUser.cs" />
+    <Compile Include="Services\YouTube\YouTubeId.cs" />
+    <Compile Include="Services\YouTube\YouTubeSnippet.cs" />
     <Compile Include="SongData\DataFindMethods\Id3TagDataFindMethod.cs" />
     <Compile Include="SongData\FindSongDataRequest.cs" />
     <Compile Include="SongData\FoundDataEventArgs.cs" />
