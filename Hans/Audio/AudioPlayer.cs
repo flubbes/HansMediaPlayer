@@ -4,9 +4,13 @@ using Hans.Library;
 using NAudio.Wave;
 using System;
 using System.Threading;
+using System.Windows;
 
 namespace Hans.Audio
 {
+    /// <summary>
+    /// The audioplayer class for hans
+    /// </summary>
     public class AudioPlayer : IAudioPlayer, IDisposable
     {
         private readonly IAudioLoader _audioLoader;
@@ -22,6 +26,11 @@ namespace Hans.Audio
         private bool _stop;
         private IWavePlayer _wavePlayer;
 
+        /// <summary>
+        /// Initializes the audio player class
+        /// </summary>
+        /// <param name="audioLoader"></param>
+        /// <param name="exitAppTrigger"></param>
         public AudioPlayer(IAudioLoader audioLoader, ExitAppTrigger exitAppTrigger)
         {
             _audioLoader = audioLoader;
@@ -29,33 +38,64 @@ namespace Hans.Audio
             new Thread(PlayerThread).Start();
         }
 
+        /// <summary>
+        /// Gets triggered when the load fails
+        /// </summary>
         public event EventHandler LoadingFailed;
 
+        /// <summary>
+        /// Gets triggered when the currently playing song finished playing
+        /// </summary>
         public event EventHandler SongFinished;
 
+        /// <summary>
+        /// Gets triggered when a new songs started playing
+        /// </summary>
         public event StartedPlayingEventHandler StartedPlaying;
 
+        /// <summary>
+        /// Gets the length of the currently playling song
+        /// </summary>
         public double Length { get; private set; }
 
+        /// <summary>
+        /// The current playback state
+        /// </summary>
         public PlaybackState PlaybackState
         {
             get { return _wavePlayer.PlaybackState; }
         }
 
-        public long Position { get; set; }
+        /// <summary>
+        /// Gets the current song position
+        /// </summary>
+        public long Position { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the volume
+        /// </summary>
         public float Volume { get; private set; }
 
+        /// <summary>
+        /// Disposes the audioplayer and all of its native and managed inherited objects
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
         }
 
+        /// <summary>
+        /// Pauses the audio player
+        /// </summary>
         public void Pause()
         {
             _pause = true;
         }
 
+        /// <summary>
+        /// Plays a new song
+        /// </summary>
+        /// <param name="song"></param>
         public void Play(HansSong song)
         {
             if (PlaybackState == PlaybackState.Stopped)
@@ -70,18 +110,29 @@ namespace Hans.Audio
             }
         }
 
+        /// <summary>
+        /// Sets the current song position
+        /// </summary>
+        /// <param name="value"></param>
         public void SetPosition(long value)
         {
             _newPosition = value;
             _setPosition = true;
         }
 
+        /// <summary>
+        /// Sets the volume
+        /// </summary>
+        /// <param name="value"></param>
         public void SetVolume(float value)
         {
             _newVolume = value;
             _setVolume = true;
         }
 
+        /// <summary>
+        /// Stops the the playback
+        /// </summary>
         public void Stop()
         {
             if (PlaybackState == PlaybackState.Playing)
@@ -90,6 +141,9 @@ namespace Hans.Audio
             }
         }
 
+        /// <summary>
+        /// Triggers the loading fail event
+        /// </summary>
         protected virtual void OnLoadingFailed()
         {
             var handler = LoadingFailed;
@@ -99,6 +153,9 @@ namespace Hans.Audio
             }
         }
 
+        /// <summary>
+        /// Triggers the song finished event
+        /// </summary>
         protected virtual void OnSongFinished()
         {
             var handler = SongFinished;
@@ -108,6 +165,10 @@ namespace Hans.Audio
             }
         }
 
+        /// <summary>
+        /// Triggers the started playing event
+        /// </summary>
+        /// <param name="song"></param>
         protected virtual void OnStartedPlaying(HansSong song)
         {
             var handler = StartedPlaying;
@@ -117,6 +178,10 @@ namespace Hans.Audio
             }
         }
 
+        /// <summary>
+        /// Disposes managed and native inherited objects
+        /// </summary>
+        /// <param name="cleanAll"></param>
         private void Dispose(bool cleanAll)
         {
             if (cleanAll)
@@ -125,12 +190,20 @@ namespace Hans.Audio
             _wavePlayer.Dispose();
         }
 
+        /// <summary>
+        /// Gets called when the exitAppTrigger got triggered
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void exitAppTrigger_GotTriggered(object sender, EventArgs eventArgs)
         {
             _exit = true;
             _stop = true;
         }
 
+        /// <summary>
+        /// Handles the pause logic while the player is already paused
+        /// </summary>
         private void HandlePauseWhilePasued()
         {
             if (_pause && PlaybackState == PlaybackState.Paused)
@@ -140,6 +213,9 @@ namespace Hans.Audio
             }
         }
 
+        /// <summary>
+        /// Handles the pause logic while the player is currently playing
+        /// </summary>
         private void HandlePauseWhilePlaying()
         {
             if (_pause && PlaybackState == PlaybackState.Playing)
@@ -149,6 +225,9 @@ namespace Hans.Audio
             }
         }
 
+        /// <summary>
+        /// Handles the playback
+        /// </summary>
         private void HandlePlayBack()
         {
             using (var audioFileReader = _audioLoader.Load(_current))
@@ -167,6 +246,10 @@ namespace Hans.Audio
             _reload = false;
         }
 
+        /// <summary>
+        /// Handles the events while playing
+        /// </summary>
+        /// <param name="audioFileReader"></param>
         private void HandlePlayEvents(AudioFileReader audioFileReader)
         {
             HandleSetVolume(audioFileReader);
@@ -178,6 +261,9 @@ namespace Hans.Audio
             SetPlayerProperties(audioFileReader);
         }
 
+        /// <summary>
+        /// Handles the reload
+        /// </summary>
         private void HandleReload()
         {
             if (_reload)
@@ -187,6 +273,10 @@ namespace Hans.Audio
             }
         }
 
+        /// <summary>
+        /// Handles the set position event
+        /// </summary>
+        /// <param name="audioFileReader"></param>
         private void HandleSetPosition(AudioFileReader audioFileReader)
         {
             if (_setPosition)
@@ -196,6 +286,10 @@ namespace Hans.Audio
             }
         }
 
+        /// <summary>
+        /// Handles the set volume event
+        /// </summary>
+        /// <param name="audioFileReader"></param>
         private void HandleSetVolume(AudioFileReader audioFileReader)
         {
             if (_setVolume)
@@ -205,6 +299,9 @@ namespace Hans.Audio
             }
         }
 
+        /// <summary>
+        /// Handles the stop event
+        /// </summary>
         private void HandleStop()
         {
             if (_stop)
@@ -214,6 +311,9 @@ namespace Hans.Audio
             }
         }
 
+        /// <summary>
+        /// The thread that handles all the playing logic
+        /// </summary>
         private void PlayerThread()
         {
             _wavePlayer = new WaveOut();
@@ -235,6 +335,10 @@ namespace Hans.Audio
             }
         }
 
+        /// <summary>
+        /// Sets all player properties
+        /// </summary>
+        /// <param name="audioFileReader"></param>
         private void SetPlayerProperties(AudioFileReader audioFileReader)
         {
             Length = audioFileReader.Length;
@@ -242,6 +346,10 @@ namespace Hans.Audio
             Volume = audioFileReader.Volume;
         }
 
+        /// <summary>
+        /// Starts the player to play a new song
+        /// </summary>
+        /// <param name="audioFileReader"></param>
         private void StartPlayer(AudioFileReader audioFileReader)
         {
             _wavePlayer.Init(audioFileReader);
