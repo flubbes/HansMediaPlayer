@@ -1,7 +1,7 @@
-﻿using Gat.Controls;
-using Hans.Database.Songs;
+﻿using Hans.Database.Songs;
 using Hans.General;
 using Hans.Library;
+using Hans.Properties;
 using Hans.Services;
 using Hans.Services.LinkCrawl;
 using Hans.Services.YouTube;
@@ -66,14 +66,6 @@ namespace Hans
         public void Dispose()
         {
             Dispose(true);
-        }
-
-        private static OpenDialogViewModel BuildOpenDialog(string caption)
-        {
-            var openDialogView = new OpenDialogView();
-            var vm = (OpenDialogViewModel)openDialogView.DataContext;
-            vm.Caption = caption;
-            return vm;
         }
 
         private void _formRefresher_Elapsed(object sender, ElapsedEventArgs e)
@@ -276,7 +268,7 @@ namespace Hans
         {
             var fbd = new FolderBrowserDialog
             {
-                Description = "Open a folder to add to your music library",
+                Description = Settings.Default.Form_Text_AddFromLibrary,
                 SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic),
                 ShowNewFolderButton = true
             };

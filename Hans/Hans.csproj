@@ -84,9 +84,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\GAPI.dll</HintPath>
     </Reference>
-    <Reference Include="Gat.Controls.OpenDialog">
-      <HintPath>..\packages\OpenDialog.1.1.1\lib\net45\Gat.Controls.OpenDialog.dll</HintPath>
-    </Reference>
     <Reference Include="Id3">
       <HintPath>..\packages\ID3.0.3.0\lib\net40\Id3.dll</HintPath>
     </Reference>
