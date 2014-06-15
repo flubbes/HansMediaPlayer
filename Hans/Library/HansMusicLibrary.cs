@@ -2,7 +2,6 @@
 using Hans.Database.Songs;
 using Hans.General;
 using Hans.SongData;
-using Ninject.Infrastructure.Language;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,9 @@ using System.Threading;
 
 namespace Hans.Library
 {
+    /// <summary>
+    /// The hans music library
+    /// </summary>
     public sealed class HansMusicLibrary
     {
         private readonly IPlaylistStore _playlistStore;
@@ -26,8 +28,14 @@ namespace Hans.Library
             songDataFinder.FoundData += songDataFinder_FoundData;
         }
 
+        /// <summary>
+        /// When a new song is added to the library
+        /// </summary>
         public event NewLibrarySongEventHandler NewSong;
 
+        /// <summary>
+        /// When a search is finished in the local library
+        /// </summary>
         public event LibrarySearchFinishedEventHandler SearchFinished;
 
         /// <summary>
@@ -41,17 +49,26 @@ namespace Hans.Library
             }
         }
 
+        /// <summary>
+        /// All the songs in the library
+        /// </summary>
         public IEnumerable<HansSong> Songs
         {
             get
             {
-                //TODO update to new format
                 return _songStore.GetEnumerable();
             }
         }
 
+        /// <summary>
+        /// The song data finder isntance
+        /// </summary>
         private ISongDataFinder SongDataFinder { get; set; }
 
+        /// <summary>
+        /// Adds a folder to the library
+        /// </summary>
+        /// <param name="folderAddRequest"></param>
         public void AddFolder(FolderAddRequest folderAddRequest)
         {
             var folderAnalyzer = new FolderAnalyzer();
@@ -64,6 +81,10 @@ namespace Hans.Library
             });
         }
 
+        /// <summary>
+        /// Adds a new song the library
+        /// </summary>
+        /// <param name="hansSong"></param>
         public void AddSong(HansSong hansSong)
         {
             _songStore.Add(hansSong);
@@ -83,11 +104,19 @@ namespace Hans.Library
             });
         }
 
+        /// <summary>
+        /// removes a song from the library
+        /// </summary>
+        /// <param name="hansSong"></param>
         public void RemoveSong(HansSong hansSong)
         {
             _songStore.Remove(hansSong);
         }
 
+        /// <summary>
+        /// Searches for a term in the library and calls the Searchfinished event at the end
+        /// </summary>
+        /// <param name="term"></param>
         public void Search(string term)
         {
             var t = term.ToLower();
@@ -101,11 +130,21 @@ namespace Hans.Library
             })).Start();
         }
 
+        /// <summary>
+        /// If the song id exists in the library
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         private bool Exists(Guid id)
         {
             return _songStore.GetEnumerable().Any(s => s.Id == id);
         }
 
+        /// <summary>
+        /// Gets called when the folder Analyzer found a new file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void folderAnalyzer_FoundNewfile(object sender, FoundNewFileEventArgs e)
         {
             var hansSong = new HansSong(e.File);
@@ -116,6 +155,10 @@ namespace Hans.Library
             });
         }
 
+        /// <summary>
+        /// Triggers the new song event
+        /// </summary>
+        /// <param name="song"></param>
         private void OnNewSong(HansSong song)
         {
             var handler = NewSong;
@@ -125,6 +168,10 @@ namespace Hans.Library
             }
         }
 
+        /// <summary>
+        /// Triggers the search finished event
+        /// </summary>
+        /// <param name="e"></param>
         private void OnSearchFinished(LibrarySearchFinishedEventArgs e)
         {
             var handler = SearchFinished;
@@ -134,6 +181,11 @@ namespace Hans.Library
             }
         }
 
+        /// <summary>
+        /// Gets called when the song data finder found new data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void songDataFinder_FoundData(object sender, FoundDataEventArgs e)
         {
             var songData = e.SongData;

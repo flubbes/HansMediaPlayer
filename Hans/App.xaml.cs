@@ -1,5 +1,4 @@
-﻿using CsQuery.Utility;
-using Hans.General;
+﻿using Hans.General;
 using Hans.Modules;
 using Newtonsoft.Json;
 using Ninject;

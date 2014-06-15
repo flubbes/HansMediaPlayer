@@ -3,6 +3,9 @@ using NAudio.Wave;
 
 namespace Hans.Library
 {
+    /// <summary>
+    /// The audio loader interface
+    /// </summary>
     public interface IAudioLoader
     {
         /// <summary>
