@@ -1,12 +1,17 @@
 ﻿using Hans.SongData;
 using Hans.SongData.DataFindMethods;
-using NAudio.Codecs;
 using Ninject.Modules;
 
 namespace Hans.Modules
 {
+    /// <summary>
+    /// The song data module for hans
+    /// </summary>
     public class SongDataModule : NinjectModule
     {
+        /// <summary>
+        /// Loads the module
+        /// </summary>
         public override void Load()
         {
             Bind<ISongDataFinder>().To<SongDataFinder>();
@@ -16,5 +21,4 @@ namespace Hans.Modules
             }));
         }
     }
-
 }

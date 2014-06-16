@@ -1,6 +1,9 @@
-﻿using Hans.Library;
-
-namespace Hans.SongData
+﻿namespace Hans.SongData
 {
-    public delegate void FoundDataEventHandler(SongDataResponse songData);
+    /// <summary>
+    /// The found data event handler
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    public delegate void FoundDataEventHandler(object sender, FoundDataEventArgs e);
 }

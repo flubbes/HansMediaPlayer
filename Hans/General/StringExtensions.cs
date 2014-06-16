@@ -4,8 +4,16 @@ using System.Linq;
 
 namespace Hans.General
 {
+    /// <summary>
+    /// String extension methods
+    /// </summary>
     public static class StringExtensions
     {
+        /// <summary>
+        /// Removes illegal characters from the string
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public static string RemoveIllegalCharacters(this string s)
         {
             var newName = string.Empty;

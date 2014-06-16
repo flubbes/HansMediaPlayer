@@ -1,3 +1,4 @@
+using Hans.General;
 using Newtonsoft.Json;
 using Ninject.Infrastructure.Language;
 using System;
@@ -7,22 +8,40 @@ using System.Threading;
 
 namespace Hans.Database.FlatFile
 {
+    /// <summary>
+    /// The flat file storage logic
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class FlatFileStorage<T> : IStore<T>
     {
         private readonly List<T> _cache;
         private readonly string _path;
         private readonly object _threadLock;
         private bool _cacheChanged;
+        private bool _exit;
         private DateTime _lastCacheUpdate;
 
-        public FlatFileStorage(string path)
+        /// <summary>
+        /// Initializes a new flat file storage
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="exitAppTrigger"></param>
+        public FlatFileStorage(string path, ExitAppTrigger exitAppTrigger)
         {
+            exitAppTrigger.GotTriggered += exitAppTrigger_GotTriggered;
             _path = path;
             _threadLock = new object();
             _cache = new List<T>(GetCacheFromFile() ?? new T[0]);
-            new Thread(CommitThread) { IsBackground = true }.Start();
+            new Thread(CommitThread)
+            {
+                IsBackground = true
+            }.Start();
         }
 
+        /// <summary>
+        /// Adds a new item to the flat file storage
+        /// </summary>
+        /// <param name="item"></param>
         public void Add(T item)
         {
             lock (_cache)
@@ -32,6 +51,10 @@ namespace Hans.Database.FlatFile
             CacheUpdate();
         }
 
+        /// <summary>
+        /// Gets the current collection as an enumerable
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<T> GetEnumerable()
         {
             lock (_cache)
@@ -40,6 +63,10 @@ namespace Hans.Database.FlatFile
             }
         }
 
+        /// <summary>
+        /// Removes an item from the storage
+        /// </summary>
+        /// <param name="item"></param>
         public void Remove(T item)
         {
             lock (_cache)
@@ -49,6 +76,10 @@ namespace Hans.Database.FlatFile
             CacheUpdate();
         }
 
+        /// <summary>
+        /// Updates an item from the storage
+        /// </summary>
+        /// <param name="item"></param>
         public void Update(T item)
         {
             lock (_cache)
@@ -69,6 +100,9 @@ namespace Hans.Database.FlatFile
             return JsonConvert.DeserializeObject<IEnumerable<T>>(json);
         }
 
+        /// <summary>
+        /// Sets all variables for the cache update
+        /// </summary>
         private void CacheUpdate()
         {
             _lastCacheUpdate = DateTime.Now;
@@ -86,18 +120,35 @@ namespace Hans.Database.FlatFile
             }
         }
 
+        /// <summary>
+        /// The thread that commits all changes if needed
+        /// </summary>
         private void CommitThread()
         {
-            while (true)
+            while (!_exit)
             {
                 CommitCachedChanges();
                 Thread.Sleep(1000);
             }
         }
 
+        /// <summary>
+        /// Determines whether the database file doesn't exist
+        /// </summary>
+        /// <returns></returns>
         private bool DatabaseFileDoesNotExist()
         {
             return !File.Exists(_path);
+        }
+
+        /// <summary>
+        /// Gets called when the exit app trigger got triggered
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        private void exitAppTrigger_GotTriggered(object sender, EventArgs eventArgs)
+        {
+            _exit = true;
         }
 
         /// <summary>
@@ -136,6 +187,10 @@ namespace Hans.Database.FlatFile
             return File.CreateText(_path);
         }
 
+        /// <summary>
+        /// Reads the content of a file
+        /// </summary>
+        /// <returns></returns>
         private string ReadFileContent()
         {
             using (var fs = GetFileStreamReader())

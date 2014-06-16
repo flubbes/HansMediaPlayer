@@ -1,50 +1,137 @@
-﻿using System;
+﻿using Hans.General;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
-using Hans.General;
 using YoutubeExtractor;
 
 namespace Hans.Web
 {
-    class YouTubeDownloader : IDownloader
+    /// <summary>
+    /// The youtube downloader class
+    /// </summary>
+    public class YouTubeDownloader : IDownloader
     {
         private AudioDownloader _audioDownloader;
 
+        /// <summary>
+        /// When the download failed
+        /// </summary>
+        public event EventHandler Failed;
+
+        /// <summary>
+        /// If the download is complete
+        /// </summary>
+        public bool IsComplete { get; private set; }
+
+        /// <summary>
+        /// If currently downlading
+        /// </summary>
+        public bool IsDownloading { get; private set; }
+
+        /// <summary>
+        /// The progress of the download
+        /// </summary>
+        public int Progress { get; private set; }
+
+        /// <summary>
+        /// Aborts the download CURRENTLY NOT WORKING
+        /// </summary>
+        public void Abort()
+        {
+            // TODO find a way to abort the youtube downloader
+        }
+
+        /// <summary>
+        /// Starts a new download
+        /// </summary>
+        /// <param name="request"></param>
         public void Start(DownloadRequest request)
         {
+            IsDownloading = true;
             InitialzeAudioDownloader(request, GetVideoInfo(request));
             HookEvents();
-
             try
             {
                 _audioDownloader.Execute();
             }
-            catch (WebException e)
+            catch
             {
                 Debug.WriteLine("Song not available");
+                OnFailed();
             }
         }
 
-        private void InitialzeAudioDownloader(DownloadRequest request, VideoInfo video)
+        /// <summary>
+        /// Triggers the fail event
+        /// </summary>
+        protected virtual void OnFailed()
         {
-            _audioDownloader = new AudioDownloader(video,
-                Path.Combine(request.DestinationDirectory, request.OnlineServiceTrack.DisplayName.RemoveIllegalCharacters() + video.AudioExtension));
+            var handler = Failed;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
+            IsDownloading = false;
         }
 
+        /// <summary>
+        /// Gets the first video with extractable audio
+        /// </summary>
+        /// <param name="videoInfos"></param>
+        /// <returns></returns>
+        private static VideoInfo GetFirstVideoWithExtractableAudio(IEnumerable<VideoInfo> videoInfos)
+        {
+            return videoInfos.Where(info => info.CanExtractAudio).OrderByDescending(info => info.AudioBitrate).First();
+        }
+
+        /// <summary>
+        /// Gets the video info from a request
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         private static VideoInfo GetVideoInfo(DownloadRequest request)
         {
             var videoInfos = DownloadUrlResolver.GetDownloadUrls(request.Uri);
             return GetFirstVideoWithExtractableAudio(videoInfos);
         }
 
-        private static VideoInfo GetFirstVideoWithExtractableAudio(IEnumerable<VideoInfo> videoInfos)
+        /// <summary>
+        /// Gets called when the audio extraction progress changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void _audioExtractionProgressChanged(object sender, ProgressEventArgs args)
         {
-            return videoInfos.Where(info => info.CanExtractAudio).OrderByDescending(info => info.AudioBitrate).First();
+            Progress = Convert.ToInt32(85 + args.ProgressPercentage * 0.15);
         }
 
+        /// <summary>
+        /// Gets called when the download finished
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _downloadFinished(object sender, EventArgs e)
+        {
+            Progress = 100;
+            IsDownloading = false;
+            IsComplete = true;
+        }
+
+        /// <summary>
+        /// Gest called when the download progress changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void _downloadProgressChanged(object sender, ProgressEventArgs args)
+        {
+            Progress = Convert.ToInt32(args.ProgressPercentage * 0.85);
+        }
+
+        /// <summary>
+        /// Hooks all events
+        /// </summary>
         private void HookEvents()
         {
             _audioDownloader.DownloadProgressChanged += _downloadProgressChanged;
@@ -52,27 +139,15 @@ namespace Hans.Web
             _audioDownloader.DownloadFinished += _downloadFinished;
         }
 
-        private void _downloadFinished(object sender, EventArgs e)
+        /// <summary>
+        /// Initializes the audio downloader
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="video"></param>
+        private void InitialzeAudioDownloader(DownloadRequest request, VideoInfo video)
         {
-            Progress = 100;
-        }
-
-        void _downloadProgressChanged(object sender, ProgressEventArgs args)
-        {
-            Progress = Convert.ToInt32(args.ProgressPercentage*0.85);
-        }
-
-        void _audioExtractionProgressChanged(object sender, ProgressEventArgs args)
-        {
-            Progress = Convert.ToInt32(85 + args.ProgressPercentage * 0.15);
-        }
-
-        public int Progress { get; private set; }
-
-        public void Abort()
-        {   
-            // Stop audioDownloader.Execute(); 
-            // Non-existing atm.
+            _audioDownloader = new AudioDownloader(video,
+                Path.Combine(request.DestinationDirectory, request.OnlineServiceTrack.DisplayName.RemoveIllegalCharacters() + video.AudioExtension));
         }
     }
 }

@@ -3,6 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="DownloaderWindow" Height="397" Width="594" Closing="DownloaderWindow_OnClosing">
     <Grid>
+    	<Grid.Background>
+    		<ImageBrush ImageSource="pack://siteoforigin:,,,/darkwoodpanels.jpg" />
+    	</Grid.Background>
         <ListView Margin="10" x:Name="ListViewDownloads" ItemsSource="{Binding}">
             <ListView.View>
                 <GridView>

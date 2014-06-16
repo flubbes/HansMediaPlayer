@@ -2,15 +2,21 @@
 
 namespace Hans.Web
 {
-    public delegate void DownloadFinishedEventHandler(object sender, DownloadFinishedEventHandlerArgs args);
+    /// <summary>
+    /// The download finished event handler
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    public delegate void DownloadFinishedEventHandler(object sender, DownloadFinishedEventArgs e);
 
-    public class DownloadFinishedEventHandlerArgs : EventArgs
+    /// <summary>
+    /// The download finished event args
+    /// </summary>
+    public class DownloadFinishedEventArgs : EventArgs
     {
-        public DownloadFinishedEventHandlerArgs(DownloadRequest downloadRequest)
-        {
-            DownloadRequest = downloadRequest;
-        }
-
+        /// <summary>
+        /// The download request that got finished
+        /// </summary>
         public DownloadRequest DownloadRequest { get; set; }
     }
 }

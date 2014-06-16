@@ -1,9 +1,41 @@
-﻿namespace Hans.Web
+﻿using System;
+
+namespace Hans.Web
 {
+    /// <summary>
+    /// The downloader interface
+    /// </summary>
     public interface IDownloader
     {
-        void Start(DownloadRequest request);
+        /// <summary>
+        /// When the download failed
+        /// </summary>
+        event EventHandler Failed;
+
+        /// <summary>
+        /// If the download is finished
+        /// </summary>
+        bool IsComplete { get; }
+
+        /// <summary>
+        /// If is currently downloading
+        /// </summary>
+        bool IsDownloading { get; }
+
+        /// <summary>
+        /// Current progress
+        /// </summary>
         int Progress { get; }
+
+        /// <summary>
+        /// Aborts the download
+        /// </summary>
         void Abort();
+
+        /// <summary>
+        /// Starts a download
+        /// </summary>
+        /// <param name="request"></param>
+        void Start(DownloadRequest request);
     }
 }

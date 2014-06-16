@@ -1,7 +1,10 @@
 ﻿using Hans.General;
 using Hans.Modules;
+using Newtonsoft.Json;
 using Ninject;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Hans
@@ -9,19 +12,22 @@ namespace Hans
     /// <summary>
     /// Interaktionslogik für "App.xaml"
     /// </summary>
-    public partial class App
+    public partial class App : IDisposable
     {
         private ExitAppTrigger _exitAppTrigger;
         private IKernel _kernel;
 
-        /// <summary>
-        /// Gets triggered when the app exits
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnExit(ExitEventArgs e)
+        public void Dispose()
         {
-            _exitAppTrigger.Trigger();
-            base.OnExit(e);
+            Dispose(true);
+        }
+
+        protected virtual void Dispose(bool cleanAll)
+        {
+            if (cleanAll)
+            {
+            }
+            _kernel.Dispose();
         }
 
         /// <summary>
@@ -31,10 +37,27 @@ namespace Hans
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+            HookExceptions();
             BuildKernel();
             BuildForm();
             Current.MainWindow.Show();
+        }
+
+        private static void HandleError(string jsonException)
+        {
+            var now = DateTime.Now;
+            var fileName = string.Format("error_{0}-{1}-{2}_{3}-{4}-{5}-{6}", now.Year, now.Month, now.Day, now.Hour, now.Minute,
+                now.Second, now.Millisecond);
+            int counter = 1;
+            string safeFileName = fileName;
+            while (File.Exists(fileName))
+            {
+                safeFileName = fileName + counter + ".json";
+            }
+            using (var sw = new StreamWriter(safeFileName))
+            {
+                sw.Write(jsonException);
+            }
         }
 
         /// <summary>
@@ -68,7 +91,33 @@ namespace Hans
         private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-            MessageBox.Show(e.Exception.Message, e.Exception.Source);
+            var jsonException = JsonConvert.SerializeObject(e.Exception, Formatting.Indented);
+            HandleError(jsonException);
+        }
+
+        private void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
+        {
+            var jsonException = JsonConvert.SerializeObject(e.Exception, Formatting.Indented);
+            HandleError(jsonException);
+        }
+
+        /// <summary>
+        /// Get triggered when an unhandled exception occures
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var jsonException = JsonConvert.SerializeObject(e.ExceptionObject, Formatting.Indented);
+            HandleError(jsonException);
+        }
+
+        private void HookExceptions()
+        {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            //AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+            //Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+            //TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         }
 
         /// <summary>
@@ -87,6 +136,13 @@ namespace Hans
             _kernel.Load<DatabaseModule>();
             _kernel.Load<AudioModule>();
             _kernel.Load<SongDataModule>();
+            _kernel.Load<FileSystemModule>();
+        }
+
+        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            var jsonException = JsonConvert.SerializeObject(e.Exception, Formatting.Indented);
+            HandleError(jsonException);
         }
     }
 }

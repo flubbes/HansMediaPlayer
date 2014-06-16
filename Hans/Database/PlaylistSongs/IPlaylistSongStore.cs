@@ -1,6 +1,9 @@
 ﻿namespace Hans.Database.PlaylistSongs
 {
-    interface IPlaylistSongStore : IStore<PlaylistSong>
+    /// <summary>
+    /// Needed interface for the ninject dependency injection
+    /// </summary>
+    internal interface IPlaylistSongStore : IStore<PlaylistSong>
     {
     }
 }
