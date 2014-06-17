@@ -1,4 +1,5 @@
-﻿using Hans.Audio;
+﻿using System.Diagnostics;
+using Hans.Audio;
 using Hans.Database.Songs;
 using Hans.Library;
 using Hans.Properties;
@@ -22,6 +23,9 @@ namespace Hans.General
         private IAudioPlayer _audioPlayer;
         private volatile int _listPosition;
         private volatile List<HansSong> _songQueue;
+
+        private Boolean muted = false;
+        private float previousVolume;
 
         /// <summary>
         /// Initializes a new instance of the hans audio player
@@ -127,9 +131,13 @@ namespace Hans.General
             }
             set
             {
+                PreviousVolume = Volume;
                 _audioPlayer.SetVolume(value);
             }
         }
+
+        public Boolean Muted { get; set; }
+        public float PreviousVolume { get; set; }
 
         /// <summary>
         /// Adds a song to the current playlist
@@ -257,6 +265,15 @@ namespace Hans.General
             {
                 handler(this, EventArgs.Empty);
             }
+            setWindowsTitle();
+        }
+
+        private void setWindowsTitle()
+        {
+            // Retrieve current song name
+            var title = _songQueue[_listPosition].Title;
+            // Set current song title
+            Debug.WriteLine(title);
         }
 
         /// <summary>

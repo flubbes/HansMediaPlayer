@@ -1,4 +1,7 @@
-﻿using Hans.Database.Songs;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Windows.Media.Imaging;
+using Hans.Database.Songs;
 using Hans.General;
 using Hans.Library;
 using Hans.Models;
@@ -529,6 +532,22 @@ namespace Hans
             if (e.Key == Key.Return)
             {
                 ButtonSearch_Click(null, null);
+            }
+        }
+
+        private void MuteKeyDown(object sender, RoutedEventArgs e)
+        {
+            if (_hansAudioPlayer.Muted)
+            {
+                VolumeMuter.Source = new BitmapImage(new Uri("volumeup.png", UriKind.Relative));
+                _hansAudioPlayer.Volume = _hansAudioPlayer.PreviousVolume;
+                _hansAudioPlayer.Muted = false;
+            }
+            else
+            {
+                VolumeMuter.Source = new BitmapImage(new Uri("volumemute.png", UriKind.Relative));
+                _hansAudioPlayer.Volume = 0;
+                _hansAudioPlayer.Muted = true;
             }
         }
     }
