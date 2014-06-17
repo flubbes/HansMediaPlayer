@@ -12,7 +12,7 @@ namespace Hans.Library
     /// <summary>
     /// The hans music library
     /// </summary>
-    public sealed class HansMusicLibrary
+    public class HansMusicLibrary
     {
         private readonly IPlaylistStore _playlistStore;
         private ISongStore _songStore;

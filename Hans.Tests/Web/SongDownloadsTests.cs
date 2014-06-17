@@ -1,26 +1,19 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using FakeItEasy;
+﻿using FakeItEasy;
 using FluentAssertions;
 using Hans.General;
 using Hans.Web;
 using NUnit.Framework;
+using System;
+using System.Linq;
+using System.Threading;
 
 namespace Hans.Tests.Web
 {
     [TestFixture]
     public class SongDownloadsTests
     {
-        private SongDownloads _songDownloads;
         private IDownloader _downloaderFake;
-
-        [SetUp]
-        public void SetUp()
-        {
-            _songDownloads = new SongDownloads(A.Fake<ExitAppTrigger>());
-            _downloaderFake = A.Fake<IDownloader>();
-        }
+        private SongDownloads _songDownloads;
 
         [Test]
         public void CanQueueItem()
@@ -32,15 +25,11 @@ namespace Hans.Tests.Web
             _songDownloads.ActiveDownloads.Any().Should().BeTrue();
         }
 
-        [Test]
-        public void StartsTheDownload()
+        [SetUp]
+        public void SetUp()
         {
-            var downloadRequest = new DownloadRequest
-            {
-                Downloader = _downloaderFake
-            };
-            _songDownloads.Start(downloadRequest);
-            A.CallTo(() => downloadRequest.Downloader.Start(downloadRequest)).MustHaveHappened();
+            _songDownloads = new SongDownloads(A.Fake<ExitAppTrigger>());
+            _downloaderFake = A.Fake<IDownloader>();
         }
 
         [Test]
@@ -52,8 +41,7 @@ namespace Hans.Tests.Web
                 Downloader = downloader
             };
             var checker = A.Fake<Action>();
-            
-            
+
             var songDownloads = new SongDownloads(A.Fake<ExitAppTrigger>());
             songDownloads.DownloadFinished += (sender, args) => checker.Invoke();
             A.CallTo(() => downloadRequest.Downloader.Progress).Returns(100);

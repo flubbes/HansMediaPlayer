@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using FakeItEasy;
+﻿using FakeItEasy;
 using FluentAssertions;
 using Hans.Database.Playlists;
 using Hans.Database.Songs;
 using Hans.Library;
 using Hans.SongData;
 using NUnit.Framework;
+using System.Linq;
 
 namespace Hans.Tests.Library
 {
@@ -14,12 +14,13 @@ namespace Hans.Tests.Library
     {
         private HansMusicLibrary _musicLibrary;
         private IPlaylistStore _playListStore;
+        private ISongStore _songStore;
 
-        [SetUp]
-        public void SetUp()
+        [Test]
+        public void CanAddSongsToTheLibrary()
         {
-            _playListStore = A.Fake<IPlaylistStore>();
-            _musicLibrary = new HansMusicLibrary(_playListStore, A.Fake<ISongStore>(), A.Fake<ISongDataFinder>());
+            _musicLibrary.AddSong(new HansSong(""));
+            A.CallTo(() => _songStore.Add(default(HansSong))).WithAnyArguments().MustHaveHappened();
         }
 
         [Test]
@@ -30,19 +31,20 @@ namespace Hans.Tests.Library
         }
 
         [Test]
-        public void CanAddSongsToTheLibrary()
-        {
-            _musicLibrary.AddSong(new HansSong(""));
-            _musicLibrary.Songs.Any().Should().BeTrue();
-        }
-
-        [Test]
         public void CanRemoveSong()
         {
             var hansSong = new HansSong("");
             _musicLibrary.AddSong(hansSong);
             _musicLibrary.RemoveSong(hansSong);
             _musicLibrary.Songs.Any().Should().BeFalse();
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            _playListStore = A.Fake<IPlaylistStore>();
+            _songStore = A.Fake<ISongStore>();
+            _musicLibrary = new HansMusicLibrary(_playListStore, _songStore, A.Fake<ISongDataFinder>());
         }
     }
 }
