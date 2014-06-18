@@ -208,6 +208,7 @@
     <Compile Include="Services\SoundCloud\SoundCloudTrack.cs" />
     <Compile Include="FileSystem\FileSystem.cs" />
     <Compile Include="Web\SongDownloads.cs" />
+    <Compile Include="Web\ThreadSafeList.cs" />
     <Compile Include="Web\YouTubeDownloader.cs" />
     <Page Include="DownloaderWindow.xaml">
       <SubType>Designer</SubType>

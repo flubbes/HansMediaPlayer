@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using YoutubeExtractor;
 
 namespace Hans.Web
@@ -50,17 +51,20 @@ namespace Hans.Web
         public void Start(DownloadRequest request)
         {
             IsDownloading = true;
-            InitialzeAudioDownloader(request, GetVideoInfo(request));
-            HookEvents();
-            try
+            new Thread(() =>
             {
-                _audioDownloader.Execute();
-            }
-            catch
-            {
-                Debug.WriteLine("Song not available");
-                OnFailed(request);
-            }
+                try
+                {
+                    InitialzeAudioDownloader(request, GetVideoInfo(request));
+                    HookEvents();
+                    _audioDownloader.Execute();
+                }
+                catch
+                {
+                    Debug.WriteLine("Song not available");
+                    OnFailed(request);
+                }
+            }).Start();
         }
 
         /// <summary>

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Hans.Audio;
+﻿using Hans.Audio;
 using Hans.Database.Songs;
 using Hans.Library;
 using Hans.Properties;
@@ -8,6 +7,7 @@ using Hans.Web;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
@@ -23,9 +23,6 @@ namespace Hans.General
         private IAudioPlayer _audioPlayer;
         private volatile int _listPosition;
         private volatile List<HansSong> _songQueue;
-
-        private Boolean muted = false;
-        private float previousVolume;
 
         /// <summary>
         /// Initializes a new instance of the hans audio player
@@ -88,6 +85,10 @@ namespace Hans.General
         /// </summary>
         public HansMusicLibrary Library { get; set; }
 
+        public Boolean Muted { get; set; }
+
+        public float PreviousVolume { get; set; }
+
         /// <summary>
         /// Repeat the playlist at the end
         /// </summary>
@@ -135,9 +136,6 @@ namespace Hans.General
                 _audioPlayer.SetVolume(value);
             }
         }
-
-        public Boolean Muted { get; set; }
-        public float PreviousVolume { get; set; }
 
         /// <summary>
         /// Adds a song to the current playlist
@@ -266,14 +264,6 @@ namespace Hans.General
                 handler(this, EventArgs.Empty);
             }
             setWindowsTitle();
-        }
-
-        private void setWindowsTitle()
-        {
-            // Retrieve current song name
-            var title = _songQueue[_listPosition].Title;
-            // Set current song title
-            Debug.WriteLine(title);
         }
 
         /// <summary>
@@ -458,6 +448,14 @@ namespace Hans.General
             {
                 Play();
             }
+        }
+
+        private void setWindowsTitle()
+        {
+            // Retrieve current song name
+            var title = _songQueue[_listPosition].Title;
+            // Set current song title
+            Debug.WriteLine(title);
         }
 
         /// <summary>

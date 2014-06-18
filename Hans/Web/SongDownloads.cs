@@ -1,6 +1,7 @@
 ﻿using Hans.General;
 using Hans.Properties;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,9 +14,9 @@ namespace Hans.Web
     /// </summary>
     public class SongDownloads
     {
-        private readonly List<DownloadRequest> _activeDownloads;
-        private readonly object _lock = new object();
+        private readonly ThreadSafeList<DownloadRequest> _activeDownloads;
         private bool _exit;
+        private Thread _thread;
 
         /// <summary>
         /// Initializes a new instance of the song downloader
@@ -24,11 +25,8 @@ namespace Hans.Web
         public SongDownloads(ExitAppTrigger exitAppTrigger)
         {
             exitAppTrigger.GotTriggered += exitAppTrigger_GotTriggered;
-            _activeDownloads = new List<DownloadRequest>();
-            new Thread(DownloadProgressCheckerMethod)
-            {
-                IsBackground = true
-            }.Start();
+            _activeDownloads = new ThreadSafeList<DownloadRequest>();
+            StartProgressCheckerThread();
             ParalelDownloads = 1;
         }
 
@@ -42,10 +40,7 @@ namespace Hans.Web
         /// </summary>
         public IEnumerable<DownloadRequest> ActiveDownloads
         {
-            get
-            {
-                return _activeDownloads.BuildThreadSafeCopy();
-            }
+            get { return _activeDownloads.GetEnumerable(); }
         }
 
         /// <summary>
@@ -75,29 +70,34 @@ namespace Hans.Web
             }
         }
 
+        private static bool IsUnstartedDownloader(IDownloader item)
+        {
+            return !item.IsDownloading && !item.IsComplete;
+        }
+
         /// <summary>
         /// Counts the active downloads
         /// </summary>
         /// <returns></returns>
         private int CountActiveDownloads()
         {
-            lock (_lock)
+            var result = 0;
+            _activeDownloads.ThreadSafeForeach(r =>
             {
-                return _activeDownloads.Count(d => d.Downloader.IsDownloading);
-            }
+                result += r.Downloader.IsDownloading ? 1 : 0;
+                return false;
+            });
+            return result;
         }
 
         /// <summary>
         /// Gets called when the download operation failed
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="downloadFailedEventArgs"></param>
+        /// <param name="e"></param>
         private void DownloaderOnFailed(object sender, DownloadFailedEventArgs e)
         {
-            lock (_lock)
-            {
-                _activeDownloads.Remove(e.Request);
-            }
+            _activeDownloads.Remove(e.Request);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Hans.Web
             {
                 RemoveFinishedDownloads();
                 StartDownloadsIfNecessary();
-                Thread.Sleep(50);
+                Thread.Sleep(100);
             }
         }
 
@@ -121,6 +121,40 @@ namespace Hans.Web
         private void exitAppTrigger_GotTriggered(object sender, EventArgs eventArgs)
         {
             _exit = true;
+        }
+
+        private DownloadRequest GetFirstUnstartedDownload()
+        {
+            var res = default(DownloadRequest);
+            _activeDownloads.ThreadSafeForeach(r =>
+            {
+                if (IsUnstartedDownloader(r.Downloader))
+                {
+                    res = r;
+                    return true;
+                }
+                return false;
+            });
+            return res;
+        }
+
+        /// <summary>
+        /// Determines whether the download queue has unstarted downloads
+        /// </summary>
+        /// <returns></returns>
+        private bool HasUnstartedDownloads()
+        {
+            var result = false;
+            _activeDownloads.ThreadSafeForeach(r =>
+            {
+                if (IsUnstartedDownloader(r.Downloader))
+                {
+                    result = true;
+                    return true;
+                }
+                return false;
+            });
+            return result;
         }
 
         /// <summary>
@@ -140,12 +174,9 @@ namespace Hans.Web
         /// </summary>
         private void RemoveFinishedDownloads()
         {
-            lock (_lock)
+            for (var i = 0; i < _activeDownloads.Count; i++)
             {
-                for (var i = 0; i < _activeDownloads.Count; i++)
-                {
-                    RemoveIfDownloadFinished(i);
-                }
+                RemoveIfDownloadFinished(i);
             }
         }
 
@@ -164,23 +195,31 @@ namespace Hans.Web
             _activeDownloads.RemoveAt(i);
         }
 
+        private bool ShouldStartNewDownloads()
+        {
+            return CountActiveDownloads() < ParalelDownloads;
+        }
+
         /// <summary>
         /// Starts downloads if necessary
         /// </summary>
         private void StartDownloadsIfNecessary()
         {
-            lock (_lock)
+            if (HasUnstartedDownloads() && ShouldStartNewDownloads())
             {
-                while (_activeDownloads.Any(d => !d.Downloader.IsDownloading && !d.Downloader.IsComplete) && CountActiveDownloads() < ParalelDownloads)
+                var request = GetFirstUnstartedDownload();
+                if (request != null)
                 {
-                    var request = _activeDownloads.FirstOrDefault(d => !d.Downloader.IsDownloading && !d.Downloader.IsComplete);
-                    if (request != null)
-                    {
-                        request.Downloader.Failed += DownloaderOnFailed;
-                        request.Downloader.Start(request);
-                    }
+                    request.Downloader.Failed += DownloaderOnFailed;
+                    request.Downloader.Start(request);
                 }
             }
+        }
+
+        private void StartProgressCheckerThread()
+        {
+            _thread = new Thread(DownloadProgressCheckerMethod);
+            _thread.Start();
         }
     }
 }
