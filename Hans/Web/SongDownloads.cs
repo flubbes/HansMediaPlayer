@@ -81,7 +81,23 @@ namespace Hans.Web
         /// <returns></returns>
         private int CountActiveDownloads()
         {
-            return _activeDownloads.Count(d => d.Downloader.IsDownloading);
+            lock (_lock)
+            {
+                return _activeDownloads.Count(d => d.Downloader.IsDownloading);
+            }
+        }
+
+        /// <summary>
+        /// Gets called when the download operation failed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="downloadFailedEventArgs"></param>
+        private void DownloaderOnFailed(object sender, DownloadFailedEventArgs e)
+        {
+            lock (_lock)
+            {
+                _activeDownloads.Remove(e.Request);
+            }
         }
 
         /// <summary>
@@ -160,6 +176,7 @@ namespace Hans.Web
                     var request = _activeDownloads.FirstOrDefault(d => !d.Downloader.IsDownloading && !d.Downloader.IsComplete);
                     if (request != null)
                     {
+                        request.Downloader.Failed += DownloaderOnFailed;
                         request.Downloader.Start(request);
                     }
                 }

@@ -93,7 +93,7 @@ namespace Hans.SongData
                         SongId = request.SongId,
                         Artists = ExtractStringList(data, "Artists", Splitter),
                         Title = ExtractString(data, "Title"),
-                        Genre = ExtractString(data, "Genre")
+                        Genre = ExtractString(data, "Genre"),
                     };
                     OnFoundData(songDataResponse);
                 }

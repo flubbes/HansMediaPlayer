@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:hans="clr-namespace:Hans"
     mc:Ignorable="d"
-    
+
     Height="229" Width="273" MinWidth="864" MinHeight="612" Title="Hans Audio Player 1.0 (&quot;Schlauchboot&quot;)"
     d:DataContext="{d:DesignData hans:MainWindow}">
     <Window.Resources>
@@ -259,6 +259,7 @@
             </MenuItem>
             <MenuItem Header="View" BorderBrush="#FF74EAE4" Background="#FF74EAE4">
                 <MenuItem Header="Downloads" Click="MenuItemDownloads_OnClick" />
+                <MenuItem Header="Settings" Click="MenuItemSettings_OnClick"></MenuItem>
             </MenuItem>
         </Menu>
         <Image Name="VolumeMuter" MaxHeight="20" MaxWidth="20" Margin="30,20,0,23" Grid.Row="2" Source="volumeup.png" Stretch="Fill" MinWidth="20" MinHeight="20" Width="Auto" Height="Auto" Grid.Column="1" MouseUp="MuteKeyDown" />

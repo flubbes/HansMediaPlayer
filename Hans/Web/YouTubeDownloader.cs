@@ -18,7 +18,7 @@ namespace Hans.Web
         /// <summary>
         /// When the download failed
         /// </summary>
-        public event EventHandler Failed;
+        public event DownloadFailedEventHandler Failed;
 
         /// <summary>
         /// If the download is complete
@@ -59,19 +59,20 @@ namespace Hans.Web
             catch
             {
                 Debug.WriteLine("Song not available");
-                OnFailed();
+                OnFailed(request);
             }
         }
 
         /// <summary>
         /// Triggers the fail event
         /// </summary>
-        protected virtual void OnFailed()
+        /// <param name="request"></param>
+        protected virtual void OnFailed(DownloadRequest request)
         {
             var handler = Failed;
             if (handler != null)
             {
-                handler(this, EventArgs.Empty);
+                handler(this, new DownloadFailedEventArgs { Request = request });
             }
             IsDownloading = false;
         }

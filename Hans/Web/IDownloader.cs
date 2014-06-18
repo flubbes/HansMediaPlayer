@@ -1,4 +1,4 @@
-﻿using System;
+﻿using CsQuery.Engine.PseudoClassSelectors;
 
 namespace Hans.Web
 {
@@ -10,7 +10,7 @@ namespace Hans.Web
         /// <summary>
         /// When the download failed
         /// </summary>
-        event EventHandler Failed;
+        event DownloadFailedEventHandler Failed;
 
         /// <summary>
         /// If the download is finished

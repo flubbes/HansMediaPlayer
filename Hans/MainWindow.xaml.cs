@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Windows.Media.Imaging;
-using Hans.Database.Songs;
+﻿using Hans.Database.Songs;
 using Hans.General;
 using Hans.Library;
 using Hans.Models;
@@ -13,12 +10,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using Timer = System.Timers.Timer;
 
@@ -34,6 +34,7 @@ namespace Hans
         private readonly HansAudioPlayer _hansAudioPlayer;
         private Timer _formRefresher;
         private bool _progressChangeIgnoreIndicator;
+        private SettingsWindow _settingsWindow;
         private bool _volumeChangeIgnoreIndicator;
 
         /// <summary>
@@ -50,6 +51,7 @@ namespace Hans
             HookHansAudioPlayerEvents();
             InitServiceComboBox();
             ListViewSongQueue.ItemsSource = SongQueueListViewItems;
+            _settingsWindow = new SettingsWindow(_hansAudioPlayer);
             _downloaderWindow = new DownloaderWindow(_hansAudioPlayer.SongDownloads);
         }
 
@@ -463,6 +465,27 @@ namespace Hans
             _downloaderWindow.Show();
         }
 
+        private void MenuItemSettings_OnClick(object sender, RoutedEventArgs e)
+        {
+            _settingsWindow.Show();
+        }
+
+        private void MuteKeyDown(object sender, RoutedEventArgs e)
+        {
+            if (_hansAudioPlayer.Muted)
+            {
+                VolumeMuter.Source = new BitmapImage(new Uri("volumeup.png", UriKind.Relative));
+                _hansAudioPlayer.Volume = _hansAudioPlayer.PreviousVolume;
+                _hansAudioPlayer.Muted = false;
+            }
+            else
+            {
+                VolumeMuter.Source = new BitmapImage(new Uri("volumemute.png", UriKind.Relative));
+                _hansAudioPlayer.Volume = 0;
+                _hansAudioPlayer.Muted = true;
+            }
+        }
+
         /// <summary>
         /// Refreshes the the songqueue listview
         /// </summary>
@@ -532,22 +555,6 @@ namespace Hans
             if (e.Key == Key.Return)
             {
                 ButtonSearch_Click(null, null);
-            }
-        }
-
-        private void MuteKeyDown(object sender, RoutedEventArgs e)
-        {
-            if (_hansAudioPlayer.Muted)
-            {
-                VolumeMuter.Source = new BitmapImage(new Uri("volumeup.png", UriKind.Relative));
-                _hansAudioPlayer.Volume = _hansAudioPlayer.PreviousVolume;
-                _hansAudioPlayer.Muted = false;
-            }
-            else
-            {
-                VolumeMuter.Source = new BitmapImage(new Uri("volumemute.png", UriKind.Relative));
-                _hansAudioPlayer.Volume = 0;
-                _hansAudioPlayer.Muted = true;
             }
         }
     }

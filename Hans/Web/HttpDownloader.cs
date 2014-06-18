@@ -16,7 +16,7 @@ namespace Hans.Web
         /// <summary>
         /// When the download failed
         /// </summary>
-        public event EventHandler Failed;
+        public event DownloadFailedEventHandler Failed;
 
         /// <summary>
         /// If the download is completed
@@ -54,7 +54,7 @@ namespace Hans.Web
             if (request.Uri == null
                 || fileSystem.Exists.File(filePath) && !fileSystem.Can.ReadWrite.File(filePath))
             {
-                OnFailed();
+                OnFailed(request);
                 return;
             }
             _thread = new Thread(() => Download(request, filePath)) { IsBackground = true };
@@ -64,14 +64,20 @@ namespace Hans.Web
         /// <summary>
         /// Triggers the fail event
         /// </summary>
-        protected virtual void OnFailed()
+        /// <param name="request"></param>
+        protected virtual void OnFailed(DownloadRequest request)
         {
             var handler = Failed;
             if (handler != null)
             {
-                handler(this, EventArgs.Empty);
+                handler(this, new DownloadFailedEventArgs { Request = request });
             }
             IsDownloading = false;
+        }
+
+        private static int CalcProgress(long g, int writtenTotal)
+        {
+            return Convert.ToInt32(writtenTotal * 100 / g);
         }
 
         /// <summary>
@@ -103,7 +109,7 @@ namespace Hans.Web
             }
             catch
             {
-                OnFailed();
+                OnFailed(request);
             }
         }
 
@@ -140,7 +146,7 @@ namespace Hans.Web
         /// <param name="fileWriter"></param>
         /// <param name="responseStream"></param>
         /// <param name="g"></param>
-        private void WriteWebStreamToFileStream(Stream fileWriter, Stream responseStream, int g)
+        private void WriteWebStreamToFileStream(Stream fileWriter, Stream responseStream, long g)
         {
             var buffer = new byte[4096];
             var written = 0;
@@ -150,7 +156,7 @@ namespace Hans.Web
                 written = responseStream.Read(buffer, 0, buffer.Length);
                 fileWriter.Write(buffer, 0, written);
                 writtenTotal += written;
-                Progress = writtenTotal * 100 / g;
+                Progress = CalcProgress(g, writtenTotal);
             } while (written > 0 && !_abort);
             IsDownloading = false;
             IsComplete = true;
