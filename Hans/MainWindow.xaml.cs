@@ -10,8 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Timers;
 using System.Windows;
@@ -34,7 +32,7 @@ namespace Hans
         private readonly HansAudioPlayer _hansAudioPlayer;
         private Timer _formRefresher;
         private bool _progressChangeIgnoreIndicator;
-        private SettingsWindow _settingsWindow;
+        private readonly SettingsWindow _settingsWindow;
         private bool _volumeChangeIgnoreIndicator;
 
         /// <summary>

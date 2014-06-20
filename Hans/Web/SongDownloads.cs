@@ -123,6 +123,10 @@ namespace Hans.Web
             _exit = true;
         }
 
+        /// <summary>
+        /// Gets the first unstarted download from the activeDownloads list
+        /// </summary>
+        /// <returns>The fist unstarted download</returns>
         private DownloadRequest GetFirstUnstartedDownload()
         {
             var res = default(DownloadRequest);

@@ -5,7 +5,7 @@ using Ninject.Modules;
 namespace Hans.Modules
 {
     /// <summary>
-    /// The song data module for hans
+    /// The songdata module for hans
     /// </summary>
     public class SongDataModule : NinjectModule
     {
