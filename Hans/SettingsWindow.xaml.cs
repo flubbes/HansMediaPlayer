@@ -1,8 +1,5 @@
 ﻿using Hans.General;
-using Hans.Library;
-using Hans.Properties;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Hans
 {

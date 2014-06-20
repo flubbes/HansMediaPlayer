@@ -34,7 +34,8 @@ namespace Hans.Services.SoundCloud
         public IEnumerable<IOnlineServiceTrack> Search(string query)
         {
             var restClient = new RestClient("https://api.soundcloud.com");
-            var response = restClient.Execute(new RestRequest("tracks.json?client_id=" + ApiKey + "&q=" + query,
+            var response = restClient.Execute(new RestRequest(
+                "tracks.json?client_id=" + ApiKey + "&q=" + query,
                 Method.GET));
             var a = JArray.Parse(response.Content);
             return a.Select(val => val.ToObject<SoundCloudTrack>());
