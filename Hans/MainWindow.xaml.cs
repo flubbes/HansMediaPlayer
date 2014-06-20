@@ -463,11 +463,21 @@ namespace Hans
             _downloaderWindow.Show();
         }
 
+        /// <summary>
+        /// Gets called when the menu item settings got clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItemSettings_OnClick(object sender, RoutedEventArgs e)
         {
             _settingsWindow.Show();
         }
 
+        /// <summary>
+        /// Gets triggered when 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MuteKeyDown(object sender, RoutedEventArgs e)
         {
             if (_hansAudioPlayer.Muted)
