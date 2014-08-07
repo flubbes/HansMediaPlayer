@@ -3,18 +3,77 @@
 
 public partial class MainWindow
 {
+	private global::Gtk.UIManager UIManager;
+	
+	private global::Gtk.Action FileAction;
+	
+	private global::Gtk.VPaned vpaned2;
+	
+	private global::Gtk.MenuBar menubar2;
+	
+	private global::Gtk.Notebook notebook2;
+	
+	private global::Gtk.Label label2;
+	
+	private global::Gtk.Label label3;
+
 	protected virtual void Build ()
 	{
 		global::Stetic.Gui.Initialize (this);
 		// Widget MainWindow
+		this.UIManager = new global::Gtk.UIManager ();
+		global::Gtk.ActionGroup w1 = new global::Gtk.ActionGroup ("Default");
+		this.FileAction = new global::Gtk.Action ("FileAction", global::Mono.Unix.Catalog.GetString ("File"), null, null);
+		this.FileAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("File");
+		w1.Add (this.FileAction, null);
+		this.UIManager.InsertActionGroup (w1, 0);
+		this.AddAccelGroup (this.UIManager.AccelGroup);
 		this.Name = "MainWindow";
 		this.Title = global::Mono.Unix.Catalog.GetString ("MainWindow");
 		this.WindowPosition = ((global::Gtk.WindowPosition)(4));
+		// Container child MainWindow.Gtk.Container+ContainerChild
+		this.vpaned2 = new global::Gtk.VPaned ();
+		this.vpaned2.CanFocus = true;
+		this.vpaned2.Name = "vpaned2";
+		this.vpaned2.Position = 29;
+		// Container child vpaned2.Gtk.Paned+PanedChild
+		this.UIManager.AddUiFromString ("<ui><menubar name=\'menubar2\'><menu name=\'FileAction\' action=\'FileAction\'/></menub" +
+		"ar></ui>");
+		this.menubar2 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar2")));
+		this.menubar2.Name = "menubar2";
+		this.vpaned2.Add (this.menubar2);
+		global::Gtk.Paned.PanedChild w2 = ((global::Gtk.Paned.PanedChild)(this.vpaned2 [this.menubar2]));
+		w2.Resize = false;
+		// Container child vpaned2.Gtk.Paned+PanedChild
+		this.notebook2 = new global::Gtk.Notebook ();
+		this.notebook2.CanFocus = true;
+		this.notebook2.Name = "notebook2";
+		this.notebook2.CurrentPage = 1;
+		// Notebook tab
+		global::Gtk.Label w3 = new global::Gtk.Label ();
+		w3.Visible = true;
+		this.notebook2.Add (w3);
+		this.label2 = new global::Gtk.Label ();
+		this.label2.Name = "label2";
+		this.label2.LabelProp = global::Mono.Unix.Catalog.GetString ("Library");
+		this.notebook2.SetTabLabel (w3, this.label2);
+		this.label2.ShowAll ();
+		// Notebook tab
+		global::Gtk.Label w4 = new global::Gtk.Label ();
+		w4.Visible = true;
+		this.notebook2.Add (w4);
+		this.label3 = new global::Gtk.Label ();
+		this.label3.Name = "label3";
+		this.label3.LabelProp = global::Mono.Unix.Catalog.GetString ("Online Search");
+		this.notebook2.SetTabLabel (w4, this.label3);
+		this.label3.ShowAll ();
+		this.vpaned2.Add (this.notebook2);
+		this.Add (this.vpaned2);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
 		}
-		this.DefaultWidth = 400;
-		this.DefaultHeight = 300;
+		this.DefaultWidth = 593;
+		this.DefaultHeight = 452;
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 	}
