@@ -82,6 +82,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Hans.Components\Hans.Components.csproj">
+      <Project>{0B4B9221-47A8-45FF-AA01-D51BE854C655}</Project>
+      <Name>Hans.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hans.Core\Hans.Core.csproj">
+      <Project>{0e88ef77-b6e8-480a-ac31-816b1f235ebf}</Project>
+      <Name>Hans.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Hans\Hans.csproj">
       <Project>{4d565016-7fe9-4378-b315-3be9ff121d3c}</Project>
       <Name>Hans</Name>

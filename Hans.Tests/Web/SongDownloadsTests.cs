@@ -1,7 +1,7 @@
 ﻿using FakeItEasy;
 using FluentAssertions;
-using Hans.General;
-using Hans.Web;
+using Hans.Core.General;
+using Hans.Core.Web;
 using NUnit.Framework;
 using System;
 using System.Linq;

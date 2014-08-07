@@ -1,9 +1,9 @@
-﻿using Hans.Database.Playlists;
+﻿using Hans.Components.Database;
+using Hans.Core.Database.Playlists;
+using Hans.Core.Database.PlaylistSongs;
+using Hans.Core.Database.Songs;
+using Hans.Database.Playlists;
 using Hans.Database.Playlists.FlatFile;
-using Hans.Database.PlaylistSongs;
-using Hans.Database.PlaylistSongs.FlatFile;
-using Hans.Database.Songs;
-using Hans.Database.Songs.FlatFile;
 using Ninject.Modules;
 
 namespace Hans.Modules

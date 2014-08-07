@@ -1,11 +1,9 @@
 ﻿using FakeItEasy;
 using FluentAssertions;
-using Hans.FileSystem;
-using Hans.Services;
-using Hans.Web;
+using Hans.Components.Web;
+using Hans.Core.Services;
+using Hans.Core.Web;
 using NUnit.Framework;
-using System.IO;
-using System.Net;
 
 namespace Hans.Tests.Web
 {
@@ -16,7 +14,7 @@ namespace Hans.Tests.Web
         public void WhenTheFileCantBeAccessed_TriggersFailEvent()
         {
             //create test class and fakes
-            var fileSystem = A.Fake<FileSystem.FileSystem>();
+            var fileSystem = A.Fake<Core.FileSystem.FileSystem>();
             var httpDownloader = new HttpDownloader();
 
             //hook event

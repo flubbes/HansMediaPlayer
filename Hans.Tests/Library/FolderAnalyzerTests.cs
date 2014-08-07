@@ -1,6 +1,6 @@
 ﻿using FakeItEasy;
 using FluentAssertions;
-using Hans.Library;
+using Hans.Components.Library;
 using NUnit.Framework;
 
 namespace Hans.Tests.Library

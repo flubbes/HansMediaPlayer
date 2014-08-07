@@ -1,4 +1,4 @@
-﻿using Hans.General;
+﻿using Hans.Core.General;
 using Hans.Modules;
 using Newtonsoft.Json;
 using Ninject;

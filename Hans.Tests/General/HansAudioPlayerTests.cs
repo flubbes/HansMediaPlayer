@@ -1,10 +1,9 @@
 ﻿using FakeItEasy;
-using Hans.Audio;
-using Hans.FileSystem;
-using Hans.General;
-using Hans.Library;
-using Hans.Services;
-using Hans.Web;
+using Hans.Components.General;
+using Hans.Components.Library;
+using Hans.Core.Audio;
+using Hans.Core.Services;
+using Hans.Core.Web;
 using NUnit.Framework;
 
 namespace Hans.Tests.General
@@ -21,7 +20,7 @@ namespace Hans.Tests.General
                 hansMusicLibrary,
                 A.Fake<IAudioPlayer>(),
                 A.Fake<SongDownloads>(),
-                A.Fake<FileSystem.FileSystem>());
+                A.Fake<Core.FileSystem.FileSystem>());
 
             hansAudioPlayer.Search(new SearchRequest
             {

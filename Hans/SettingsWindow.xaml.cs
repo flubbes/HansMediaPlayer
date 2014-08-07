@@ -1,4 +1,4 @@
-﻿using Hans.General;
+﻿using Hans.Components.General;
 using System.Windows;
 
 namespace Hans

@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0B4B9221-47A8-45FF-AA01-D51BE854C655}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hans.Components</RootNamespace>
+    <AssemblyName>Hans.Components</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CsQuery">
+      <HintPath>..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio">
+      <HintPath>..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="YoutubeExtractor">
+      <HintPath>..\packages\YoutubeExtractor.0.10.3\lib\net35\YoutubeExtractor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Audio\AudioPlayer.cs" />
+    <Compile Include="Database\FlatFilePlaylistSongStore.cs" />
+    <Compile Include="Database\FlatFilePlaylistStore.cs" />
+    <Compile Include="Database\FlatFileSongStore.cs" />
+    <Compile Include="Database\FlatFileStorage.cs" />
+    <Compile Include="FileSystem\DefaultExists.cs" />
+    <Compile Include="FileSystem\DefaultGet.cs" />
+    <Compile Include="FileSystem\DefaultOpen.cs" />
+    <Compile Include="FileSystem\DefaultReadWrite.cs" />
+    <Compile Include="General\HansAudioPlayer.cs" />
+    <Compile Include="General\SearchFinishedEventHandler.cs" />
+    <Compile Include="General\SearchRequest.cs" />
+    <Compile Include="General\SongQueueChangedEventHandler.cs" />
+    <Compile Include="Library\AnalyzeFolderRequest.cs" />
+    <Compile Include="Library\DefaultAudioLoader.cs" />
+    <Compile Include="Library\FolderAddRequest.cs" />
+    <Compile Include="Library\FolderAnalyzer.cs" />
+    <Compile Include="Library\FoundNewFileEventHandler.cs" />
+    <Compile Include="Library\HansMusicLibrary.cs" />
+    <Compile Include="Library\LibrarySearchFinishedEventArgs.cs" />
+    <Compile Include="Library\LibrarySearchFinishedEventHandler.cs" />
+    <Compile Include="Library\NewLibrarySongEventArgs.cs" />
+    <Compile Include="Library\NewLibrarySongEventHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\LinkCrawl\Compare.cs" />
+    <Compile Include="Services\LinkCrawl\LinkCrawl.cs" />
+    <Compile Include="Services\LinkCrawl\LinkCrawlTrack.cs" />
+    <Compile Include="Services\RestSharpJsonSerializeWrapper.cs" />
+    <Compile Include="Services\SoundCloud\SoundCloud.cs" />
+    <Compile Include="Services\SoundCloud\SoundCloudTrack.cs" />
+    <Compile Include="Services\SoundCloud\SoundCloudUser.cs" />
+    <Compile Include="Services\YouTube\YouTube.cs" />
+    <Compile Include="Services\YouTube\YouTubeId.cs" />
+    <Compile Include="Services\YouTube\YouTubeSnippet.cs" />
+    <Compile Include="Services\YouTube\YouTubeTrack.cs" />
+    <Compile Include="Web\HttpDownloader.cs" />
+    <Compile Include="Web\YouTubeDownloader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Hans.Core\Hans.Core.csproj">
+      <Project>{0e88ef77-b6e8-480a-ac31-816b1f235ebf}</Project>
+      <Name>Hans.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

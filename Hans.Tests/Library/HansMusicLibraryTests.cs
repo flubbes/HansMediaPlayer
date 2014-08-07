@@ -1,9 +1,9 @@
 ﻿using FakeItEasy;
 using FluentAssertions;
-using Hans.Database.Playlists;
-using Hans.Database.Songs;
-using Hans.Library;
-using Hans.SongData;
+using Hans.Components.Library;
+using Hans.Core.Database.Playlists;
+using Hans.Core.Database.Songs;
+using Hans.Core.SongData;
 using NUnit.Framework;
 using System.Linq;
 

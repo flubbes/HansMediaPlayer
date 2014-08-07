@@ -89,7 +89,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
@@ -112,9 +112,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="YoutubeExtractor, Version=0.10.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="YoutubeExtractor, Version=0.10.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\YoutubeExtractor.0.10.1\lib\net35\YoutubeExtractor.dll</HintPath>
+      <HintPath>..\packages\YoutubeExtractor.0.10.3\lib\net35\YoutubeExtractor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -122,94 +122,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Database\PlaylistSongs\FlatFile\FlatFilePlaylistSongStore.cs" />
-    <Compile Include="Database\PlaylistSongs\IPlaylistSongStore.cs" />
-    <Compile Include="Database\PlaylistSongs\PlaylistSong.cs" />
-    <Compile Include="Database\Playlists\FlatFile\FlatFilePlaylistStore.cs" />
-    <Compile Include="Database\Songs\FlatFile\FlatFileSongStore.cs" />
-    <Compile Include="Database\FlatFile\FlatFileStorage.cs" />
-    <Compile Include="Database\Playlists\IPlaylistStore.cs" />
-    <Compile Include="Database\Songs\ISongStore.cs" />
     <Compile Include="Models\DownloaderListViewitem.cs" />
     <Compile Include="DownloaderWindow.xaml.cs">
       <DependentUpon>DownloaderWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FileSystem\Can.cs" />
-    <Compile Include="FileSystem\Default\DefaultExists.cs" />
-    <Compile Include="FileSystem\Default\DefaultGet.cs" />
-    <Compile Include="FileSystem\Default\DefaultOpen.cs" />
-    <Compile Include="FileSystem\Default\DefaultReadWrite.cs" />
-    <Compile Include="FileSystem\IExists.cs" />
-    <Compile Include="FileSystem\IGet.cs" />
-    <Compile Include="FileSystem\IOpen.cs" />
-    <Compile Include="FileSystem\IReadWrite.cs" />
-    <Compile Include="Audio\AudioPlayer.cs" />
-    <Compile Include="General\EnumerableExtension.cs" />
-    <Compile Include="General\GotTriggeredEventHandler.cs" />
-    <Compile Include="General\ExitAppTrigger.cs" />
-    <Compile Include="General\AppTrigger.cs" />
-    <Compile Include="Audio\IAudioPlayer.cs" />
-    <Compile Include="General\StartedPlayingEventArgs.cs" />
-    <Compile Include="General\StartedPlayingEventHandler.cs" />
-    <Compile Include="General\StringExtensions.cs" />
-    <Compile Include="Library\AnalyzeFolderRequest.cs" />
-    <Compile Include="Library\FolderAddRequest.cs" />
-    <Compile Include="Library\FolderAnalyzer.cs" />
-    <Compile Include="Library\LibrarySearchFinishedEventArgs.cs" />
-    <Compile Include="Library\LibrarySearchFinishedEventHandler.cs" />
-    <Compile Include="Library\NewLibrarySongEventArgs.cs" />
     <Compile Include="Modules\FileSystemModule.cs" />
     <Compile Include="Modules\SongDataModule.cs" />
-    <Compile Include="Services\LinkCrawl\Compare.cs" />
-    <Compile Include="Services\LinkCrawl\LinkCrawl.cs" />
-    <Compile Include="Services\LinkCrawl\LinkCrawlTrack.cs" />
-    <Compile Include="Services\SoundCloud\SoundCloudUser.cs" />
-    <Compile Include="Services\YouTube\YouTubeId.cs" />
-    <Compile Include="Services\YouTube\YouTubeSnippet.cs" />
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SongData\DataFindMethods\Id3TagDataFindMethod.cs" />
-    <Compile Include="SongData\FindSongDataRequest.cs" />
-    <Compile Include="SongData\FoundDataEventArgs.cs" />
-    <Compile Include="SongData\IDataFindMethod.cs" />
-    <Compile Include="SongData\DataFindMethodCollection.cs" />
-    <Compile Include="SongData\ISongDataFinder.cs" />
-    <Compile Include="SongData\FoundDataEventHandler.cs" />
-    <Compile Include="Library\FoundNewFileEventHandler.cs" />
-    <Compile Include="Library\HansMusicLibrary.cs" />
-    <Compile Include="Database\IStore.cs" />
-    <Compile Include="Library\DefaultAudioLoader.cs" />
-    <Compile Include="General\SearchFinishedEventHandler.cs" />
-    <Compile Include="General\SearchRequest.cs" />
-    <Compile Include="Library\NewLibrarySongEventHandler.cs" />
-    <Compile Include="SongData\SongDataFinder.cs" />
-    <Compile Include="Library\SongDataResponse.cs" />
     <Compile Include="Modules\AudioModule.cs" />
     <Compile Include="Modules\DatabaseModule.cs" />
-    <Compile Include="Services\RestSharpJsonSerializeWrapper.cs" />
-    <Compile Include="Services\YouTube\YouTube.cs" />
-    <Compile Include="Services\YouTube\YouTubeTrack.cs" />
-    <Compile Include="General\SongQueueChangedEventHandler.cs" />
     <Compile Include="Models\SongQueueListViewItem.cs" />
-    <Compile Include="Web\DownloadFailedEventArgs.cs" />
-    <Compile Include="Web\DownloadFailedEventHandler.cs" />
-    <Compile Include="Web\DownloadFinishedEventHandler.cs" />
-    <Compile Include="Web\DownloadRequest.cs" />
-    <Compile Include="Web\HttpDownloader.cs" />
-    <Compile Include="Web\IDownloader.cs" />
-    <Compile Include="General\HansAudioPlayer.cs" />
-    <Compile Include="Library\IAudioLoader.cs" />
-    <Compile Include="Database\Songs\HansSong.cs" />
-    <Compile Include="Database\Playlists\HansPlaylist.cs" />
-    <Compile Include="Services\IOnlineService.cs" />
-    <Compile Include="Services\IOnlineServiceTrack.cs" />
-    <Compile Include="Services\SoundCloud\SoundCloud.cs" />
-    <Compile Include="Services\SoundCloud\SoundCloudTrack.cs" />
-    <Compile Include="FileSystem\FileSystem.cs" />
-    <Compile Include="Web\SongDownloads.cs" />
-    <Compile Include="Web\ThreadSafeList.cs" />
-    <Compile Include="Web\YouTubeDownloader.cs" />
     <Page Include="DownloaderWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -278,6 +202,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Fonts\" />
+    <Folder Include="General\" />
+    <Folder Include="Library\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.1">
@@ -298,6 +224,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="volumemute.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Hans.Components\Hans.Components.csproj">
+      <Project>{0b4b9221-47a8-45ff-aa01-d51be854c655}</Project>
+      <Name>Hans.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hans.Core\Hans.Core.csproj">
+      <Project>{0e88ef77-b6e8-480a-ac31-816b1f235ebf}</Project>
+      <Name>Hans.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\.NETFramework\v4.5\Microsoft.Expression.Blend.WPF.targets" />

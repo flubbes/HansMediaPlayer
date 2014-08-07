@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hans", "Hans\Hans.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hans.Tests", "Hans.Tests\Hans.Tests.csproj", "{9794A9F2-A607-4A9C-9E35-E02C04C695CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hans.Core", "Hans.Core\Hans.Core.csproj", "{0E88EF77-B6E8-480A-AC31-816B1F235EBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hans.Components", "Hans.Components\Hans.Components.csproj", "{0B4B9221-47A8-45FF-AA01-D51BE854C655}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{9794A9F2-A607-4A9C-9E35-E02C04C695CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9794A9F2-A607-4A9C-9E35-E02C04C695CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9794A9F2-A607-4A9C-9E35-E02C04C695CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E88EF77-B6E8-480A-AC31-816B1F235EBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E88EF77-B6E8-480A-AC31-816B1F235EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E88EF77-B6E8-480A-AC31-816B1F235EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E88EF77-B6E8-480A-AC31-816B1F235EBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B4B9221-47A8-45FF-AA01-D51BE854C655}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B4B9221-47A8-45FF-AA01-D51BE854C655}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B4B9221-47A8-45FF-AA01-D51BE854C655}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B4B9221-47A8-45FF-AA01-D51BE854C655}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

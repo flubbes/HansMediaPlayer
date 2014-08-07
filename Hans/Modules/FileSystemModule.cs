@@ -1,5 +1,5 @@
-﻿using Hans.FileSystem;
-using Hans.FileSystem.Default;
+﻿using Hans.Components.FileSystem;
+using Hans.Core.FileSystem;
 using Ninject.Modules;
 
 namespace Hans.Modules

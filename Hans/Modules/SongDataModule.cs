@@ -1,5 +1,5 @@
-﻿using Hans.SongData;
-using Hans.SongData.DataFindMethods;
+﻿using Hans.Core.SongData;
+using Hans.Core.SongData.DataFindMethods;
 using Ninject.Modules;
 
 namespace Hans.Modules

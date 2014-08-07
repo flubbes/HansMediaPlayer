@@ -1,6 +1,5 @@
-﻿using Hans.General;
+﻿using Hans.Core.Web;
 using Hans.Models;
-using Hans.Web;
 using System;
 using System.ComponentModel;
 using System.Linq;

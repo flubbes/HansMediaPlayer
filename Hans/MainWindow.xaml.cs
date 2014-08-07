@@ -1,11 +1,13 @@
-﻿using Hans.Database.Songs;
-using Hans.General;
-using Hans.Library;
+﻿using Hans.Components.General;
+using Hans.Components.Library;
+using Hans.Components.Services.LinkCrawl;
+using Hans.Components.Services.SoundCloud;
+using Hans.Components.Services.YouTube;
+using Hans.Core.Database.Songs;
+using Hans.Core.General;
+using Hans.Core.Services;
 using Hans.Models;
 using Hans.Properties;
-using Hans.Services;
-using Hans.Services.LinkCrawl;
-using Hans.Services.YouTube;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -298,7 +300,7 @@ namespace Hans
         private void InitServiceComboBox()
         {
             ComboBoxService.DisplayMemberPath = "Name";
-            ComboBoxService.Items.Add(typeof(Services.SoundCloud.SoundCloud));
+            ComboBoxService.Items.Add(typeof(SoundCloud));
             ComboBoxService.Items.Add(typeof(YouTube));
             ComboBoxService.Items.Add(typeof(LinkCrawl));
             ComboBoxService.SelectedIndex = 0;
@@ -474,7 +476,7 @@ namespace Hans
         }
 
         /// <summary>
-        /// Gets triggered when 
+        /// Gets triggered when the mute key is down
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

@@ -25,42 +25,6 @@ namespace Hans.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("songs.json")]
-        public string Database_SongStore_Path {
-            get {
-                return ((string)(this["Database_SongStore_Path"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("playlists.json")]
-        public string Database_PlaylistStore_Path {
-            get {
-                return ((string)(this["Database_PlaylistStore_Path"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("temp")]
-        public string Download_Temp_Directory {
-            get {
-                return ((string)(this["Download_Temp_Directory"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("playlistSongs.json")]
-        public string Database_PlaylistSongStore_Path {
-            get {
-                return ((string)(this["Database_PlaylistSongStore_Path"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Open a folder to add to your music library")]
         public string Form_Text_AddFromLibrary {
             get {

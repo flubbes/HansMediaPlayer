@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Hans.General;
+using Hans.Core.General;
 using NUnit.Framework;
 
 namespace Hans.Tests.General

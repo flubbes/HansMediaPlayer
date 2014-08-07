@@ -1,5 +1,5 @@
-﻿using Hans.Audio;
-using Hans.Library;
+﻿using Hans.Components.Audio;
+using Hans.Core.Audio;
 using Ninject.Modules;
 
 namespace Hans.Modules
