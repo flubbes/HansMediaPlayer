@@ -69,7 +69,7 @@
     <Compile Include="General\SearchRequest.cs" />
     <Compile Include="General\SongQueueChangedEventHandler.cs" />
     <Compile Include="Library\AnalyzeFolderRequest.cs" />
-    <Compile Include="Library\DefaultAudioLoader.cs" />
+    <Compile Include="Audio\DefaultAudioLoader.cs" />
     <Compile Include="Library\FolderAddRequest.cs" />
     <Compile Include="Library\FolderAnalyzer.cs" />
     <Compile Include="Library\FoundNewFileEventHandler.cs" />

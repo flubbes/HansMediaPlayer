@@ -1,5 +1,0 @@
-D:\Eigene Dateien\Documents\GIT\Hans\Hans.Components\bin\Debug\Hans.Components.dll
-D:\Eigene Dateien\Documents\GIT\Hans\Hans.Components\bin\Debug\Hans.Components.pdb
-D:\Eigene Dateien\Documents\GIT\Hans\Hans.Components\obj\Debug\Hans.Components.csprojResolveAssemblyReference.cache
-D:\Eigene Dateien\Documents\GIT\Hans\Hans.Components\obj\Debug\Hans.Components.dll
-D:\Eigene Dateien\Documents\GIT\Hans\Hans.Components\obj\Debug\Hans.Components.pdb

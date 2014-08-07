@@ -1,7 +1,0 @@
-D:\Eigene Dateien\Documents\GIT\Hans\Hans.Core\bin\Debug\Hans.Core.dll
-D:\Eigene Dateien\Documents\GIT\Hans\Hans.Core\bin\Debug\Hans.Core.pdb
-D:\Eigene Dateien\Documents\GIT\Hans\Hans.Core\obj\Debug\Hans.Core.csprojResolveAssemblyReference.cache
-D:\Eigene Dateien\Documents\GIT\Hans\Hans.Core\obj\Debug\Hans.Core.dll
-D:\Eigene Dateien\Documents\GIT\Hans\Hans.Core\obj\Debug\Hans.Core.pdb
-D:\Eigene Dateien\Documents\GIT\Hans\Hans.Core\bin\Debug\Newtonsoft.Json.dll
-D:\Eigene Dateien\Documents\GIT\Hans\Hans.Core\bin\Debug\Newtonsoft.Json.xml

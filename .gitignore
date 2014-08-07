@@ -4,3 +4,7 @@ Hans.Tests/obj/
 Hans.Tests/bin/
 Hans.v12.suo
 Hans.sln.DotSettings.user
+Hans.Core/bin/
+Hans.Components/bin/
+Hans.Core/obj/
+Hans.Components/obj/
