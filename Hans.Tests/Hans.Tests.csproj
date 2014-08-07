@@ -69,13 +69,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="General\AppTriggerTests.cs" />
-    <Compile Include="General\HansAudioPlayerTests.cs" />
-    <Compile Include="Library\FolderAnalyzerTests.cs" />
-    <Compile Include="Library\HansMusicLibraryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Web\HttpDownloaderTests.cs" />
-    <Compile Include="Web\SongDownloadsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -94,6 +88,9 @@
       <Project>{4d565016-7fe9-4378-b315-3be9ff121d3c}</Project>
       <Name>Hans</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="General\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

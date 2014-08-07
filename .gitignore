@@ -8,3 +8,5 @@ Hans.Core/bin/
 Hans.Components/bin/
 Hans.Core/obj/
 Hans.Components/obj/
+Hans.Components.Tests/obj/
+Hans.Core.Tests/obj/
