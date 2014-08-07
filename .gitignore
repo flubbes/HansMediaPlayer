@@ -10,3 +10,9 @@ Hans.Core/obj/
 Hans.Components/obj/
 Hans.Components.Tests/obj/
 Hans.Core.Tests/obj/
+Hans.Components.Tests/bin/
+Hans.Core.Tests/bin/
+Hans.Gtk/bin/
+Hans/Hans.Gui.Gtk/bin/
+Hans.Gtk/obj/
+Hans/Hans.Gui.Gtk/obj/

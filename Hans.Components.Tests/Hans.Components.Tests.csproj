@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -59,11 +59,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hans.Components\Hans.Components.csproj">
-      <Project>{0b4b9221-47a8-45ff-aa01-d51be854c655}</Project>
+      <Project>{0B4B9221-47A8-45FF-AA01-D51BE854C655}</Project>
       <Name>Hans.Components</Name>
     </ProjectReference>
     <ProjectReference Include="..\Hans.Core\Hans.Core.csproj">
-      <Project>{0e88ef77-b6e8-480a-ac31-816b1f235ebf}</Project>
+      <Project>{0E88EF77-B6E8-480A-AC31-816B1F235EBF}</Project>
       <Name>Hans.Core</Name>
     </ProjectReference>
   </ItemGroup>
