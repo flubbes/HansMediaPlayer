@@ -17,9 +17,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hans.Components.Tests", "Ha
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GUI", "GUI", "{158483C6-80F6-4B0B-B62B-48D9F0A2AA0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hans.Wpf", "Hans\Hans.Wpf.csproj", "{4D565016-7FE9-4378-B315-3BE9FF121D3C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hans.Gui.Wpf", "Hans\Hans.Gui.Wpf.csproj", "{4D565016-7FE9-4378-B315-3BE9FF121D3C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hans.Gui.Gtk", "Hans\Hans.Gui.Gtk\Hans.Gui.Gtk.csproj", "{1BA5B4FB-51AF-483A-AADB-66F966F6C08A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hans.Gui.WinForms", "Hans.Gui.WinForms\Hans.Gui.WinForms.csproj", "{F19B91DD-4BDB-42ED-97A1-E1D43B9D20B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{1BA5B4FB-51AF-483A-AADB-66F966F6C08A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BA5B4FB-51AF-483A-AADB-66F966F6C08A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BA5B4FB-51AF-483A-AADB-66F966F6C08A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F19B91DD-4BDB-42ED-97A1-E1D43B9D20B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F19B91DD-4BDB-42ED-97A1-E1D43B9D20B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F19B91DD-4BDB-42ED-97A1-E1D43B9D20B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F19B91DD-4BDB-42ED-97A1-E1D43B9D20B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{937D959C-EEE9-4436-8B32-AB5080218FC7} = {A5215425-9B5A-47C9-A3EF-9C2104E3E354}
 		{4D565016-7FE9-4378-B315-3BE9FF121D3C} = {158483C6-80F6-4B0B-B62B-48D9F0A2AA0E}
 		{1BA5B4FB-51AF-483A-AADB-66F966F6C08A} = {158483C6-80F6-4B0B-B62B-48D9F0A2AA0E}
+		{F19B91DD-4BDB-42ED-97A1-E1D43B9D20B7} = {158483C6-80F6-4B0B-B62B-48D9F0A2AA0E}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Hans\Hans.Gui.Gtk\Hans.Gui.Gtk.csproj
