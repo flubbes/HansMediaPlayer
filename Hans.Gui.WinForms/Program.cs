@@ -1,13 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Hans.Components.Database;
+using Hans.Core.Database.Playlists;
+using Hans.Core.Database.Songs;
+using Hans.Core.General;
+using Hans.Database.Playlists.FlatFile;
+using Hans.Gui.WinForms.Modules;
+using Ninject;
 
 namespace Hans.Gui.WinForms
 {
     static class Program
     {
+        private static IKernel _kernel;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -16,7 +22,24 @@ namespace Hans.Gui.WinForms
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
+            BuildKernel();
+            var form = _kernel.Get<FormMain>();
+            Application.Run(form);
+        }
+
+        private static void BuildKernel()
+        {
+            _kernel = new StandardKernel();
+            LoadModules();
+            _kernel.Bind<ExitAppTrigger>().ToSelf().InSingletonScope();
+        }
+
+        private static void LoadModules()
+        {
+            _kernel.Load<DatabaseModule>();
+            _kernel.Load<SongDataModule>();
+            _kernel.Load<AudioModule>();
+            _kernel.Load<FileSystemModule>();
         }
     }
 }

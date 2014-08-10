@@ -17,3 +17,5 @@ Hans/Hans.Gui.Gtk/bin/
 Hans.Gtk/obj/
 Hans/Hans.Gui.Gtk/obj/
 Hans.Gui.WinForms/obj/
+Hans.Gui.WinForms.Tests/obj/
+Hans.Gui.WinForms/bin/

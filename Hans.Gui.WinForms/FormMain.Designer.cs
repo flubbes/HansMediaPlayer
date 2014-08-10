@@ -28,12 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.lvLibrary = new System.Windows.Forms.ListView();
+            this.SuspendLayout();
+            // 
+            // lvLibrary
+            // 
+            this.lvLibrary.Location = new System.Drawing.Point(122, 53);
+            this.lvLibrary.Name = "lvLibrary";
+            this.lvLibrary.Size = new System.Drawing.Size(442, 309);
+            this.lvLibrary.TabIndex = 0;
+            this.lvLibrary.UseCompatibleStateImageBehavior = false;
+            this.lvLibrary.View = System.Windows.Forms.View.Details;
+            // 
+            // FormMain
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(728, 406);
+            this.Controls.Add(this.lvLibrary);
+            this.Name = "FormMain";
+            this.Text = "Hans Media Player";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.ListView lvLibrary;
     }
 }
 
