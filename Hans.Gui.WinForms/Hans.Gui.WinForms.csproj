@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\SongListViewFiller.cs" />
+    <Compile Include="Data\SongListViewFillRequest.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -56,6 +58,7 @@
     <Compile Include="Modules\AudioModule.cs" />
     <Compile Include="Modules\DatabaseModule.cs" />
     <Compile Include="Modules\FileSystemModule.cs" />
+    <Compile Include="Modules\FormModule.cs" />
     <Compile Include="Modules\SongDataModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -85,9 +88,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Hans.Components\Hans.Components.csproj">
       <Project>{0b4b9221-47a8-45ff-aa01-d51be854c655}</Project>

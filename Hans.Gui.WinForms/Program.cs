@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using Hans.Components.Database;
-using Hans.Core.Database.Playlists;
-using Hans.Core.Database.Songs;
 using Hans.Core.General;
-using Hans.Database.Playlists.FlatFile;
 using Hans.Gui.WinForms.Modules;
 using Ninject;
 
@@ -40,6 +36,7 @@ namespace Hans.Gui.WinForms
             _kernel.Load<SongDataModule>();
             _kernel.Load<AudioModule>();
             _kernel.Load<FileSystemModule>();
+            _kernel.Load<FormModule>();
         }
     }
 }

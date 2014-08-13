@@ -25,23 +25,4 @@ namespace Hans.Gui.WinForms.Tests
             firstItem.SubItems[1].Text.Should().Be(item.Title);
         }
     }
-
-    public struct SongListViewFillRequest
-    {
-        public ListView ListView { get; set; }
-        public HansSong[] Songs { get; set; }
-    }
-
-    public class SongListViewFiller
-    {
-        public void Fill(SongListViewFillRequest songs)
-        {
-            foreach (var song in songs.Songs)
-            {
-                var item = new ListViewItem(song.Artist);
-                item.SubItems.Add(song.Title);
-                songs.ListView.Items.Add(item);
-            }
-        }
-    }
 }
