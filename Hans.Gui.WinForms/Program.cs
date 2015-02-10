@@ -36,7 +36,6 @@ namespace Hans.Gui.WinForms
             _kernel.Load<SongDataModule>();
             _kernel.Load<AudioModule>();
             _kernel.Load<FileSystemModule>();
-            _kernel.Load<FormModule>();
         }
     }
 }

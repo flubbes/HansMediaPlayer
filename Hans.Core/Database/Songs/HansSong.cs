@@ -35,10 +35,6 @@ namespace Hans.Core.Database.Songs
         {
             get
             {
-                if (!_artists.Any())
-                {
-                    return Path.GetFileNameWithoutExtension(FilePath);
-                }
                 return _artists.FirstOrDefault();
             }
         }
@@ -74,10 +70,6 @@ namespace Hans.Core.Database.Songs
         {
             get
             {
-                if (string.IsNullOrEmpty(_title))
-                {
-                    return Path.GetFileNameWithoutExtension(FilePath);
-                }
                 return _title;
             }
             set { _title = value; }
