@@ -15,9 +15,10 @@ namespace Hans.Modules
         public override void Load()
         {
             Bind<ISongDataFinder>().To<SongDataFinder>();
-            Bind<DataFindMethodCollection>().ToMethod(context => new DataFindMethodCollection(new[]
+            Bind<DataFindMethodCollection>().ToMethod(context => new DataFindMethodCollection(new IDataFindMethod[]
             {
-                new Id3TagDataFindMethod()
+                new Id3TagDataFindMethod(),
+                new FileNameDataFindMethod(), 
             }));
         }
     }

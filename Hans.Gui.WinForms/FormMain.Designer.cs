@@ -45,7 +45,7 @@
             this.olvLibrary.GridLines = true;
             this.olvLibrary.Location = new System.Drawing.Point(12, 12);
             this.olvLibrary.Name = "olvLibrary";
-            this.olvLibrary.Size = new System.Drawing.Size(447, 347);
+            this.olvLibrary.Size = new System.Drawing.Size(607, 353);
             this.olvLibrary.TabIndex = 0;
             this.olvLibrary.UseCompatibleStateImageBehavior = false;
             this.olvLibrary.View = System.Windows.Forms.View.Details;

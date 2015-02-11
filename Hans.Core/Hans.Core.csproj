@@ -33,8 +33,13 @@
     <Reference Include="Id3">
       <HintPath>..\packages\ID3.0.3.0\lib\net40\Id3.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio">
-      <HintPath>..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
+    <Reference Include="NAudio, Version=1.7.2.19, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NAudio.1.7.2\lib\net35\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,11 +48,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="YoutubeExtractor">
-      <HintPath>..\packages\YoutubeExtractor.0.10.3\lib\net35\YoutubeExtractor.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="YoutubeExtractor, Version=0.10.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\YoutubeExtractor.0.10.6\lib\net35\YoutubeExtractor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +81,7 @@
     <Compile Include="Services\IOnlineService.cs" />
     <Compile Include="Services\IOnlineServiceTrack.cs" />
     <Compile Include="SongData\DataFindMethodCollection.cs" />
+    <Compile Include="SongData\DataFindMethods\FileNameDataFindMethod.cs" />
     <Compile Include="SongData\DataFindMethods\Id3TagDataFindMethod.cs" />
     <Compile Include="SongData\FindSongDataRequest.cs" />
     <Compile Include="SongData\FoundDataEventArgs.cs" />

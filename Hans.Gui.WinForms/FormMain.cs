@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
 using Hans.Components.General;
 using Hans.Core.General;
-using BrightIdeasSoftware;
 
 namespace Hans.Gui.WinForms
 {
@@ -48,7 +46,6 @@ namespace Hans.Gui.WinForms
 
         private void ForEachSelectedItem(ListView listView, Action<object> action)
         {
-            var counter = 0;
             foreach (var item in listView.SelectedItems)
             {
                 var copiedItem = item;
