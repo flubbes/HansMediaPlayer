@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Hans.Core.Web;
+using System;
 using System.IO;
 using System.Net;
 using System.Threading;
-using Hans.Core.Web;
 
 namespace Hans.Components.Web
 {
@@ -76,7 +76,7 @@ namespace Hans.Components.Web
             IsDownloading = false;
         }
 
-        private static int CalcProgress(long g, int writtenTotal)
+        private static int CalcProgress(long g, long writtenTotal)
         {
             return Convert.ToInt32(writtenTotal * 100 / g);
         }
